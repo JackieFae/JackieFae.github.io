@@ -1,13 +1,426 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
   <head>
-    <title>SimpleAces</title>
+    <title>BA Monte Carlo</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jackie Fae" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="res/css/bootstrap-5-hacked.min.css" rel="stylesheet" media="screen"></script>
-      <style>a{ text-decoration: none; }</style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="res/js/montecarlo/constants.js" defer></script>
+    <script src="res/js/montecarlo/common.js" defer></script>
+    <script src="res/js/montecarlo/regression.js" defer></script>
+    <script src="res/js/montecarlo/results.js" defer></script>
+    <script src="res/js/montecarlo/ladder.js" defer></script>
+    <script src="res/js/montecarlo/report.js" defer></script>
+    <script src="res/js/montecarlo/load.js" defer></script>
+    <link href="res/css/bootstrap-5-hacked.min.css" rel="stylesheet" media="screen">
+    <link id="pagestyle" href="res/css/montecarloHer.css" rel="stylesheet" media="screen">
   </head>
   <body>
+    <div class="container main" id="top">
+      <div class="pt-2">
+        <h3 class="text-center">A Monte Carlo Simulation of Combat in Battle Aces</h3>
+        <h4 class="text-center">Version 0.9 - WORK IN PROGRESS - 100,000 Simulations</h4>
+        <p class="section-label">Style</p>
+        <button onClick="swapStyle('res/css/montecarloHer.css')" type="button" class="btn btn-outline-secondary btn-xs">Her</button>
+        <button onClick="swapStyle('res/css/montecarloHim.css')" type="button" class="btn btn-outline-secondary btn-xs">Him</button>
+        <button onClick="swapStyle('res/css/montecarloLight.css')" type="button" class="btn btn-outline-secondary btn-xs" disabled>Light</button>
+        <button onClick="swapStyle('res/css/montecarloDark.css')" type="button" class="btn btn-outline-secondary btn-xs" disabled>Dark</button>
+        <p></p>
+        <p class="section-label">Acknowledgements</p>
+        <p class="text-justified">Thanks to <a href="https://www.reddit.com/u/Dolmant">u/Dolmant</a> for his working mining and publishing the unit data.</p>
+        <p class="text-justified">Thanks to <a href="https://github.com/keiras">u/Keiras</a> for advice on getting started (also, I have broadly aped his style).</p>
+        <p class="text-justified">Thanks to <a href="http://www.math.sci.hiroshima-u.ac.jp/m-mat/MT/MT2002/emt19937ar.html">Matsumoto et. al.</a> for their work developing large period pseudo-random number generation for Monte Carlo simulation.</p>
+      </div>
+
+      <div class="hr-sect">
+        <a href="#regression"><button type="button" class="btn btn-outline-secondary btn-xs">Regression Analysis</button></a>
+        <a href="#results"><button type="button" class="btn btn-outline-secondary btn-xs">Simulation Results</button></a>
+        <a href="#ladder"><button type="button" class="btn btn-outline-secondary btn-xs">Mock Ladder</button></a>
+        <a href="#reports"><button type="button" class="btn btn-outline-secondary btn-xs">Battle Reports</button></a>
+        <a href="#howitworks"><button type="button" class="btn btn-outline-secondary btn-xs">Under the Hood</button></a>
+        <a href="#future"><button type="button" class="btn btn-outline-secondary btn-xs">Future Work</button></a>
+        <a href="#contact"><button type="button" class="btn btn-outline-secondary btn-xs">Contact</button></a>
+      </div>
+
+      <div id="regression">
+        <p class="section-label">Regression Analysis</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="text-justified">
+          Results of 100,000 permutations of combat in Battle Aces are described through a multiple linear regression creating a picture of the value of compositional choices.
+          In the plot, units are ranked from left to right based on a selected measure from the table below.
+        </p>
+        <p class="text-justified">
+          Detailed data is provided in the table.
+          Value is the average points toward the final score earned by adding one more of the given bot.
+          Norm Value is the value above or below the cost of that bot (divided by the bots cost to give a percentage).
+          % Adv Wins is the percentage of victories where the winning player had more of that bot.
+          % Dis Wins is the percentage of victories where the winning player had fewer of that bot.
+          % Pick Rate is the percentage of games in which that bot appeared.
+        </p>
+        <p class="text-justified">
+          Selecting filters will present the analysis results for a reduced dataset that highlights each unit's value against a particular subset of opposing bots.
+        </p>
+        <p class="text-justified">
+          NOTE: These are very slow to generate, so they are left out of the beta version.
+        </p>
+
+        <div id="div-reg-filters" class="d-flex align-items-center">
+          <span id="hint-span" class="text-muted">Filters:</span>
+
+          <select name="vsBotSlug" id="vsBotSlug" class="form-select form-select-sm" style="width: 125px">
+            <option value="" selected>NONE</option>
+            <option value="_vsuCrab">vs. Crab</option>
+            <option value="_vsuHunter">vs. Hunter</option>
+            <option value="_vsuRecall">vs. Recall</option>
+            <option value="_vsuRecall Hunter">vs. Recall Hunter</option>
+            <option value="_vsuScorpion">vs. Scorpion</option>
+            <option value="_vsuBeetle">vs. Beetle</option>
+            <option value="_vsuBlink">vs. Blink</option>
+            <option value="_vsuBlink Hunter">vs. Blink Hunter</option>
+            <option value="_vsuGunbot">vs. Gunbot</option>
+            <option value="_vsuMissilebot">vs. Missilebot</option>
+            <option value="_vsuWasp">vs. Wasp</option>
+            <option value="_vsuHornet">vs. Hornet</option>
+            <option value="_vsuKnight">vs. Knight</option>
+            <option value="_vsuCrossbow">vs. Crossbow</option>
+            <option value="_vsuBallista">vs. Ballista</option>
+            <option value="_vsuKing Crab">vs. King Crab</option>
+            <option value="_vsuCrusader">vs. Crusader</option>
+            <option value="_vsuBomber">vs. Bomber</option>
+            <option value="_vsuShocker">vs. Shocker</option>
+            <option value="_vsuRecall Shocker">vs. Recall Shocker</option>
+            <option value="_vsuMortar">vs. Mortar</option>
+            <option value="_vsuSwift Shocker">vs. Swift Shocker</option>
+            <option value="_vsuHeavy Hunter">vs. Heavy Hunter</option>
+            <option value="_vsuDestroyer">vs. Destroyer</option>
+            <option value="_vsuRaider">vs. Raider</option>
+            <option value="_vsuTurret">vs. Turret</option>
+            <option value="_vsuHeavy Ballista">vs. Heavy Ballista</option>
+            <option value="_vsuPredator">vs. Predator</option>
+            <option value="_vsuSniper">vs. Sniper</option>
+            <option value="_vsuAdvanced Blink">vs. Advanced Blink</option>
+            <option value="_vsuAssaultbot">vs. Assaultbot</option>
+            <option value="_vsuBehemoth">vs. Behemoth</option>
+            <option value="_vsuGargantua">vs. Gargantua</option>
+            <option value="_vsuButterfly">vs. Butterfly</option>
+            <option value="_vsuDragonfly">vs. Dragonfly</option>
+            <option value="_vsuFalcon">vs. Falcon</option>
+            <option value="_vsuAirship">vs. Airship</option>
+            <option value="_vsuAdvanced Recall">vs. Advanced Recall</option>
+            <option value="_vsuMammoth">vs. Mammoth</option>
+            <option value="_vsuStinger">vs. Stinger</option>
+            <option value="_vsuFlak Turret">vs. Flak Turret</option>
+            <option value="_vsuBulwark">vs. Bulwark</option>
+            <option value="_vsuKatbus">vs. Katbus</option>
+            <option value="_vsuLocust">vs. Locust</option>
+            <option value="_vsuKraken">vs. Kraken</option>
+            <option value="_vsuValkyrie">vs. Valkyrie</option>
+            <option value="_vsuArtillery">vs. Artillery</option>
+            <option value="_vsuAdvancedbot">vs. Advancedbot</option>
+            <option value="_vsuAdvancedDestroyer">vs. AdvancedDestroyer</option>
+          </select>
+
+          <select name="vsTraitSlug" id="vsTraitSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+            <option value="" selected>NONE</option>
+            <option value="_vscSwm">vs. Swarming</option>
+            <option value="_vscPrc">vs. Piercing</option>
+            <option value="_vscHlk">vs. Hulking</option>
+            <option value="_vscShr">vs. Shattering</option>
+            <option value="_vscFly">vs. Flying</option>
+            <option value="_vscHnt">vs. Hunting</option>
+          </select>
+
+          <select name="vsTechSlug" id="vsTechSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+            <option value="" selected>NONE</option>
+            <option value="_vstFd">vs. Foundry</option>
+            <option value="_vstAFd">vs. Advanced Foundry</option>
+            <option value="_vst2Fd">vs. Double Foundry</option>
+            <option value="_vstSf">vs. Starforge</option>
+            <option value="_vstASf">vs. Advanced Starforge</option>
+            <option value="_vst2Sf">vs. Double Starforge</option>
+            <option value="_vstT2">vs. Double Tier 2</option>
+            <option value="_vstT2AFd">vs. Double Tier 2 and Foundry</option>
+            <option value="_vstT2ASf">vs. Double Tier 2 and Starforge</option>
+            <option value="_vstT3">vs. Double Tier 3</option>
+            <option value="_vstAll">vs. Everything</option>
+          </select>
+
+          <select name="vsManuSlug" id="vsManuSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+            <option value="" selected>NONE</option>
+            <option value="_vsmNP">vs. North Performance</option>
+            <option value="_vsmFHC">vs. Far Horizon Collective</option>
+            <option value="_vsmGV">vs. Ghosts of Venus</option>
+            <option value="_vsmSen">vs. Senkeishu Ltd.</option>
+            <option value="_vsmIaS">vs. Irons and Sons</option>
+            <option value="_vsmCor">vs. Corona Central Systems</option>
+            <option value="_vsmHU">vs. Heavy Union Alliance</option>
+          </select>
+
+          <select name="stanceSlug" id="stanceSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+            <option value="" selected>NONE</option>
+            <option value="_aNeut">vs. Neutral</option>
+            <option value="_aDef">vs. Defender</option>
+            <option value="_aAgg">vs. Aggressor</option>
+          </select>
+
+          <select name="vsSkillSlug" id="vsSkillSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+            <option value="" selected>NONE</option>
+            <option value="_vssLow">vs. Lower Skill</option>
+            <option value="_vssNear">vs. Similar Skill</option>
+            <option value="_vssHigh">vs. Higher Skill</option>
+          </select>
+        </div>
+
+        <div id="div-regression">
+          <div id="viz-regression"></div>
+          <div id="table-regression"></div>
+        </div>
+
+      </div>
+
+      <hr />
+      <div id="results">
+        <p class="section-label">Simulation Results</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="text-justified">
+          This section shows the actual values resulting from a set of simulations.
+          Select a bot to view simulations containing that bot.
+          Select Raw Points or Means and Errors to show the data as a scatter or error bar plot.
+          The initial set is reduced to a maximum of 15000 data points to reduce clutter, with bot selection possibly reducing that count further.
+          Data is charted on the x-axis by count of the selected bot count and on the y-axis by score differential.
+        <p class="text-justified">
+          Two lines are drawn over the data.
+          The blue line shows the linear regression result from the previous section for the selected bot.
+          This shows the estimated increase in score for adding additional bots.
+          The orange line similarly shows the normalized percentage value from the previous section.
+          This line is more directly comparable across bots.
+        </p>
+
+        <div id="container-res-filters">
+          <div class="col">
+            <div class="d-flex align-items-center">
+              <span id="hint-span" class="text-muted">Select Bot: </span>
+              <select name="selectBotSlug" id="selectBotSlug" class="form-select form-select-sm" style="width: 100px">
+                <option value="0" selected>Crab</option>
+                <option value="1">Hunter</option>
+                <option value="2">Recall</option>
+                <option value="3">Recall Hunter</option>
+                <option value="4">Scorpion</option>
+                <option value="5">Beetle</option>
+                <option value="6">Blink</option>
+                <option value="7">Blink Hunter</option>
+                <option value="8">Gunbot</option>
+                <option value="9">Missilebot</option>
+                <option value="10">Wasp</option>
+                <option value="11">Hornet</option>
+                <option value="12">Knight</option>
+                <option value="13">Crossbow</option>
+                <option value="14">Ballista</option>
+                <option value="15">King Crab</option>
+                <option value="16">Crusader</option>
+                <option value="17">Bomber</option>
+                <option value="18">Shocker</option>
+                <option value="19">Recall Shocker</option>
+                <option value="20">Mortar</option>
+                <option value="21">Swift Shocker</option>
+                <option value="22">Heavy Hunter</option>
+                <option value="23">Destroyer</option>
+                <option value="24">Raider</option>
+                <option value="25">Turret</option>
+                <option value="26">Heavy Ballista</option>
+                <option value="27">Predator</option>
+                <option value="28">Sniper</option>
+                <option value="29">Advanced Blink</option>
+                <option value="30">Assaultbot</option>
+                <option value="31">Behemoth</option>
+                <option value="32">Gargantua</option>
+                <option value="33">Butterfly</option>
+                <option value="34">Dragonfly</option>
+                <option value="35">Falcon</option>
+                <option value="36">Airship</option>
+                <option value="37">Advanced Recall</option>
+                <option value="38">Mammoth</option>
+                <option value="39">Stinger</option>
+                <option value="40">Flak Turret</option>
+                <option value="41">Bulwark</option>
+                <option value="42">Katbus</option>
+                <option value="43">Locust</option>
+                <option value="44">Kraken</option>
+                <option value="45">Valkyrie</option>
+                <option value="46">Artillery</option>
+                <option value="47">Advancedbot</option>
+                <option value="48">Advanced Destroyer</option>
+                <option value="49">Skill</option>
+              </select>
+          </div>
+          <p></p>
+          <div>
+            <span id="hint-span" class="text-muted">Show data as:</span>
+            <button type="button" id="points-button" class="btn btn-outline-secondary btn-xs">Raw Points</button>
+            <button type="button" id="means-button" class="btn btn-outline-secondary btn-xs">Means and Errors</button>
+            <p></p>
+          </div>
+          <div id="container-viz-results">
+            <div id="viz-results"></div>
+            <div id="table-results"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <hr />
+    <div id="ladder">
+      <p class="section-label">Mock Ladder</p>
+      <p class="text-justified"><a href="#top">Back to top</a></p>
+      <p class="text-justified">
+        A mock ladder based on a simple Elo MMR system and Battle Aces league tiering shows how the results of the analysis might map onto a live ladder.
+        The ladder consists of 3500 players, each playing a single deck with a randomly generated "true skill" value.
+        Players play 10000 games against opponents selected for nearby ladder score.
+      </p>
+      <p class="text-justified">
+        Press a league button to show the ranked list of players in that league.
+        Ladder score indicates displayed rank "in-game".
+        MMR indicates the Elo score used to determine match making (this is to allow emulating ladder thresholding like what was used in beta1, though it is not used in the present simulation).
+        Expected rank shows the projected power of a player based on their combination of skill and deck selection.
+        Skill is the true MMR value of a player without regard to deck.
+      </p>
+      <p class="text-justified">
+        Below the main table are summaries of bot usage in various leagues.
+        On the left, bots are ranked by popularity in the selected league.
+        On the right, bot popularity is shown across all leagues with Iron on the left extreme and Top Ace on the right.
+      </p>
+      <p></p>
+      <div id="container-viz-ladder">
+        <button type="button" id="iron-button" class="btn btn-outline-secondary btn-xs">Iron League</button>
+        <button type="button" id="bronze-button" class="btn btn-outline-secondary btn-xs">Bronze League</button>
+        <button type="button" id="silver-button" class="btn btn-outline-secondary btn-xs">Silver League</button>
+        <button type="button" id="gold-button" class="btn btn-outline-secondary btn-xs">Gold League</button>
+        <button type="button" id="platinum-button" class="btn btn-outline-secondary btn-xs">Platinum League</button>
+        <button type="button" id="emerald-button" class="btn btn-outline-secondary btn-xs">Emerald League</button>
+        <button type="button" id="diamond-button" class="btn btn-outline-secondary btn-xs">Diamond League</button>
+        <button type="button" id="topace-button" class="btn btn-outline-secondary btn-xs">Top Ace</button>
+        <p></p>
+        <div id="table-ladder-notes"></div>
+        <p></p>
+        <div id="viz-ladder"></div>
+        <div id="table-ladder"></div>
+        <p></p>
+        <div class="row row-cols-2">
+          <div id="table-ladder-summary" class ="col-2"></div>
+          <div id="viz-ladder-summary" class ="col-10"></div>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+    <div id="reports">
+      <p class="section-label">Battle Reports</p>
+      <p class="text-justified"><a href="#top">Back to top</a></p>
+      <p class="text-justified">
+        This section allows the viewing of a reduced set of 1000 simulations.
+        Select a report in the dialogue to the right (1-1000).
+      </p>
+      <p class="text-justified">
+        Below the selection is a bar showing the score comparison between both players and their army compositions.
+        On the left is a scroll-able field showing the position and approximate actions of each bot.
+        Track forward and backward in time by using the lower scrollbar or the timer dialogue.
+      </p>
+      <p class="text-justified">
+        Reports are shown with 1 second resolution.
+        Each second, the bots position is updated and its highest priority action is recorded.
+        Not all activity is visible, however the reports give a good idea of how timing and position within the simulation corresponds to live gameplay.
+      </p>
+      <div id="viz-report"></div>
+    </div>
+
+    <hr />
+    <div id="howitworks">
+      <p class="section-label">Under the Hood</p>
+      <p class="text-justified"><a href="#top">Back to top</a></p>
+      <p class="text-justified">
+        This section will go into a bit more detail about the workings of the model and the assumptions that underpin it. <b>TODO</b>
+      </p>
+    </div>
+
+    <hr />
+    <div id="future">
+      <p class="section-label">Future Work</p>
+      <p class="text-justified"><a href="#top">Back to top</a></p>
+      <ul>
+      <li>Version 0.9:</li>
+        <ul>
+          <li>Add aggressive and defensive positioning logic,</li>
+          <li>Add defensive combat logic,</li>
+          <li>Randomize unit stats per simulation,</li>
+          <li>Add unit stats per simulation to regression analysis,</li>
+          <li>Add automated validation for the PRNG,</li>
+          <li>Add automated validation for basic unit combos,</li>
+        </ul>
+      <br>
+      <li>Version 1.0:</li>
+        <ul>
+          <li>DONE Add new beta 2 bots,</li>
+          <li>Update bot stats for beta 2,</li>
+          <li>CLI option for generating specific deck match-ups,</li>
+          <li>CLI option for generating specific deck match-ups,</li>
+          <li>Add unit movement (kiting) between attack cooldowns,</li>
+          <li>Program OVERCLOCK_START and OVERCLOCK_STOP events,</li>
+          <li>Program BLINK_START and BLINK_STOP events,</li>
+          <li>Program RECALL_START and RECALL_STOP events,</li>
+          <li>Program SETUP_START and SETUP_STOP events,</li>
+          <li>Program UNSETUP_START and UNSETUP_STOP events,</li>
+          <li>Program DETONATE events,</li>
+          <li>Logic for ability use: Detonate,</li>
+          <li>Logic for ability use: aggressive Overclock (use on cooldown),</li>
+          <li>Logic for ability use: defensive Overclock (same as aggro),</li>
+          <li>Logic for ability use: aggressive Blink (Blink to get in range of target),</li>
+          <li>Logic for ability use: defensive Blink (Blink back on low HP),</li>
+          <li>Logic for ability use: aggressive Recall (none),</li>
+          <li>Logic for ability use: defensive Recall (Recall on low HP),</li>
+          <li>Logic for ability use: aggressive Setup (leapfrog),</li>
+          <li>Logic for ability use: defensive Setup (static defense),</li>
+          <li>Update seeding to randomize results for release,</li>
+          <li>Identify event linked list memory leak,</li>
+          <li>Fix splash over-damage on overlapping units in motion,</li>
+          <li>Fix units moving when dead,</li>
+          <li>Fix untargetable units at map boundary,</li>
+          <li>Reduce time spent deconflicting units/finding open positions,</li>
+          <li>Improve packing of melee units on their targets,</li>
+          <li>Optimize event processing (create/destroy and targetting) for speed,</li>
+          <li>Implement and compare Glicko/Glicko2 with Elo performance for ladder,</li>
+          <li>Multi-thread report writing,</li>
+          <li>Multi-thread ladder match-making,</li>
+          <li>SIMD for matrix library (maybe),</li>
+          <li>Make code presentable,</li>
+        </ul>
+      <br>
+      <li>Version 2.0:</li>
+        <ul>
+          <li>Human-ish APM,</li>
+          <li>Human-ish kiting and stutter stepping,</li>
+          <li>Human-ish focus fire,</li>
+          <li>Human-ish ability use,</li>
+          <li>Fuzzy logic to scale Human-ness with Skill setting,</li>
+          <li>Iterate ladder in "days" of a gaussian number of games, with players changing decks each day,</li>
+          <li>Add to a subset of players a tendancy to copy Top Ace decks from the previous day,</li>
+          <li>Add a chance for higher skill players to pick high performing bots,</li>
+          <li>Generalize Monte Carlo code and fully separate from BA data, allowing reuse on other titles,</li>
+        </ul>
+      </ul>
+      <li>Version 3.0 (ie: optional stuff I may never get to):</li>
+        <ul>
+          <li>Javascript version of sim, allowing users to plug in bots and get a summary of outcomes,</li>
+          <li>Create page for comparing simulations between patches,</li>
+        </ul>
+      </ul>
+    </div>
+
+    <hr />
+    <div id="contact">
+      <p class="section-label">Contact Info</p>
+      <p class="text-justified"><a href="#top">Back to top</a></p>
+      <p class="text-justified"> - <a href="https://www.reddit.com/user/Hi_Dayvie/">reddit</a> - <a href="https://github.com/JackieFae">GitHub</a> - </p>
+    </div>
   </body>
 </html>
