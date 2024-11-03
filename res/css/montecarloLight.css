@@ -1,0 +1,138 @@
+
+/*
+  COLOUR SCHEME
+  Background:       #f8f8f8 -- invert(98%) sepia(3%) saturate(395%) hue-rotate(182deg) brightness(116%) contrast(95%)
+  Basic white text: #e0e0e0 -- 
+  Dark Orange:      #a36c2d -- 
+  Mid Orange:       #d68324 -- 
+  Bright Orange:    #ff7b00 -- 
+  Dark Blue:        #3b46e9 -- 
+  Mid Blue:         #418de4 -- 
+  Bright Blue:      #2191ec -- 
+*/
+
+/* Common settings */
+body {
+  background-color: #ffffff;
+}
+
+/* Combine with bootstrap container to create page background */
+.main {
+  background-color: #f8f8f8;
+}
+
+/* Navigation bar styling with text in the center */
+.hr-sect {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.99);
+  margin: 8px 0px;
+}
+.hr-sect::before, .hr-sect::after {
+  content: "";
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.35);
+  height: 2px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 8px;
+}
+
+/* Basic formatting for sections */
+.section-label {
+  text-align: left;
+  font-variant: petite-caps;
+  font-weight: bold;
+}
+
+.text-justified {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Graph formatting */
+.svg_background {
+  filter: invert(98%) sepia(3%) saturate(395%) hue-rotate(182deg) brightness(116%) contrast(95%);
+}
+
+.svg_shape {
+  filter: invert(66%);
+}
+.svg_shape.selected{
+  filter: invert(11%) sepia(92%) saturate(7500%) hue-rotate(359deg) brightness(105%) contrast(108%);
+}
+.svg_shape.highlighted{
+  filter: invert(43%) sepia(72%) saturate(365%) hue-rotate(164deg) brightness(96%) contrast(90%);
+}
+
+.svg_image {
+  filter: invert(100%) invert(66%);
+}
+.svg_image.selected{
+  filter: invert(100%) invert(11%) sepia(92%) saturate(7500%) hue-rotate(359deg) brightness(105%) contrast(108%);
+}
+.svg_image.highlighted{
+  filter: invert(100%) invert(43%) sepia(72%) saturate(365%) hue-rotate(164deg) brightness(96%) contrast(90%);
+}
+
+.svg_line {
+  stroke: black;
+  stroke-width: 1;
+  opacity: 1.0;
+}
+.svg_line_fuzzy {
+  stroke: darkblue;
+  stroke-width: 3;
+  opacity: 0.2;
+}
+
+/* Table formatting */
+.table_hr, .table_hr_sticky, .table_hr_cornersticky{
+  border: 1px solid black;
+  border-collapse: collapse;
+  background: #f8f8f8;
+  padding-left: 4px;
+}
+.table_hr_sticky, .table_hr_cornersticky {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.table_hr_cornersticky {
+  left: 0;
+  z-index: 2;
+}
+
+.table_cell, .table_cell_sticky {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding-left: 4px;
+}
+.table_cell_sticky {
+  position: sticky;
+  left: 0;
+  background: #f8f8f8;
+}
+
+.table_cell img, .table_cell_sticky img {
+  width: 34px;
+  height: 34px;
+  filter: invert(100%) ;
+}
+.table_cell img.highlighted, .table_cell_sticky img.highlighted {
+  filter: invert(100%) invert(43%) sepia(72%) saturate(365%) hue-rotate(164deg) brightness(96%) contrast(90%);
+}
+.table_cell img.selected, .table_cell_sticky img.selected {
+  filter: invert(100%) invert(11%) sepia(92%) saturate(7500%) hue-rotate(359deg) brightness(105%) contrast(108%);
+}
+
+.table_cell text {
+  filter: invert(0%);
+}
+.table_cell text.highlighted {
+  filter: invert(43%) sepia(72%) saturate(365%) hue-rotate(164deg) brightness(96%) contrast(90%);
+}
+.table_cell text.selected {
+  filter: invert(11%) sepia(92%) saturate(7500%) hue-rotate(359deg) brightness(105%) contrast(108%);
+}

@@ -1,0 +1,329 @@
+
+/*
+  COLOUR SCHEME
+  Background:       #303030 -- invert(19%) sepia(18%) saturate(0%) hue-rotate(152deg) brightness(94%) contrast(99%)
+  Basic white text: #e0e0e0 -- sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%)
+  Dark Teal:        #2da376 -- invert(52%) sepia(75%) saturate(404%) hue-rotate(105deg) brightness(88%) contrast(82%)
+  Mid Teal:         #24d69b -- invert(72%) sepia(67%) saturate(523%) hue-rotate(100deg) brightness(89%) contrast(87%)
+  Bright Teal:      #00ffdd -- invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%)
+  Dark Red:         #b33030 -- invert(27%) sepia(79%) saturate(2573%) hue-rotate(343deg) brightness(72%) contrast(88%)
+  Mid Red:          #e44141 -- invert(48%) sepia(9%) saturate(4737%) hue-rotate(315deg) brightness(84%) contrast(116%)
+  Bright Red:       #ff3737 -- invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%)
+*/
+
+/* Common settings */
+body {
+  background-color: #000000;
+  color: #e0e0e0;
+}
+
+/* Bootstrap overrides */
+.btn-outline-secondary{color:#24d69b;border-color:#2da376}
+.btn-outline-secondary:hover{color:#000;background-color:#00ffdd;border-color:#24d69b}
+
+.text-muted{color:#24d69b!important}
+.form-select{display:block;width:100%;padding:.375rem 2.25rem .375rem .75rem;-moz-padding-start:calc(0.75rem - 3px);font-size:1rem;font-weight:400;line-height:1.4;
+  color:#24d69b;
+  background-color:#303030;
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2324d69b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right .75rem center;background-size:16px 12px;
+  border:1px solid #2da376;
+  border-radius:0;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;-webkit-appearance:none;-moz-appearance:none;appearance:none}
+@media (prefers-reduced-motion:reduce){.form-select{transition:none}}
+.form-select:focus{border-color:#00ffdd;outline:0;box-shadow:0 0 0 .25rem #00ffdd77}
+.form-select:disabled{background-color:#2da376}
+.form-select::-webkit-scrollbar {
+  background-color: #2da37677;
+}
+.form-select::-webkit-scrollbar-thumb {
+  background: #24d69b;
+}
+
+.overflow-auto {
+  scrollbar-color: #24d69b #303030;
+}
+
+/* Combine with bootstrap container to create page background */
+.main {
+  background-color: #303030;
+}
+
+/* Navigation bar styling with text in the center */
+.hr-sect {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: #2da376;
+  margin: 8px 0px;
+}
+.hr-sect::before, .hr-sect::after {
+  content: "";
+  flex-grow: 1;
+  background: #2da376;
+  height: 2px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 8px;
+}
+
+/* Basic formatting for sections */
+.section-label {
+  text-align: left;
+  font-variant: petite-caps;
+  font-weight: bold;
+}
+
+.text-justified {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Graph formatting */
+.svg_background {
+  filter: invert(19%) sepia(18%) saturate(0%) hue-rotate(152deg) brightness(94%) contrast(99%);
+}
+
+.svg_transparent {
+  filter: saturate(0%) brightness(175%);
+}
+
+.svg_text {
+  filter: invert(100%) invert(35%);
+}
+.svg_text.hightlighted {
+  filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+}
+.svg_text.selected {
+  filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+}
+
+.svg_text_secondary {
+  filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+}
+.svg_text_secondary.highlighted {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+.svg_text_secondary.selected {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+
+.svg_text_tertiary {
+  filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+}
+.svg_text_tertiary.highlighted {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+.svg_text_tertiary.selected {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+
+.svg_shape {
+  filter: invert(100%) invert(35%);
+}
+.svg_shape.highlighted {
+  filter: invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+}
+.svg_shape.selected {
+  filter: invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+}
+
+.svg_shape_secondary {
+  filter: invert(72%) sepia(67%) saturate(523%) hue-rotate(100deg) brightness(89%) contrast(87%);
+}
+.svg_shape_secondary.highlighted {
+  filter: invert(52%) sepia(75%) saturate(404%) hue-rotate(105deg) brightness(88%) contrast(82%);
+}
+.svg_shape_secondary.selected {
+  filter: invert(72%) sepia(67%) saturate(523%) hue-rotate(100deg) brightness(89%) contrast(87%);
+}
+
+.svg_shape_tertiary {
+  filter: invert(48%) sepia(9%) saturate(4737%) hue-rotate(315deg) brightness(84%) contrast(116%);
+}
+.svg_shape_tertiary.highlighted {
+  filter: invert(27%) sepia(79%) saturate(2573%) hue-rotate(343deg) brightness(72%) contrast(88%);
+}
+.svg_shape_tertiary.selected {
+  filter: invert(27%) sepia(79%) saturate(2573%) hue-rotate(343deg) brightness(72%) contrast(88%);
+}
+
+.svg_image {
+  filter: invert(25%);
+}
+.svg_image.highlighted {
+  filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+}
+.svg_image.selected {
+  filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+}
+
+.svg_line {
+  stroke: #e0e0e0;
+  stroke-width: 1;
+}
+.svg_line.soften {
+  opacity: 0.2;
+}
+.svg_line.highlighted {
+  stroke: #ff3737;
+  stroke-width: 1;
+  opacity: 1.0;
+}
+.svg_line_highlighted {
+  stroke: #ff3737;
+  stroke-width: 1;
+  opacity: 1.0;
+}
+.svg_line.selected {
+  stroke: #00ffdd;
+  stroke-width: 1;
+  opacity: 1.0;
+}
+.svg_line_selected {
+  stroke: #00ffdd;
+  stroke-width: 1;
+  opacity: 1.0;
+}
+
+.svg_report_image {
+  filter: invert(25%);
+}
+.svg_report_image.teamA {
+  filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+}
+.svg_report_image.dead {
+  filter: brightness(50%);
+}
+.svg_report_image.teamB {
+  filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+}
+.svg_report_image.dead {
+  filter: brightness(50%);
+}
+
+.svg_report_line {
+  stroke: #e0e0e0;
+  stroke-width: 1;
+  opacity: 1.0;
+}
+.svg_report_line.teamA {
+  stroke: #00ffdd;
+  stroke-width: 1;
+  opacity: 1.0;
+}
+.svg_report_line.teamB {
+  stroke: #ff3737;
+  stroke-width: 1;
+  opacity: 1.0;
+}
+
+/* Table formatting */
+.table_hr, .table_hr_sticky, .table_hr_cornersticky{
+  border: 1px solid #2da376;
+  border-collapse: collapse;
+  background: #303030;
+  padding-left: 4px;
+  font-weight: 100;
+}
+.table_hr text, .table_hr_sticky text, .table_hr_cornersticky text{
+  filter: invert(72%) sepia(67%) saturate(523%) hue-rotate(100deg) brightness(89%) contrast(87%);
+}
+.table_hr_sticky, .table_hr_cornersticky {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.table_hr_cornersticky {
+  left: 0;
+  z-index: 2;
+}
+
+.table_cell, .table_cell_sticky {
+  border: 1px solid #2da376;
+  border-collapse: collapse;
+  padding-left: 4px;
+}
+.table_cell_sticky {
+  position: sticky;
+  left: 0;
+  background: #303030;
+}
+
+.table_cell img, .table_cell_sticky img {
+  width: 34px;
+  height: 34px;
+  filter: invert(0%);
+}
+.table_cell img.highlighted, .table_cell_sticky img.highlighted {
+  filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+}
+.table_cell img.selected, .table_cell_sticky img.selected {
+  filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+}
+
+.table_cell text {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+.table_cell text.highlighted {
+  filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+}
+.table_cell text.selected {
+  filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+}
+
+.table_cell text.secondary {
+  filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+}
+.table_cell text.secondary.highlighted {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+.table_cell text.secondary.selected {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+
+.table_cell text.tertiary {
+  filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+}
+.table_cell text.tertiary.highlighted {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+.table_cell text.tertiary.selected {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #e0e0e0;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #00ffdd;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #00ffdd;
+  cursor: pointer;
+}
