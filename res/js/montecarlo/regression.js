@@ -1,7 +1,7 @@
 
-const regressionGraph = d3.select('#viz-regression').append('svg')
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom);
+const regressionGraph = d3.select('#viz-regression').append('div').attr('class', 'overflow-auto')
+  .append('svg')
+  .attr("height", 40 + height + margin.top + margin.bottom);
 
 const regHeader = ["Variable", "Value", "Norm Value", /*"% Advantage", */"% Adv Win", /*"% Disadvantage", */"% Dis Win", /*"% Neutral", "% Neutral Win", */"Pick Rate (%)" ];
 const regressionTable = d3.select('#table-regression').append('div').attr('class', 'overflow-auto')
@@ -77,6 +77,9 @@ function drawRegression()
 function drawRegressionGraph()
 {
   regressionGraph.selectAll('*').remove();
+
+  const graphWidth = botNameLookup.length * 35 + margin.left + margin.right
+  regressionGraph.attr("width", graphWidth + 35);
   const svg = regressionGraph.append('g')
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -96,7 +99,7 @@ function drawRegressionGraph()
 
   const numRegVars = /*(*/sortedData.length;// - 1) / GlobalData.varCount + 1;
   const rectSpacing = 1;
-  const rectWidth = (width / numRegVars) - rectSpacing;
+  const rectWidth = (graphWidth / numRegVars) - rectSpacing;
   var zeroPos = 0;
   sortedData.forEach((d, i) => {
     if(d[regressionOutputSelect] < 0.0)
@@ -104,7 +107,7 @@ function drawRegressionGraph()
       zeroPos = i + 1;
     }
   });
-  const centerW = width * Math.max(0, (zeroPos)) / numRegVars;
+  const centerW = graphWidth * Math.max(0, (zeroPos)) / numRegVars;
 
   var lineCount = 0;
   sortedData.forEach(function(d, i) {
@@ -116,7 +119,7 @@ function drawRegressionGraph()
     const upperBoundDiff = Math.abs(plotDiff);
     svg.append('rect').attr('class', 'svg_background')
       .attr('x', lineCount * (rectWidth + rectSpacing))
-      .attr('y', 0.0)
+      .attr('y', 40.0 + 0.0)
       .attr('width', rectWidth)
       .attr('height', height)
       .attr('filter', 'invert(97.27%)')
@@ -125,7 +128,7 @@ function drawRegressionGraph()
       .on('click', () => setRegressionInputSelect(d.name))
     svg.append('rect').attr('class', 'svg_shape')
       .attr('x', lineCount * (rectWidth + rectSpacing))
-      .attr('y', centerH + lowerBoundValue / maxYExtent * centerH)
+      .attr('y', 40.0 + centerH + lowerBoundValue / maxYExtent * centerH)
       .attr('width', rectWidth)
       .attr('height', upperBoundValue / maxYExtent * centerH)
       .attr('alt', d.name)
@@ -145,7 +148,7 @@ function drawRegressionGraph()
     {
       svg.append('rect').attr('class', rectType)
         .attr('x', lineCount * (rectWidth + rectSpacing))
-        .attr('y', centerH + lowerBoundDiff / maxYExtent * centerH)
+        .attr('y', 40.0 + centerH + lowerBoundDiff / maxYExtent * centerH)
         .attr('width', rectWidth)
         .attr('height', upperBoundDiff / maxYExtent * centerH)
         .attr('alt', d.name)
@@ -168,7 +171,7 @@ function drawRegressionGraph()
         }
         svg.append('image').attr('class', 'svg_image')
           .attr('x', lineCount * (rectWidth + rectSpacing))
-          .attr('y', centerH + offset)
+          .attr('y', 40.0 + centerH + offset)
           .attr('width', rectWidth)
           .attr('height', rectWidth)
           .attr('filter', 'invert(100%)')
@@ -187,10 +190,10 @@ function drawRegressionGraph()
 
   // Add X axis
   const x = d3.scaleLinear()
-    .domain([0, numRegVars])
-    .range([0, width]);
+    .domain([1, numRegVars])
+    .range([0, graphWidth]);
   svg.append("g")
-    .attr("transform", `translate(0,${centerH})`)
+    .attr("transform", `translate(0,${40.0 + centerH})`)
     .call(
       d3.axisBottom(x).tickValues(x.domain()));
 
@@ -199,7 +202,7 @@ function drawRegressionGraph()
   .domain(minYExtent, maxYExtent)
   .range([height, 0]);
   svg.append("g")
-    .attr("transform", `translate(${centerW},0)`)
+    .attr("transform", `translate(${centerW},${40.0})`)
     .call(
       d3.axisRight(y)
         .tickValues(y.domain()).tickFormat((d) => d + '%') // Custom format to convert decimal to percentage

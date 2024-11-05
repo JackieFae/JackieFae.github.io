@@ -8,6 +8,7 @@
 .hr-sect {
   display: flex;
   flex-basis: 100%;
+  flex-wrap: wrap;
   align-items: center;
   color: rgba(0, 0, 0, 0.99);
   margin: 8px 0px;
@@ -27,6 +28,12 @@
   text-align: left;
   font-variant: petite-caps;
   font-weight: bold;
+}
+
+/* Basic formatting for sections */
+.section-sublabel {
+  text-align: left;
+  font-variant: petite-caps;
 }
 
 .text-justified {

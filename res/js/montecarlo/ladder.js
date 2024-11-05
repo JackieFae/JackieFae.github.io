@@ -17,15 +17,15 @@ const ladderTable = d3.select('#table-ladder').append('div').attr('class', 'over
   .style('width', '100%')
   .style('height', '215px')
   .append('table')
-  .style('width', '100%');
-  const notes = d3.select('#table-ladder-notes').append('div');
+    .style('width', width+'px');
+const notes = d3.select('#table-ladder-notes').append('div');
 const summaryTable = d3.select('#table-ladder-summary').append('div').attr('class', 'overflow-auto')
   .style('width', '100%')
   .style('height', '400px')
   .append('table')
-  .style('width', '100%');
+    .style('width', '100%');
 const summaryGraph = d3.select('#viz-ladder-summary').append('svg')
-  .attr("width", '100%')
+  .attr("width", '775px')
   .attr("height", '400px');
 
 d3.select('#iron-button').on('click', () => selectLeague(leagueIndex.iron));

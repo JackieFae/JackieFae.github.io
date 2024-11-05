@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
   <head>
-    <title>BA Monte Carlo</title>
+    <link rel="icon" href="res/images/page/favicon.png" type="image/x-icon">
+    <title>SA Monte Carlo</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jackie Fae" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,8 +35,10 @@
       </div>
 
       <div class="hr-sect">
-        <a href="#regression"><button type="button" class="btn btn-outline-secondary btn-xs">Regression Analysis</button></a>
-        <a href="#results"><button type="button" class="btn btn-outline-secondary btn-xs">Simulation Results</button></a>
+        <a href="#introduction"><button type="button" class="btn btn-outline-secondary btn-xs">Intro</button></a>
+        <a href="#overview"><button type="button" class="btn btn-outline-secondary btn-xs">Overview</button></a>
+        <a href="#regression"><button type="button" class="btn btn-outline-secondary btn-xs">Regressions</button></a>
+        <a href="#results"><button type="button" class="btn btn-outline-secondary btn-xs">Bot Results</button></a>
         <a href="#ladder"><button type="button" class="btn btn-outline-secondary btn-xs">Mock Ladder</button></a>
         <a href="#reports"><button type="button" class="btn btn-outline-secondary btn-xs">Battle Reports</button></a>
         <a href="#howitworks"><button type="button" class="btn btn-outline-secondary btn-xs">Under the Hood</button></a>
@@ -43,6 +46,215 @@
         <a href="#contact"><button type="button" class="btn btn-outline-secondary btn-xs">Contact</button></a>
       </div>
 
+      <div id="introduction">
+        <p class="section-label">Introduction</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="text-justified">
+          Welcome, reader, please enjoy the following self-indulgent blog/guide/paper on the nature of combat in the (at time of writing) upcoming RTS <a href="https://www.playbattleaces.com">Battle Aces</a> from Uncapped Games.
+        </p>
+        <p class="text-justified">
+          In Battle Aces (BA from here on to spare my phalanges), players take part in matched competitions consisting of short, single games with play comprised of a harshly pared down subset of elements common to the RTS genre.
+          It is descended most directly from Blizzard's 2010 title, StarCraft II, and, like that game, is fast and furious.
+          It emphasizes tight unit control, intelligent tactical positioning, and multitasking and feeds back to the player similar vibes: huge futuristic drone armies pushing larger-than-screen-height battle lines while navigating delicate compositional variety enabled through silky smooth pathing and responsiveness.
+        </p>
+        <p class="text-justified">
+          It is unlike nearly every other RTS in most other aspects, having been designed with the intent to remove unnecessary elements.
+          BA features no building placement, no worker management, no trade-offs between the collection of disparate resources, very little "macro"-style gameplay at all, in fact.
+          Likewise, it includes no high ground advantage, no covering behind terrain, no capture points or optional objectives, and no map variety whatsoever.
+          Finally, it features no single-player mode, limited team play, and few practice/non-competitive modes.
+        </p>
+        <p class="text-justified">
+          In place of genre staples, BA offers each player the opportunity to construct a custom faction from a growing supply of unique units.
+          Combinations are limited by a few simple rules: Decks contain 8 slots for selecting units, units come in 5 tech categories, and 1-2 slots per deck are allotted to each category.
+          The deck building provides the main source of variety and strategy in the game and, along with skill expression, decides the overwhelming portion of how games unfold and how players interact with the main game mode, competitive play up and down a ranked ladder.
+        </p>
+        <p class="text-justified">
+          For my money, this emphasis on player faction diversity, and the asymmetry it creates, pulls BA out from the realm of RTS and into a unique zone shared by only a handful of other titles, like Pocketwatch Games' <a href="https://www.toothandtailgame.com/">Tooth and Tail</a>, and the criminally underappreciated <a href="https://www.absolvergame.com/">Absolver</a> from SloClap that looked to blend TCG-style deck construction with real-time action.
+          All RTS games since my youth have had some amount of faction diversity, with the decision to play one or another made outside the gameplay proper and leeching into the strategy by dictating the available timings and counters.
+          BA, by so frontloading the faction creation and simplifying in-game decision-making, has placed almost all this activity outside the moment-to-moment gameplay.
+          Player decks have narrow spaces to adjust to eachother and the breakneck pace prefers hurling players into the haze of combat rather than having them sit and stew over long-term decisions.
+          This feeds the main gameplay loop well, once a deck is built a player can play again and again with match-making coming quickly and games lasting as little as 2 minutes and never more than 10.
+        </p>
+        <p class="text-justified">
+          It also means that the game is more fundamentally about how a players choice in deck relates to the behaviour of the ladder population as a whole.
+          It is a <b>game of averages</b> and puts a premium on players understanding the high-level trends in deck choices in order to engage with the ladder successfully.
+          While this is a mindset already espoused at the top of the ladder in many RTS games, BA, through its design, more directly asks players to disavow the need/expectation to seek to win every individual encounter.
+          It is not an uncontroversial choice.
+          There are players who express frustration with the lack of direct control, or concern that the gameplay complexities of asymmetrical information and long-term planning that can normally balance players have been reduced to pre-game decisions.
+          While these concerns are, in my mind, overanxious, I think they arise from a legitimate discomfort that grows out of finding oneself in a new and unfamiliar space even though that space is merely a new lens on the world they already occupy.
+          RTS players are not always TCG players, card and tabletop gamers are not always RTS players, and everyone (myself included) who engages with this game is going to need a bit of time and assitance in making the switch.
+        </p>
+        <p class="text-justified">
+          So that is, finally, why we are here.
+          I will repeat this phrase throughout this document and certainly over and over during the lifetime of the title, <b>"Battle Aces is a game of averages,"</b> and so, to describe it, to play it, to master it, we will have to learn to speak the language of averages.
+          As we go on, I will be presenting a statistical analysis that combines the rules of deck-building in BA with the rules of its combat to model to describe as much of the game as I can at a population level.
+          As time goes on, this analysis will improve and deepen and, with enough head-scratching and a little luck, I think I can create a holistic description of the game's interactions that players can use as a tool to learn, or bring with them onto the ladder to upset the meta.
+        </p>
+        <p class="text-justified">
+          I will add a few final notes on the project's status, goals, and intentions before we move on.
+          Simple Aces Monte Carlo is written in C and will be open-source (once it is presentable) so that the source, too, can be used as a learning tool or for any branching works interested parties can imagine.
+          I am happy to collaborate and accept feedback on the design and content of the simulation, this page, and my analysis, or answer questions about my decisions. 
+          You can reach me <a href="https://www.reddit.com/user/Hi_Dayvie/">here</a> and <a href="https://github.com/JackieFae">here</a>.
+          I am treating this both as a contribution to a growing community and a learning experience for myself, so I reserve the right to make mistakes and work painstakingly as I figure out optimal and accurate solutions to the many interesting problems.
+        </p>
+        <p class="text-justified">
+          So once again, thank you for coming, I hope you find something here to help you on your Ace's journey, and I look forward to working with you.
+        </p>
+      </div>
+
+      <hr />
+      <div id="overview">
+        <p class="section-label">Overview</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="section-sublabel">On Monte Carlo Models</p>
+        <p class="text-justified">
+          A Monte Carlo modelling is a type of mathematical simulation that describes a large and perhaps unknowably complex real-world system by breaking it into smaller, well-behaved components or inputs (some or all of which can be realistically modelled as random), combining them together, and iterating the collective over an enormous number of random permutations.
+          This generally has the effect of both expressing the length and breadth of variation in the random inputs, as most combinations of very large and very small values occur in the system over the course of a very large number of iterations, and of describing the system's behaviour in the average case.
+        </p>
+        <p class="text-justified">
+          The classic example that recurred throughout my education in engineering is a production line.
+          A production line has multiple inputs, different materials, parts, even other partially assembled components, that each come with lead times and often suffer random delays or hiccups.
+          It also includes several stages or steps where a worker performs a task, like machining, assembling, painting, or testing.
+          Each stage takes time and the time taken, too, can be modelled as random variation about a mean. 
+          Even farther, in the emotionless language of our corpo-verlords, the human resources can be modelled as random with each worker's labour varying about the population mean of skill and speed.
+        </p>
+        <p class="text-justified">
+          There is more at play, however, than the single time taken for a particular stage.
+          The process of a production line is sequential with each stage having to wait until one (or more, if multiple sub-elements have to come together at once) previous stages are completed creating, sometimes extreme, delays.
+          Likewise, a stage of production is usually limited in how many inputs it can receive and might experience a bottleneck as the speed of previous stages creates too many inputs and a queue forms.
+          In both cases, the aggregate behaviour of the system very quickly becomes chaotic and leads to headaches when attempting to predict output.
+        </p>
+        <p class="text-justified">
+          This is where the power of Monte Carlo modelling shines.
+          With many behaviours colliding and decisions cascading and bouncing off one another, simpler analyses leave a lot of nuance on the table.
+          If one assumes the mean time for every stage, one woefully underestimates the compounding effects errors.
+          If one assumes the worst case scenario, where everything goes wrong at once, one is equally unsatisfied, finding in-hand a nigh apocalyptic prediction.
+          And all in between, the chaotic nature of the system defies attempts to soothe uncertainty.
+        </p>
+        <p class="section-sublabel">On Event-Based Simulation</p>
+        <p>
+          Monte Carlo modelling is a technique for ensuring diverse data and collating it, but it does not actually tell us much about how the system runs or how the data are generated.
+          The details of the simulation are based on other factors.
+        </p>
+        <p class="text-justified">
+          In the digital world, these are usually practical concerns regarding time, memory usage, the purpose of the sim itself.
+          For example, an aircraft flight simulator needs to perform in real-time to train real-world actions, while a simulation of stress in a planned building can take a week or so to run so long as it is very definitive.
+          As well, simulations can vary based on whether they center discrete objects or high-level, chronological events.
+          In the game Battle Aces, simulating the units themselves is part of the point, it enhances the fun to see discrete objects interact, while in the above production line example only specific moments in time when an action starts or stops are really needed, details like worker bathroom breaks can be abstracted into the time computation.
+        </p>
+        <p class="text-justified">
+          We can break simulation broadly into categories real-time and non-real-time and further into agent-based and event-based.
+          In many cases, it feels like an agent-based simulation is the truest representation of the system.
+          However, it turns out that event-based simulation can often represent the same interactions and is usually orders of magnitude faster and lighter.
+          Inevitably, some interactions of agents can be highly complex and even rely on inter-agent relationships.
+          These relationships are, in event-based sims, forced to be approximated an acceptable casualty of performance requirements.
+        </p>
+        <p class="text-justified">
+          For those reasons, I have undertaken to reformulate agent-behaviours in BA into simplified timed events.
+          While agents are still present in the simulation, they are not the owners of any actions but are updated and acted upon by the events that occur.
+          Discussing how and where this assumption creates distance between the model and reality is an important part of this analysis and will come up frequently in more detailed discussions.
+        </p>
+        <p class="section-sublabel">Goals</p>
+        <p class="text-justified">
+          This is more or less where we find Battle Aces (and most competitive games).
+          It is a massive nest of interconnected selections, decisions, actions, costs, trade-offs, and delays that somehow coalesce into a climactic battle between two players and, finally, an outcome.
+          The advantage that BA has in this arena is that its rules are relatively simple, its playspace relatively small, so we can imagine a possible breakdown of the game into its constituent components and their recombination into a Monte Carlo model.
+        </p>
+        <p class="text-justified">
+          Such a simulation will not be perfect, of course, predictive models never are.
+          Its ability to describe professional play will be limited, as top-tier players become so by eliminating much uncertainty and inconsistency from their play.
+          Similarly, its ability to describe the outcome of a specific battle is highly limited.
+          Rather, what a Monte Carlo simulation of BA offers is the prediction of trends, a crystalization of population-level behaviours: the choices of the playerbase holistically, the meta of the ladder as a whole.
+          As well as a prediction of ranges, helping to show the upper and lower ends of value for each player choice.
+          Finally, statistical modelling opens to door to unravelling complex correlations that describe how many variables can interact and which depends most on which.
+        </p>
+        <p class="text-justified">
+          To get nitty-gritty, I hope to be able to a few key values in relation to the count of a unit used in a battle to find its:
+          <ul>
+            <li><b>Overall contribution to victory in a general case</b> -- measuring the improvement in battle results as more of that unit are added,</li>
+            <li><b>Counts of highest return</b> -- those numbers where adding or removing a unit impacts score the most,</li>
+            <li><b>Synergies and anti-synergies</b> -- the units with and against which a unit sees increased or degraded performance,</li>
+            <li><b>Approximate skill cap</b> -- the degree to which player ability and unit performance are correlated.</li>
+          </ul>
+          As well, I want to analyse individual unit values: health, attack range, damage, speed, ability charge count, etc.
+          Then I want derive similar numbers to describe these in terms of score contribution with an eye to pulling out which elements of a unit's specific make up contribute most to their performance.
+        </p>
+        <p class="section-sublabel">Details</p>
+        <p class="text-justified">
+          While I don't want to put anymore detail on top than I really need, I think it does make sense to preview the content of the actual simulation, in advance of detailed discussion <a href="#howitworks">here</a>.
+          Generally, a Monte Carlo consists of:
+          <ul>
+            <li>A (pseudo) random number generator -- selected for large periods of generation without repetition and thread-ability,</li>
+            <li>An algorithm for setting up initial model conditions -- including all relevant variables and leveraging the PRNG to ensure realistic spread,</li>
+            <li>An algorithm for propagating the models from initial to end conditions -- leveraging the PRNG to create variation in intermediate states,</li>
+            <li>Statistical techniques for interpretting the outcomes.</li>
+          </ul>
+          The random number generator and statistical analysis we will leave for later and focus on the BA-specific details.
+          The two middle algorithms are the bulk of the model and run together for a large number of iterations to generate a mountain of outputs.
+        </p>
+        <p class="text-justified">
+          The model imagines games between two players, each moves through the same initial steps:
+          <ul>
+            <li>Deck selection -- up to 8 bot types are selected for each player according to BA deck building rules,</li>
+            <li><b>NOT YET LIVE</b> Mutation -- the stats of the selected bot types are randomly moved up or down by a small amount,</li>
+            <li>Resource Allotment -- A random army size is generated using resources matter and energy, both players receive the same allotment,</li>
+            <li>Tech Choice -- A random number of upgrades are chosen for each player, unlocking some bots, with the tech cost subtracted from the allotment,</li>
+            <li>Army Composition -- The remaining allotment determines how many of each bot a player has, total are adjusted when selections prevent cost parity,</li>
+            <li>World Creation -- The units are placed in the simulated game world, all simulations use the same world size and separate players a fixed distance,</li>
+            <li>Event Execution -- Everything that occurs in BA is an event, each is placed in a chonological queue and then executed, generating more events if needed,</li>
+            <li>Implemented Evnts Include:
+              <ul>
+                <li>Creating a Unit</li>
+                <li>Targetting a unit -- simple logic targets the nearest valid target, <b>turn speed to be added</b>,</li>
+                <li>Moving toward a location -- includes intercepting a target unit and resolving collisions,</li>
+                <li>Attacking a unit -- including wind up and recoil times as well as projectile speed,</li>
+                <li>Taking damage -- resolves scoring for a unit that is destroyed</li>
+                <li>Destroying a unit -- resets other units targetting the victim</li>
+                <li>Start/Stop HP Regen</li>
+                <li><b>TO BE IMPLEMENTED</b>Blink -- instantly moves to target position,</li>
+                <li><b>TO BE IMPLEMENTED</b>Recall -- includes wind up time, always returns to home position,</li>
+                <li>Start/Stop Overclock -- Increases move and attack rates for the duration,</li>
+                <li><b>TO BE IMPLEMENTED</b>Setup/Unsetup -- Enables attack/movement respectively, and vice versa,</li>
+                <li>Detonate -- Destroys the unit on attack, does not grant score to the defender,</li>
+                <li>Destruct -- Destroys the unit if their are no more valid targets, rewarding additional resources as score,</li>
+              </ul>
+            </li>
+          </ul>
+          As you have no doubt noticed. There are a few things conspicuously absent from the simulation, namely:
+          <ul>
+            <li>Terrain,</li>
+            <li>Expansion and Core buildings,</li>
+            <li>Workers and resource collections,</li>
+            <li>Addition of new units to an on-going battle,</li>
+            <li>Researching new tech during an on-going battle.</li>
+          </ul>
+          Each of these missing pieces has an impact on the utility of the sim.
+          The main point to keep in mind is that the values the model generates without refreence to macro can only explain a bots value within a pure combat context.
+          Values should be expected to vary when examined in relation to attack timings and in economically focused play.
+        </p>
+        <p class="section-sublabel">On Linear Regression</p>
+        <p class="text-justified">
+          At this time, the analysis of the model results is based on a regression to a multi-linear model.
+          That is, the mathematics assumes that the behaviour of BA, holistically, is toward a single uniform increase or decrease is score for every bot added with each bot having its own coefficient or multiplier for that margin.
+          This is unlikely to be true in the grand scheme and I expect to eventually replace it with a more complete multivariate model that can describe the interrelation between different bots.
+          However, as a linear approximation, it is still likely to be descriptive in the base case, for valuing first few bots added compared to an opponent.
+          So if the Crab is scoring 80 points in the regression, a player that adds 1 Crab would expect to gain add 80 points, 2 Crabs to gain 160, and 3 Crabs to gain 240.
+          However, when discussing numbers like 40 or 50 crabs, the return is likely to be different from 40*80 or 50*80.
+        </p>
+        <p class="text-justified">
+          The process of determining this relationship is that of finding the line of best fit to a set of data.
+          It should be familiar to anyone who has completed a university physics lab, and will be detailed later.
+          The nuance to keep in mind now is that this number does not exist in isolation, but also has a corollary value: the error, which describes how closely the actual data actually matches the line of best fit.
+        </p>
+        <p class="text-justified">
+          Because we want to preserve both the direct value and describe the error, we present the results in a few ways.
+          Below you will find the main line regression results, sorted by bot, and presented in a few numbers, mostly relating how that bot increases of decreases player outcomes.
+          Beyond that you will find unregressed results of simulations for each bot, with comparisons showing the variability in the data relative to the regression line.
+          Both outcomes should be taken together to describe a bot.
+        </p>
+      </div>
+
+      <hr />
       <div id="regression">
         <p class="section-label">Regression Analysis</p>
         <p class="text-justified"><a href="#top">Back to top</a></p>
@@ -51,7 +263,7 @@
           In the plot, units are ranked from left to right based on a selected measure from the table below.
         </p>
         <p class="text-justified">
-          Detailed data is provided in the table.
+          Detailed data are provided in the table.
           Value is the average points toward the final score earned by adding one more of the given bot.
           Norm Value is the value above or below the cost of that bot (divided by the bots cost to give a percentage).
           % Adv Wins is the percentage of victories where the winning player had more of that bot.
@@ -68,108 +280,105 @@
         <div id="div-reg-filters" class="d-flex align-items-center">
           <span id="hint-span" class="text-muted">Filters:</span>
 
-          <select name="vsBotSlug" id="vsBotSlug" class="form-select form-select-sm" style="width: 125px">
-            <option value="" selected>NONE</option>
-            <option value="_vsuCrab">vs. Crab</option>
-            <option value="_vsuHunter">vs. Hunter</option>
-            <option value="_vsuRecall">vs. Recall</option>
-            <option value="_vsuRecall Hunter">vs. Recall Hunter</option>
-            <option value="_vsuScorpion">vs. Scorpion</option>
-            <option value="_vsuBeetle">vs. Beetle</option>
-            <option value="_vsuBlink">vs. Blink</option>
-            <option value="_vsuBlink Hunter">vs. Blink Hunter</option>
-            <option value="_vsuGunbot">vs. Gunbot</option>
-            <option value="_vsuMissilebot">vs. Missilebot</option>
-            <option value="_vsuWasp">vs. Wasp</option>
-            <option value="_vsuHornet">vs. Hornet</option>
-            <option value="_vsuKnight">vs. Knight</option>
-            <option value="_vsuCrossbow">vs. Crossbow</option>
-            <option value="_vsuBallista">vs. Ballista</option>
-            <option value="_vsuKing Crab">vs. King Crab</option>
-            <option value="_vsuCrusader">vs. Crusader</option>
-            <option value="_vsuBomber">vs. Bomber</option>
-            <option value="_vsuShocker">vs. Shocker</option>
-            <option value="_vsuRecall Shocker">vs. Recall Shocker</option>
-            <option value="_vsuMortar">vs. Mortar</option>
-            <option value="_vsuSwift Shocker">vs. Swift Shocker</option>
-            <option value="_vsuHeavy Hunter">vs. Heavy Hunter</option>
-            <option value="_vsuDestroyer">vs. Destroyer</option>
-            <option value="_vsuRaider">vs. Raider</option>
-            <option value="_vsuTurret">vs. Turret</option>
-            <option value="_vsuHeavy Ballista">vs. Heavy Ballista</option>
-            <option value="_vsuPredator">vs. Predator</option>
-            <option value="_vsuSniper">vs. Sniper</option>
-            <option value="_vsuAdvanced Blink">vs. Advanced Blink</option>
-            <option value="_vsuAssaultbot">vs. Assaultbot</option>
-            <option value="_vsuBehemoth">vs. Behemoth</option>
-            <option value="_vsuGargantua">vs. Gargantua</option>
-            <option value="_vsuButterfly">vs. Butterfly</option>
-            <option value="_vsuDragonfly">vs. Dragonfly</option>
-            <option value="_vsuFalcon">vs. Falcon</option>
-            <option value="_vsuAirship">vs. Airship</option>
-            <option value="_vsuAdvanced Recall">vs. Advanced Recall</option>
-            <option value="_vsuMammoth">vs. Mammoth</option>
-            <option value="_vsuStinger">vs. Stinger</option>
-            <option value="_vsuFlak Turret">vs. Flak Turret</option>
-            <option value="_vsuBulwark">vs. Bulwark</option>
-            <option value="_vsuKatbus">vs. Katbus</option>
-            <option value="_vsuLocust">vs. Locust</option>
-            <option value="_vsuKraken">vs. Kraken</option>
-            <option value="_vsuValkyrie">vs. Valkyrie</option>
-            <option value="_vsuArtillery">vs. Artillery</option>
-            <option value="_vsuAdvancedbot">vs. Advancedbot</option>
-            <option value="_vsuAdvancedDestroyer">vs. AdvancedDestroyer</option>
-          </select>
-
-          <select name="vsTraitSlug" id="vsTraitSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-            <option value="" selected>NONE</option>
-            <option value="_vscSwm">vs. Swarming</option>
-            <option value="_vscPrc">vs. Piercing</option>
-            <option value="_vscHlk">vs. Hulking</option>
-            <option value="_vscShr">vs. Shattering</option>
-            <option value="_vscFly">vs. Flying</option>
-            <option value="_vscHnt">vs. Hunting</option>
-          </select>
-
-          <select name="vsTechSlug" id="vsTechSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-            <option value="" selected>NONE</option>
-            <option value="_vstFd">vs. Foundry</option>
-            <option value="_vstAFd">vs. Advanced Foundry</option>
-            <option value="_vst2Fd">vs. Double Foundry</option>
-            <option value="_vstSf">vs. Starforge</option>
-            <option value="_vstASf">vs. Advanced Starforge</option>
-            <option value="_vst2Sf">vs. Double Starforge</option>
-            <option value="_vstT2">vs. Double Tier 2</option>
-            <option value="_vstT2AFd">vs. Double Tier 2 and Foundry</option>
-            <option value="_vstT2ASf">vs. Double Tier 2 and Starforge</option>
-            <option value="_vstT3">vs. Double Tier 3</option>
-            <option value="_vstAll">vs. Everything</option>
-          </select>
-
-          <select name="vsManuSlug" id="vsManuSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-            <option value="" selected>NONE</option>
-            <option value="_vsmNP">vs. North Performance</option>
-            <option value="_vsmFHC">vs. Far Horizon Collective</option>
-            <option value="_vsmGV">vs. Ghosts of Venus</option>
-            <option value="_vsmSen">vs. Senkeishu Ltd.</option>
-            <option value="_vsmIaS">vs. Irons and Sons</option>
-            <option value="_vsmCor">vs. Corona Central Systems</option>
-            <option value="_vsmHU">vs. Heavy Union Alliance</option>
-          </select>
-
-          <select name="stanceSlug" id="stanceSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-            <option value="" selected>NONE</option>
-            <option value="_aNeut">vs. Neutral</option>
-            <option value="_aDef">vs. Defender</option>
-            <option value="_aAgg">vs. Aggressor</option>
-          </select>
-
-          <select name="vsSkillSlug" id="vsSkillSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-            <option value="" selected>NONE</option>
-            <option value="_vssLow">vs. Lower Skill</option>
-            <option value="_vssNear">vs. Similar Skill</option>
-            <option value="_vssHigh">vs. Higher Skill</option>
-          </select>
+          <div class="hr-sect">
+            <select name="vsBotSlug" id="vsBotSlug" class="form-select form-select-sm" style="width: 125px">
+              <option value="" selected>NONE</option>
+              <option value="_vsuCrab">vs. Crab</option>
+              <option value="_vsuHunter">vs. Hunter</option>
+              <option value="_vsuRecall">vs. Recall</option>
+              <option value="_vsuRecall Hunter">vs. Recall Hunter</option>
+              <option value="_vsuScorpion">vs. Scorpion</option>
+              <option value="_vsuBeetle">vs. Beetle</option>
+              <option value="_vsuBlink">vs. Blink</option>
+              <option value="_vsuBlink Hunter">vs. Blink Hunter</option>
+              <option value="_vsuGunbot">vs. Gunbot</option>
+              <option value="_vsuMissilebot">vs. Missilebot</option>
+              <option value="_vsuWasp">vs. Wasp</option>
+              <option value="_vsuHornet">vs. Hornet</option>
+              <option value="_vsuKnight">vs. Knight</option>
+              <option value="_vsuCrossbow">vs. Crossbow</option>
+              <option value="_vsuBallista">vs. Ballista</option>
+              <option value="_vsuKing Crab">vs. King Crab</option>
+              <option value="_vsuCrusader">vs. Crusader</option>
+              <option value="_vsuBomber">vs. Bomber</option>
+              <option value="_vsuShocker">vs. Shocker</option>
+              <option value="_vsuRecall Shocker">vs. Recall Shocker</option>
+              <option value="_vsuMortar">vs. Mortar</option>
+              <option value="_vsuSwift Shocker">vs. Swift Shocker</option>
+              <option value="_vsuHeavy Hunter">vs. Heavy Hunter</option>
+              <option value="_vsuDestroyer">vs. Destroyer</option>
+              <option value="_vsuRaider">vs. Raider</option>
+              <option value="_vsuTurret">vs. Turret</option>
+              <option value="_vsuHeavy Ballista">vs. Heavy Ballista</option>
+              <option value="_vsuPredator">vs. Predator</option>
+              <option value="_vsuSniper">vs. Sniper</option>
+              <option value="_vsuAdvanced Blink">vs. Advanced Blink</option>
+              <option value="_vsuAssaultbot">vs. Assaultbot</option>
+              <option value="_vsuBehemoth">vs. Behemoth</option>
+              <option value="_vsuGargantua">vs. Gargantua</option>
+              <option value="_vsuButterfly">vs. Butterfly</option>
+              <option value="_vsuDragonfly">vs. Dragonfly</option>
+              <option value="_vsuFalcon">vs. Falcon</option>
+              <option value="_vsuAirship">vs. Airship</option>
+              <option value="_vsuAdvanced Recall">vs. Advanced Recall</option>
+              <option value="_vsuMammoth">vs. Mammoth</option>
+              <option value="_vsuStinger">vs. Stinger</option>
+              <option value="_vsuFlak Turret">vs. Flak Turret</option>
+              <option value="_vsuBulwark">vs. Bulwark</option>
+              <option value="_vsuKatbus">vs. Katbus</option>
+              <option value="_vsuLocust">vs. Locust</option>
+              <option value="_vsuKraken">vs. Kraken</option>
+              <option value="_vsuValkyrie">vs. Valkyrie</option>
+              <option value="_vsuArtillery">vs. Artillery</option>
+              <option value="_vsuAdvancedbot">vs. Advancedbot</option>
+              <option value="_vsuAdvancedDestroyer">vs. AdvancedDestroyer</option>
+            </select>
+            <select name="vsTraitSlug" id="vsTraitSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+              <option value="" selected>NONE</option>
+              <option value="_vscSwm">vs. Swarming</option>
+              <option value="_vscPrc">vs. Piercing</option>
+              <option value="_vscHlk">vs. Hulking</option>
+              <option value="_vscShr">vs. Shattering</option>
+              <option value="_vscFly">vs. Flying</option>
+              <option value="_vscHnt">vs. Hunting</option>
+            </select>
+            <select name="vsTechSlug" id="vsTechSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+              <option value="" selected>NONE</option>
+              <option value="_vstFd">vs. Foundry</option>
+              <option value="_vstAFd">vs. Advanced Foundry</option>
+              <option value="_vst2Fd">vs. Double Foundry</option>
+              <option value="_vstSf">vs. Starforge</option>
+              <option value="_vstASf">vs. Advanced Starforge</option>
+              <option value="_vst2Sf">vs. Double Starforge</option>
+              <option value="_vstT2">vs. Double Tier 2</option>
+              <option value="_vstT2AFd">vs. Double Tier 2 and Foundry</option>
+              <option value="_vstT2ASf">vs. Double Tier 2 and Starforge</option>
+              <option value="_vstT3">vs. Double Tier 3</option>
+              <option value="_vstAll">vs. Everything</option>
+            </select>
+            <select name="vsManuSlug" id="vsManuSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+              <option value="" selected>NONE</option>
+              <option value="_vsmNP">vs. North Performance</option>
+              <option value="_vsmFHC">vs. Far Horizon Collective</option>
+              <option value="_vsmGV">vs. Ghosts of Venus</option>
+              <option value="_vsmSen">vs. Senkeishu Ltd.</option>
+              <option value="_vsmIaS">vs. Irons and Sons</option>
+              <option value="_vsmCor">vs. Corona Central Systems</option>
+              <option value="_vsmHU">vs. Heavy Union Alliance</option>
+            </select>
+            <select name="stanceSlug" id="stanceSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+              <option value="" selected>NONE</option>
+              <option value="_aNeut">vs. Neutral</option>
+              <option value="_aDef">vs. Defender</option>
+              <option value="_aAgg">vs. Aggressor</option>
+            </select>
+            <select name="vsSkillSlug" id="vsSkillSlug" class="form-select form-select-sm" style="width: 125px" disabled>
+              <option value="" selected>NONE</option>
+              <option value="_vssLow">vs. Lower Skill</option>
+              <option value="_vssNear">vs. Similar Skill</option>
+              <option value="_vssHigh">vs. Higher Skill</option>
+            </select>
+          </div>
         </div>
 
         <div id="div-regression">
@@ -188,7 +397,7 @@
           Select a bot to view simulations containing that bot.
           Select Raw Points or Means and Errors to show the data as a scatter or error bar plot.
           The initial set is reduced to a maximum of 15000 data points to reduce clutter, with bot selection possibly reducing that count further.
-          Data is charted on the x-axis by count of the selected bot count and on the y-axis by score differential.
+          Data are charted on the x-axis by count of the selected bot count and on the y-axis by score differential.
         <p class="text-justified">
           Two lines are drawn over the data.
           The blue line shows the linear regression result from the previous section for the selected bot.
@@ -292,23 +501,27 @@
       </p>
       <p></p>
       <div id="container-viz-ladder">
-        <button type="button" id="iron-button" class="btn btn-outline-secondary btn-xs">Iron League</button>
-        <button type="button" id="bronze-button" class="btn btn-outline-secondary btn-xs">Bronze League</button>
-        <button type="button" id="silver-button" class="btn btn-outline-secondary btn-xs">Silver League</button>
-        <button type="button" id="gold-button" class="btn btn-outline-secondary btn-xs">Gold League</button>
-        <button type="button" id="platinum-button" class="btn btn-outline-secondary btn-xs">Platinum League</button>
-        <button type="button" id="emerald-button" class="btn btn-outline-secondary btn-xs">Emerald League</button>
-        <button type="button" id="diamond-button" class="btn btn-outline-secondary btn-xs">Diamond League</button>
-        <button type="button" id="topace-button" class="btn btn-outline-secondary btn-xs">Top Ace</button>
+        <div class="hr-sect">
+          <button type="button" id="iron-button" class="btn btn-outline-secondary btn-xs">Iron League</button>
+          <button type="button" id="bronze-button" class="btn btn-outline-secondary btn-xs">Bronze League</button>
+          <button type="button" id="silver-button" class="btn btn-outline-secondary btn-xs">Silver League</button>
+          <button type="button" id="gold-button" class="btn btn-outline-secondary btn-xs">Gold League</button>
+          <button type="button" id="platinum-button" class="btn btn-outline-secondary btn-xs">Platinum League</button>
+          <button type="button" id="emerald-button" class="btn btn-outline-secondary btn-xs">Emerald League</button>
+          <button type="button" id="diamond-button" class="btn btn-outline-secondary btn-xs">Diamond League</button>
+          <button type="button" id="topace-button" class="btn btn-outline-secondary btn-xs">Top Ace</button>
+        </div>
         <p></p>
         <div id="table-ladder-notes"></div>
         <p></p>
         <div id="viz-ladder"></div>
         <div id="table-ladder"></div>
         <p></p>
-        <div class="row row-cols-2">
-          <div id="table-ladder-summary" class ="col-2"></div>
-          <div id="viz-ladder-summary" class ="col-10"></div>
+        <div class="overflow-auto">
+          <div class="row row-cols-2" style="width:950px">
+            <div id="table-ladder-summary" class="col" style="width: 16%"></div>
+            <div id="viz-ladder-summary" class="col" style="width: 84%"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -331,7 +544,9 @@
         Each second, the bots position is updated and its highest priority action is recorded.
         Not all activity is visible, however the reports give a good idea of how timing and position within the simulation corresponds to live gameplay.
       </p>
-      <div id="viz-report"></div>
+      <div class="overflow-auto">
+        <div id="viz-report" style="width: 950"></div>
+      </div>
     </div>
 
     <hr />

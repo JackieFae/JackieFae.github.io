@@ -51,6 +51,7 @@ body {
 .hr-sect {
   display: flex;
   flex-basis: 100%;
+  flex-wrap: wrap;
   align-items: center;
   color: #2da376;
   margin: 8px 0px;
@@ -70,6 +71,12 @@ body {
   text-align: left;
   font-variant: petite-caps;
   font-weight: bold;
+}
+
+/* Basic formatting for sections */
+.section-sublabel {
+  text-align: left;
+  font-variant: petite-caps;
 }
 
 .text-justified {

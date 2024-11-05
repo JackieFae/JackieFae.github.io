@@ -35,8 +35,8 @@ var unitCost = [
 var resultSelection = botIndex.crab;
 var showResultsAll = true;
 
-const resultGraph = d3.select('#viz-results').append('svg')
-  .attr("width", width + margin.left + margin.right)
+const resultGraph = d3.select('#viz-results').append('div').attr('class', 'overflow-auto').append('svg')
+  .attr("width", width-12 + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom);
 
 // Add event listener to the select box
