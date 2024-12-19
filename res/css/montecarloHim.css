@@ -42,6 +42,64 @@ body {
   scrollbar-color: #24d69b #303030;
 }
 
+.dropbtn {
+  display:block;width:100%;padding:.375rem 2.25rem .375rem .75rem;-moz-padding-start:calc(0.75rem - 3px);font-size:1rem;font-weight:400;line-height:1.4;
+  color:#00ffdd;
+  background-color:#303030;
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2324d69b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right .75rem center;background-size:16px 12px;
+  border:1px solid #24d69b;
+  border-radius:0;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;-webkit-appearance:none;-moz-appearance:none;appearance:none
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown:disabled{
+  background-color:#24d69b
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #303030;
+  outline:0;
+  box-shadow:0 0 0 .25rem #00ffdd77;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #303030;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  overflow: auto;
+}
+.dropdown-content::-webkit-scrollbar {
+  background-color: #00ffdd77;
+}
+.dropdown-content::-webkit-scrollbar-thumb {
+  background: #00ffdd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  border: 1px solid #24d69b;
+}
+
+.dropdown-content div {
+  color: #00ffdd;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content div:hover {
+  color: #e0e0e0;
+  background-color: #ff3737;
+  cursor: pointer;
+}
+
 /* Combine with bootstrap container to create page background */
 .main {
   background-color: #303030;
@@ -192,7 +250,7 @@ body {
 }
 
 .svg_report_image {
-  filter: invert(25%);
+  filter: invert(10%);
 }
 .svg_report_image.teamA {
   filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
