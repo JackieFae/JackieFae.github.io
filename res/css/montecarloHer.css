@@ -162,7 +162,10 @@ body {
 .svg_text {
   filter: invert(100%) invert(35%);
 }
-.svg_text.hightlighted {
+.svg_text.bright {
+  filter: invert(100%);
+}
+.svg_text.highlighted {
   filter: invert(100%) invert(46%) sepia(53%) saturate(1282%) hue-rotate(179deg) brightness(94%) contrast(98%);
 }
 .svg_text.selected {
@@ -172,7 +175,7 @@ body {
 .svg_text_secondary {
   filter: invert(63%) sepia(78%) saturate(4268%) hue-rotate(360deg) brightness(102%) contrast(107%);
 }
-.svg_text_secondary.hightlighted {
+.svg_text_secondary.highlighted {
   filter: invert(100%) invert(35%);
 }
 .svg_text_secondary.selected {
@@ -182,7 +185,7 @@ body {
 .svg_text_tertiary {
   filter: invert(100%) invert(46%) sepia(53%) saturate(1282%) hue-rotate(179deg) brightness(94%) contrast(98%);
 }
-.svg_text_tertiary.hightlighted {
+.svg_text_tertiary.highlighted {
   filter: invert(100%) invert(35%);
 }
 .svg_text_tertiary.selected {
@@ -198,6 +201,16 @@ body {
 }
 .svg_shape.selected {
   filter: invert(63%) sepia(78%) saturate(4268%) hue-rotate(360deg) brightness(102%) contrast(107%);
+}
+
+.svg_shape_dark {
+  filter: invert(19%) sepia(18%) saturate(0%) hue-rotate(152deg) brightness(94%) contrast(99%)
+}
+.svg_shape_dark.highlighted {
+  filter: invert(40%) sepia(25%) saturate(5678%) hue-rotate(221deg) brightness(94%) contrast(94%);
+}
+.svg_shape_dark.selected {
+  filter: invert(40%) sepia(75%) saturate(458%) hue-rotate(352deg) brightness(96%) contrast(82%);
 }
 
 .svg_shape_secondary {

@@ -154,7 +154,7 @@ body {
 .svg_text {
   filter: invert(100%) invert(35%);
 }
-.svg_text.hightlighted {
+.svg_text.highlighted {
   filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
 }
 .svg_text.selected {
