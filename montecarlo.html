@@ -7,12 +7,16 @@
     <meta name="author" content="Jackie Fae" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="res/js/montecarlo/d3helper.js" defer></script>
     <script src="res/js/montecarlo/constants.js" defer></script>
     <script src="res/js/montecarlo/common.js" defer></script>
-    <script src="res/js/montecarlo/regression.js" defer></script>
+    <script src="res/js/montecarlo/deck.js" defer></script>
+    <script src="res/js/montecarlo/replay.js" defer></script>
     <script src="res/js/montecarlo/results.js" defer></script>
+    <script src="res/js/montecarlo/regression.js" defer></script>
+    <script src="res/js/montecarlo/stats.js" defer></script>
+    <script src="res/js/montecarlo/correlation.js" defer></script>
     <script src="res/js/montecarlo/ladder.js" defer></script>
-    <script src="res/js/montecarlo/report.js" defer></script>
     <script src="res/js/montecarlo/load.js" defer></script>
     <link href="res/css/bootstrap-5-hacked.min.css" rel="stylesheet" media="screen">
     <link id="pagestyle" href="res/css/montecarloHer.css" rel="stylesheet" media="screen">
@@ -35,16 +39,75 @@
       </div>
 
       <div class="hr-sect">
+        <a href="#deckbuilder"><button type="button" class="btn btn-outline-secondary btn-xs">Deck Builder</button></a>
         <a href="#introduction"><button type="button" class="btn btn-outline-secondary btn-xs">Intro</button></a>
         <a href="#overview"><button type="button" class="btn btn-outline-secondary btn-xs">Overview</button></a>
+        <a href="#replays"><button type="button" class="btn btn-outline-secondary btn-xs">Replays</button></a>
+        <a href="#results"><button type="button" class="btn btn-outline-secondary btn-xs">Scores</button></a>
         <a href="#regression"><button type="button" class="btn btn-outline-secondary btn-xs">Regressions</button></a>
-        <a href="#results"><button type="button" class="btn btn-outline-secondary btn-xs">Bot Results</button></a>
-        <a href="#ladder"><button type="button" class="btn btn-outline-secondary btn-xs">Mock Ladder</button></a>
-        <a href="#reports"><button type="button" class="btn btn-outline-secondary btn-xs">Battle Reports</button></a>
-        <a href="#howitworks"><button type="button" class="btn btn-outline-secondary btn-xs">Under the Hood</button></a>
+        <a href="#stats"><button type="button" class="btn btn-outline-secondary btn-xs">Stats</button></a>
+        <a href="#correlation"><button type="button" class="btn btn-outline-secondary btn-xs">Correlations</button></a>
+        <a href="#ladder"><button type="button" class="btn btn-outline-secondary btn-xs">Ladders</button></a>
+        <a href="#howitworks"><button type="button" class="btn btn-outline-secondary btn-xs">Details</button></a>
         <a href="#future"><button type="button" class="btn btn-outline-secondary btn-xs">Future Work</button></a>
         <a href="#contact"><button type="button" class="btn btn-outline-secondary btn-xs">Contact</button></a>
       </div>
+
+      <div id="deckbuilder">
+        <div id="deckbuildertext">
+          <p class="section-label">Deck Builder</p>
+          <p class="text-justified"><a href="#top">Back to top</a></p>
+          <p class="text-justified">
+            Use the simulation results to construct a deck for yourself and an opponent.
+            In the left section, click on a deck slot to bring up a list of eligible bots.
+            Click again to lock in a bot, or click the slot icon to clear the selection.
+            Once filled with a bot, a slot will present the primary combat value in white.
+            The dimensions of the value may be selected using the Bot, Bandwidth, and Resource toggles.
+          <ul>
+            <li>Using "Per Bot," combat value is the expected score (in resources) for an additional bot: descriptive for small army sizes.</li>
+            <li>Using "Per Bandwidth," combat value is divided by bandwidth cost: the bot's contribution in a maxed out force.</li>
+            <li>Using "Per Resource," combat value is normalized by resource cost in %: a bot's return on investment.</li>
+          </ul>
+            Take note when reading these values that a bot's overall value in the deck view is based on an average of the other selected bots.
+            The composition builder in the next section provides more insight into army count and tech order specifics.
+          </p>
+          <p></p>
+          <p class="text-justified">
+            As the decks are filled, slots are ornamented with coloured arrows and values indicating synergies and anti-synergies with friend and foe.
+            Each slot refers to every other using an upper and lower mini-grid for the player and opponent decks, respectively.
+            A slot always indicates its own position in the deck with a dark circle.
+            An upward arrow indicates synergy; the bot gains a benefit from the bot in the referenced slot.
+            A downward arrow indicates anti-synergy, or that the bot loses effectiveness due to a pairing.
+            A white circle is used when the synergy is minor (less than 5% of the base value) in either direction.
+          </p>
+          <p></p>
+          <p>
+            Many bot pairings result in one-sided synergies.
+            For example, the Crab loses value when paired with the Hunter, but the Hunter gains more than is lost (especially when scores are normalized for cost, due to the Crab's lower price).
+            These relationships can be explored in detailed by expanding a slot to see all the values laid out together.
+          </p>
+          <p></p>
+          <p>
+            To view a bot in detail, simply hover over it with your mouse to bring up a detailed version on the right.
+            In this version, arrows are replaced with numerical values.
+
+          </p>
+        </div>
+        <div id="deckbuilderoptions">
+          <span id="hint-span" class="text-muted">Show unit values as:</span>
+          <button type="button" id="instance-button" class="btn btn-outline-secondary btn-xs">Per Bot</button>
+          <button type="button" id="bandwidth-button" class="btn btn-outline-secondary btn-xs">Per Bandwidth</button>
+          <button type="button" id="norm-button" class="btn btn-outline-secondary btn-xs">Per Resource</button>
+          <p></p>
+        </div>
+        <div id="div-deckbuilder">
+          
+        </div>
+        <div id="div-deckcompare">
+          
+        </div>
+      </div>
+      <hr />
 
       <div id="introduction">
         <p class="section-label">Introduction</p>
@@ -87,7 +150,7 @@
         <p class="text-justified">
           So that is, finally, why we are here.
           I will repeat this phrase throughout this document and certainly over and over during the lifetime of the title, <b>"Battle Aces is a game of averages,"</b> and so, to describe it, to play it, to master it, we will have to learn to speak the language of averages.
-          As we go on, I will be presenting a statistical analysis that combines the rules of deck-building in BA with the rules of its combat to model to describe as much of the game as I can at a population level.
+          As we go on, I will be presenting a statistical analysis that combines the rules of deck-building in BA with the rules of its combat to model as much of the game as I can at a population level.
           As time goes on, this analysis will improve and deepen and, with enough head-scratching and a little luck, I think I can create a holistic description of the game's interactions that players can use as a tool to learn, or bring with them onto the ladder to upset the meta.
         </p>
         <p class="text-justified">
@@ -95,10 +158,10 @@
           Simple Aces Monte Carlo is written in C and will be open-source (once it is presentable) so that the source, too, can be used as a learning tool or for any branching works interested parties can imagine.
           I am happy to collaborate and accept feedback on the design and content of the simulation, this page, and my analysis, or answer questions about my decisions. 
           You can reach me <a href="https://www.reddit.com/user/Hi_Dayvie/">here</a> and <a href="https://github.com/JackieFae">here</a>.
-          I am treating this both as a contribution to a growing community and a learning experience for myself, so I reserve the right to make mistakes and work painstakingly as I figure out optimal and accurate solutions to the many interesting problems.
+          I am treating this both as a contribution to a growing community and a learning experience for myself, so I reserve the right to make mistakes and take my time as I painstakingly figure out optimal and accurate solutions to the many interesting problems.
         </p>
         <p class="text-justified">
-          So once again, thank you for coming, I hope you find something here to help you on your Ace's journey, and I look forward to working with you.
+          I hope you find something here to help you on your Ace's journey, and I look forward to working with you.
         </p>
       </div>
 
@@ -108,7 +171,7 @@
         <p class="text-justified"><a href="#top">Back to top</a></p>
         <p class="section-sublabel">On Monte Carlo Models</p>
         <p class="text-justified">
-          A Monte Carlo modelling is a type of mathematical simulation that describes a large and perhaps unknowably complex real-world system by breaking it into smaller, well-behaved components or inputs (some or all of which can be realistically modelled as random), combining them together, and iterating the collective over an enormous number of random permutations.
+          A Monte Carlo model is a type of stochastic representation that describes a large and perhaps unknowably complex real-world system by breaking it into smaller, well-behaved components or inputs (some or all of which can be realistically modelled as random), combining them together, and iterating the collective over an enormous number of random permutations.
           This generally has the effect of both expressing the length and breadth of variation in the random inputs, as most combinations of very large and very small values occur in the system over the course of a very large number of iterations, and of describing the system's behaviour in the average case.
         </p>
         <p class="text-justified">
@@ -116,7 +179,7 @@
           A production line has multiple inputs, different materials, parts, even other partially assembled components, that each come with lead times and often suffer random delays or hiccups.
           It also includes several stages or steps where a worker performs a task, like machining, assembling, painting, or testing.
           Each stage takes time and the time taken, too, can be modelled as random variation about a mean. 
-          Even farther, in the emotionless language of our corpo-verlords, the human resources can be modelled as random with each worker's labour varying about the population mean of skill and speed.
+          Taken even farther, in the emotionless language of our corpo-verlords, the human resources can be modelled as random with each worker's labour efficiency varying about the population means of skill and speed.
         </p>
         <p class="text-justified">
           There is more at play, however, than the single time taken for a particular stage.
@@ -126,21 +189,21 @@
         </p>
         <p class="text-justified">
           This is where the power of Monte Carlo modelling shines.
-          With many behaviours colliding and decisions cascading and bouncing off one another, simpler analyses leave a lot of nuance on the table.
+          With many behaviours colliding and decisions cascading through or bouncing off one another, simpler analyses leave a lot of nuance on the table.
           If one assumes the mean time for every stage, one woefully underestimates the compounding effects errors.
-          If one assumes the worst case scenario, where everything goes wrong at once, one is equally unsatisfied, finding in-hand a nigh apocalyptic prediction.
+          If one assumes the worst case scenario, where everything goes wrong at once, one is equally unsatisfied, finding in-hand a prediction of the apocalypse.
           And all in between, the chaotic nature of the system defies attempts to soothe uncertainty.
         </p>
         <p class="section-sublabel">On Event-Based Simulation</p>
         <p>
-          Monte Carlo modelling is a technique for ensuring diverse data and collating it, but it does not actually tell us much about how the system runs or how the data are generated.
+          Monte Carlo modelling creates and collates diverse data, but this framework puts no limits and gives no guidance on how the system runs or how the data are generated.
           The details of the simulation are based on other factors.
         </p>
         <p class="text-justified">
           In the digital world, these are usually practical concerns regarding time, memory usage, the purpose of the sim itself.
-          For example, an aircraft flight simulator needs to perform in real-time to train real-world actions, while a simulation of stress in a planned building can take a week or so to run so long as it is very definitive.
+          For example, an aircraft flight simulator needs to perform in real-time to train real-world actions, while a simulation of stress in a building design can take a week or so to run so long as it is very accurate.
           As well, simulations can vary based on whether they center discrete objects or high-level, chronological events.
-          In the game Battle Aces, simulating the units themselves is part of the point, it enhances the fun to see discrete objects interact, while in the above production line example only specific moments in time when an action starts or stops are really needed, details like worker bathroom breaks can be abstracted into the time computation.
+          In the game Battle Aces, simulating the units themselves is part of the point, it enhances the fun to see discrete objects interact, while in the above production line example only specific moments in time when a process starts or stops are really needed and details like worker bathroom breaks can be abstracted into the time computation.
         </p>
         <p class="text-justified">
           We can break simulation broadly into categories real-time and non-real-time and further into agent-based and event-based.
@@ -156,14 +219,14 @@
         </p>
         <p class="section-sublabel">Goals</p>
         <p class="text-justified">
-          This is more or less where we find Battle Aces (and most competitive games).
-          It is a massive nest of interconnected selections, decisions, actions, costs, trade-offs, and delays that somehow coalesce into a climactic battle between two players and, finally, an outcome.
-          The advantage that BA has in this arena is that its rules are relatively simple, its playspace relatively small, so we can imagine a possible breakdown of the game into its constituent components and their recombination into a Monte Carlo model.
+          Battle Aces (and most competitive games) is a massive nest of interconnected selections, decisions, actions, costs, trade-offs, and delays that somehow coalesce into a climactic battle between two players and, finally, an outcome.
+          The advantage that BA has in this arena is that its rules are relatively simple, its playspace relatively small.
+          We can imagine a possible breakdown of the game into its constituent components and their recombination into a Monte Carlo model.
         </p>
         <p class="text-justified">
           Such a simulation will not be perfect, of course, predictive models never are.
           Its ability to describe professional play will be limited, as top-tier players become so by eliminating much uncertainty and inconsistency from their play.
-          Similarly, its ability to describe the outcome of a specific battle is highly limited.
+          Similarly, its ability to describe the outcome of a specific battle through population level numbers will be lesser than some more direct analyses.
           Rather, what a Monte Carlo simulation of BA offers is the prediction of trends, a crystalization of population-level behaviours: the choices of the playerbase holistically, the meta of the ladder as a whole.
           As well as a prediction of ranges, helping to show the upper and lower ends of value for each player choice.
           Finally, statistical modelling opens to door to unravelling complex correlations that describe how many variables can interact and which depends most on which.
@@ -202,7 +265,7 @@
             <li>Army Composition -- The remaining allotment determines how many of each bot a player has, total are adjusted when selections prevent cost parity,</li>
             <li>World Creation -- The units are placed in the simulated game world, all simulations use the same world size and separate players a fixed distance,</li>
             <li>Event Execution -- Everything that occurs in BA is an event, each is placed in a chonological queue and then executed, generating more events if needed,</li>
-            <li>Implemented Evnts Include:
+            <li>Implemented Events Include:
               <ul>
                 <li>Creating a Unit</li>
                 <li>Targetting a unit -- simple logic targets the nearest valid target, <b>turn speed to be added</b>,</li>
@@ -211,12 +274,12 @@
                 <li>Taking damage -- resolves scoring for a unit that is destroyed</li>
                 <li>Destroying a unit -- resets other units targetting the victim</li>
                 <li>Start/Stop HP Regen</li>
-                <li><b>TO BE IMPLEMENTED</b>Blink -- instantly moves to target position,</li>
-                <li><b>TO BE IMPLEMENTED</b>Recall -- includes wind up time, always returns to home position,</li>
+                <li>Blink -- instantly moves to target position,</li>
+                <li>Recall -- includes wind up time, always returns to home position,</li>
                 <li>Start/Stop Overclock -- Increases move and attack rates for the duration,</li>
-                <li><b>TO BE IMPLEMENTED</b>Setup/Unsetup -- Enables attack/movement respectively, and vice versa,</li>
+                <li>Setup/Unsetup -- Enables attack/movement respectively, and vice versa,</li>
                 <li>Detonate -- Destroys the unit on attack, does not grant score to the defender,</li>
-                <li>Destruct -- Destroys the unit if their are no more valid targets, rewarding additional resources as score,</li>
+                <li>Destruct -- Destroys the unit if their are no more valid targets,</li>
               </ul>
             </li>
           </ul>
@@ -229,17 +292,18 @@
             <li>Researching new tech during an on-going battle.</li>
           </ul>
           Each of these missing pieces has an impact on the utility of the sim.
-          The main point to keep in mind is that the values the model generates without refreence to macro can only explain a bots value within a pure combat context.
+          The main point to keep in mind is that the values the model generates without reference to macro can only explain a bots value within a pure combat context.
           Values should be expected to vary when examined in relation to attack timings and in economically focused play.
         </p>
         <p class="section-sublabel">On Linear Regression</p>
         <p class="text-justified">
-          At this time, the analysis of the model results is based on a regression to a multi-linear model.
-          That is, the mathematics assumes that the behaviour of BA, holistically, is toward a single uniform increase or decrease is score for every bot added with each bot having its own coefficient or multiplier for that margin.
-          This is unlikely to be true in the grand scheme and I expect to eventually replace it with a more complete multivariate model that can describe the interrelation between different bots.
-          However, as a linear approximation, it is still likely to be descriptive in the base case, for valuing first few bots added compared to an opponent.
-          So if the Crab is scoring 80 points in the regression, a player that adds 1 Crab would expect to gain add 80 points, 2 Crabs to gain 160, and 3 Crabs to gain 240.
-          However, when discussing numbers like 40 or 50 crabs, the return is likely to be different from 40*80 or 50*80.
+          The analysis of the model results is based on a multivariate regression to a linear model.
+          A linear model is one where an input adds proportionally to an output.
+          Such a model may have any number of inputs, each with its own coefficient of proportionality or weight.
+          The inputs to this system are army composition (bot counts) and player skill for each of two players.
+          A multivariate scheme describes a model with numerous output values.
+          In our case, each output corresponds to the score earned by a particular bot type.
+          At present, this means the system is generating 49 linear relationships as outputs, each with 100 input weights.
         </p>
         <p class="text-justified">
           The process of determining this relationship is that of finding the line of best fit to a set of data.
@@ -247,11 +311,255 @@
           The nuance to keep in mind now is that this number does not exist in isolation, but also has a corollary value: the error, which describes how closely the actual data actually matches the line of best fit.
         </p>
         <p class="text-justified">
-          Because we want to preserve both the direct value and describe the error, we present the results in a few ways.
-          Below you will find the main line regression results, sorted by bot, and presented in a few numbers, mostly relating how that bot increases of decreases player outcomes.
-          Beyond that you will find unregressed results of simulations for each bot, with comparisons showing the variability in the data relative to the regression line.
-          Both outcomes should be taken together to describe a bot.
+          I expect that in understanding these many results, the analysis will provide significant insight into the workings of gameplay.
+          However, the linear representation is certain to miss some nuance, especially for very large numbers where small changes in weight result in large differences in predicted score.
+          It is likely to be most descriptive in the base case, for valuing first (or first few) bots added.
         </p>
+        <p class="text-justified">
+          Because we want to preserve both the direct value and describe the error, we present the results in a few ways.
+          Below you will step through the process of creating the results.
+          First, examples of the event-based simluation are shown as pseudo-replays to indicate the type of behaviour analysed.
+          Beyond that you will find unregressed results of simulations for each bot, with comparisons showing the variability in score relative to the regression line and unit cost.
+          Next, the main line regression results, sorted by bot, and presented in a few different values (score, win rate, etc.), relating how that bot increases of decreases player outcomes.
+          Finally, the interplay of bots is described with a more detailed breakdown of several additional regressions performed on subsets of the data to pull out specific synergies and anti-synergies between the bots.
+        </p>
+        <p class="text-justified">
+          As well, I have included a few sections applying the data to different features that might be of ancillary interest.
+          One is a deck builder, a much requested element, that uses the weighted impacts of bots on each other to create a prediction of deck power.
+          The other generates a fake ladder and estimates how a variety of decks and player skills would distribute themselves.
+        </p>
+      </div>
+
+      <hr />
+      <div id="replays">
+        <p class="section-label">Replays</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="text-justified">
+          View of a reduced set of 5000 simulation iterations.
+          Select a replay from the dialogue to the right (1-5000).
+          Track forward and backward in time by using the lower scrollbar or the timer dialogue.
+        </p>
+        <div id="container-viz-reports" style="width: 950px">
+          <div id="viz-report" style="width: 950px"></div>
+        </div>
+        <p class="text-justified">
+          Below the selection is a bar showing the score comparison between both players along with their army compositions.
+          On the left is a scroll-able field showing the position and approximate actions of each bot.
+          Replays are shown with 1 second resolution.
+          Each second, the bots position is updated and its highest priority action is recorded.
+        </p>
+        <p class="text-justified">
+          These replays are a good first step in understanding the inner workings of the simulation.
+          Initial set-up, including the selection of amry compositions and placement, can be seen at the 0th second.
+          Army position is a crude fan spanning roughly nineties degrees and placing bots by type
+          Unit properties such as size, speed, and range are easily visible.
+          Other values like damage and attack rate are less immediately obvious, but you can take my word that those are also correct.
+          Not all activity is visible, however the reports give a good idea of how timing and position within the simulation corresponds to live gameplay.
+        </p>
+        <p class="text-justified">
+          Most bots in most situations move directly toward their nearest valid target and begin to attack.
+          This is simple behaviour, but more or less in line with basic in-game bot behaviour.
+          In combat, bots spread out and surrounded their enemies.
+        </p>
+      </div>
+
+      <hr />
+      <div id="results">
+        <p class="section-label">Scores</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="text-justified">
+          This section shows the score values resulting from the simulation.
+          The initial set is reduced to a maximum of 15000 data points to reduce clutter.
+        </p>
+        <p class="text-justified">
+          Select a bot to view scores for that bot.
+          Select Raw Points or Means and Errors to show the data as a scatter or error bar plot.
+        </p>
+        <p class="text-justified">
+          Data are charted on the x-axis by count of selected bot count and on the y-axis by sum of bot score.
+          Each individual bot scores points equal to its resource cost if it is alive at the end of the sim plus points proportional to damage dealt toward to the destruction of an opposing bot.
+          That is, a bot that deals 50% of the damage to a destroyed bot is worth an additional 50% of that bot's resource value.
+          A bot will score points for damage dealt whether or not it is alive at sim end.
+          Scores are then combined so that each point represents the sum of all points earned by all bots of the selected type.
+        </p>
+        <p class="text-justified">
+          Points are drawn in orange if the score value exceeds the resource cost at that bot count and in blue if it falls short.
+          Two lines are drawn over the data.
+          The white line shows the linear increase in resource cost with bot count, delineating blue and orange points.
+          The coloured line shows the aggregate regression result for the selected bot.
+          This shows the approximate increase in score for adding additional bots.
+          This line is drawn in orange if bot scores tend to be better than costs, and blue if they tend to be worse.
+        </p>
+
+        <div id="container-res-filters">
+          <span id="hint-span" class="text-muted">Select Bot:</span>
+          <div class="dropdown" id="scoreBotSlug">
+            <button class="dropbtn" id="scoreBotButton">
+              <img src="res/images/units/crab.png" width="25" height="25">
+              <span>Crab</span>
+            </button>
+            <div class="dropdown-content" style="width: 225px; height: 450px">
+              <div id="scoreBotCrab" value="0">
+                <img src="res/images/units/crab.png" width="25" height="25"> Crab
+              </div>
+              <div id="scoreBotHunter" value="1">
+                <img src="res/images/units/hunter.png" width="25" height="25"> Hunter
+              </div>
+              <div id="scoreBotRecall" value="2">
+                <img src="res/images/units/recall.png" width="25" height="25"> Recall
+              </div>
+              <div id="scoreBotRecallHunter" value="3">
+                <img src="res/images/units/recallhunter.png" width="25" height="25"> Recall Hunter
+              </div>
+              <div id="scoreBotScorpion" value="4">
+                <img src="res/images/units/scorpion.png" width="25" height="25"> Scorpion
+              </div>
+              <div id="scoreBotBeetle" value="5">
+                <img src="res/images/units/beetle.png" width="25" height="25"> Beetle
+              </div>
+              <div id="scoreBotBlink" value="6">
+                <img src="res/images/units/blink.png" width="25" height="25"> Blink
+              </div>
+              <div id="scoreBotBlinkHunter" value="7">
+                <img src="res/images/units/blinkhunter.png" width="25" height="25"> Blink Hunter
+              </div>
+              <div id="scoreBotGunbot" value="8">
+                <img src="res/images/units/gunbot.png" width="25" height="25"> Gunbot
+              </div>
+              <div id="scoreBotMissilebot" value="9">
+                <img src="res/images/units/missilebot.png" width="25" height="25"> Missilebot
+              </div>
+              <div id="scoreBotWasp" value="10">
+                <img src="res/images/units/wasp.png" width="25" height="25"> Wasp
+              </div>
+              <div id="scoreBotHornet" value="11">
+                <img src="res/images/units/hornet.png" width="25" height="25"> Hornet
+              </div>
+              <div id="scoreBotKnight" value="12">
+                <img src="res/images/units/knight.png" width="25" height="25"> Knight
+              </div>
+              <div id="scoreBotCrossbow" value="13">
+                <img src="res/images/units/crossbow.png" width="25" height="25"> Crossbow
+              </div>
+              <div id="scoreBotBallista" value="14">
+                <img src="res/images/units/ballista.png" width="25" height="25"> Ballista
+              </div>
+              <div id="scoreBotKingCrab" value="15">
+                <img src="res/images/units/kingcrab.png" width="25" height="25"> King Crab
+              </div>
+              <div id="scoreBotCrusader" value="16">
+                <img src="res/images/units/crusader.png" width="25" height="25"> Crusader
+              </div>
+              <div id="scoreBotBomber" value="17">
+                <img src="res/images/units/bomber.png" width="25" height="25"> Bomber
+              </div>
+              <div id="scoreBotShocker" value="18">
+                <img src="res/images/units/shocker.png" width="25" height="25"> Shocker
+              </div>
+              <div id="scoreBotRecallShocker" value="19">
+                <img src="res/images/units/recallshocker.png" width="25" height="25"> Recall Shocker
+              </div>
+              <div id="scoreBotMortar" value="20">
+                <img src="res/images/units/mortar.png" width="25" height="25"> Mortar
+              </div>
+              <div id="scoreBotSwiftShocker" value="21">
+                <img src="res/images/units/swiftshocker.png" width="25" height="25"> Swift Shocker
+              </div>
+              <div id="scoreBotHeavyHunter" value="22">
+                <img src="res/images/units/heavyhunter.png" width="25" height="25"> Heavy Hunter
+              </div>
+              <div id="scoreBotDestroyer" value="23">
+                <img src="res/images/units/destroyer.png" width="25" height="25"> Destroyer
+              </div>
+              <div id="scoreBotRaider" value="24">
+                <img src="res/images/units/raider.png" width="25" height="25"> Raider
+              </div>
+              <div id="scoreBotTurret"value="25">
+                <img src="res/images/units/turret.png" width="25" height="25"> Turret
+              </div>
+              <div id="scoreBotHeavyBallista" value="26">
+                <img src="res/images/units/heavyballista.png" width="25" height="25"> Heavy Ballista
+              </div>
+              <div id="scoreBotGargantua"value="27">
+                <img src="res/images/units/gargantua.png" width="25" height="25"> Gargantua
+              </div>
+              <div id="scoreBotSniper" value="28">
+                <img src="res/images/units/sniper.png" width="25" height="25"> Sniper
+              </div>
+              <div id="scoreBotAdvancedBlink" value="29">
+                <img src="res/images/units/advancedblink.png" width="25" height="25"> Advanced Blink
+              </div>
+              <div id="scoreBotAssaultbot" value="30">
+                <img src="res/images/units/assaultbot.png" width="25" height="25"> Assaultbot
+              </div>
+              <div id="scoreBotAdvancedbot" value="31">
+                <img src="res/images/units/advancedbot.png" width="25" height="25"> Advancedbot
+              </div>
+              <div id="scoreBotBehemoth" value="32">
+                <img src="res/images/units/behemoth.png" width="25" height="25"> Behemoth
+              </div>
+              <div id="scoreBotButterfly" value="33">
+                <img src="res/images/units/butterfly.png" width="25" height="25"> Butterfly
+              </div>
+              <div id="scoreBotDragonfly" value="34">
+                <img src="res/images/units/dragonfly.png" width="25" height="25"> Dragonfly
+              </div>
+              <div id="scoreBotFalcon" value="35">
+                <img src="res/images/units/falcon.png" width="25" height="25"> Falcon
+              </div>
+              <div id="scoreBotAirship" value="36">
+                <img src="res/images/units/airship.png" width="25" height="25"> Airship
+              </div>
+              <div id="scoreBotAdvancedRecall" value="37">
+                <img src="res/images/units/advancedrecall.png" width="25" height="25"> Advanced Recall
+              </div>
+              <div id="scoreBotMammoth" value="38">
+                <img src="res/images/units/mammoth.png" width="25" height="25"> Mammoth
+              </div>
+              <div id="scoreBotStinger" value="39">
+                <img src="res/images/units/stinger.png" width="25" height="25"> Stinger
+              </div>
+              <div id="scoreBotFlakTurret" value="40">
+                <img src="res/images/units/flakturret.png" width="25" height="25"> Flak Turret
+              </div>
+              <div id="scoreBotBulwark" value="41">
+                <img src="res/images/units/bulwark.png" width="25" height="25"> Bulwark
+              </div>
+              <div id="scoreBotKatbus"value="42">
+                <img src="res/images/units/katbus.png" width="25" height="25"> Katbus
+              </div>
+              <div id="scoreBotLocust" value="43">
+                <img src="res/images/units/locust.png" width="25" height="25"> Locust
+              </div>
+              <div id="scoreBotKraken" value="44">
+                <img src="res/images/units/kraken.png" width="25" height="25"> Kraken
+              </div>
+              <div id="scoreBotPredator" value="45">
+                <img src="res/images/units/predator.png" width="25" height="25"> Predator
+              </div>
+              <div id="scoreBotValkyrie" value="46">
+                <img src="res/images/units/valkyrie.png" width="25" height="25"> Valkyrie
+              </div>
+              <div id="scoreBotAdvancedDestroyer" value="47">
+                <img src="res/images/units/advanceddestroyer.png" width="25" height="25"> Advanced Destroyer
+              </div>
+              <div id="scoreBotArtillery" value="48">
+                <img src="res/images/units/artillery.png" width="25" height="25"> Artillery
+              </div>
+            </div>
+          </div>
+          <p></p>
+          <div>
+            <span id="hint-span" class="text-muted">Show data as:</span>
+            <button type="button" id="means-button" class="btn btn-outline-secondary btn-xs">Means and Errors</button>
+            <button type="button" id="points-button" class="btn btn-outline-secondary btn-xs">Raw Points</button>
+            <p></p>
+          </div>
+          <div id="container-viz-results">
+            <div id="viz-results"></div>
+            <div id="table-results"></div>
+          </div>
+        </div>
       </div>
 
       <hr />
@@ -279,105 +587,91 @@
 
         <div id="div-reg-filters" class="d-flex align-items-center">
           <span id="hint-span" class="text-muted">Filters:</span>
-
-          <div class="hr-sect">
-            <select name="vsBotSlug" id="vsBotSlug" class="form-select form-select-sm" style="width: 125px">
-              <option value="" selected>NONE</option>
-              <option value="_vsuCrab">vs. Crab</option>
-              <option value="_vsuHunter">vs. Hunter</option>
-              <option value="_vsuRecall">vs. Recall</option>
-              <option value="_vsuRecall Hunter">vs. Recall Hunter</option>
-              <option value="_vsuScorpion">vs. Scorpion</option>
-              <option value="_vsuBeetle">vs. Beetle</option>
-              <option value="_vsuBlink">vs. Blink</option>
-              <option value="_vsuBlink Hunter">vs. Blink Hunter</option>
-              <option value="_vsuGunbot">vs. Gunbot</option>
-              <option value="_vsuMissilebot">vs. Missilebot</option>
-              <option value="_vsuWasp">vs. Wasp</option>
-              <option value="_vsuHornet">vs. Hornet</option>
-              <option value="_vsuKnight">vs. Knight</option>
-              <option value="_vsuCrossbow">vs. Crossbow</option>
-              <option value="_vsuBallista">vs. Ballista</option>
-              <option value="_vsuKing Crab">vs. King Crab</option>
-              <option value="_vsuCrusader">vs. Crusader</option>
-              <option value="_vsuBomber">vs. Bomber</option>
-              <option value="_vsuShocker">vs. Shocker</option>
-              <option value="_vsuRecall Shocker">vs. Recall Shocker</option>
-              <option value="_vsuMortar">vs. Mortar</option>
-              <option value="_vsuSwift Shocker">vs. Swift Shocker</option>
-              <option value="_vsuHeavy Hunter">vs. Heavy Hunter</option>
-              <option value="_vsuDestroyer">vs. Destroyer</option>
-              <option value="_vsuRaider">vs. Raider</option>
-              <option value="_vsuTurret">vs. Turret</option>
-              <option value="_vsuHeavy Ballista">vs. Heavy Ballista</option>
-              <option value="_vsuPredator">vs. Predator</option>
-              <option value="_vsuSniper">vs. Sniper</option>
-              <option value="_vsuAdvanced Blink">vs. Advanced Blink</option>
-              <option value="_vsuAssaultbot">vs. Assaultbot</option>
-              <option value="_vsuBehemoth">vs. Behemoth</option>
-              <option value="_vsuGargantua">vs. Gargantua</option>
-              <option value="_vsuButterfly">vs. Butterfly</option>
-              <option value="_vsuDragonfly">vs. Dragonfly</option>
-              <option value="_vsuFalcon">vs. Falcon</option>
-              <option value="_vsuAirship">vs. Airship</option>
-              <option value="_vsuAdvanced Recall">vs. Advanced Recall</option>
-              <option value="_vsuMammoth">vs. Mammoth</option>
-              <option value="_vsuStinger">vs. Stinger</option>
-              <option value="_vsuFlak Turret">vs. Flak Turret</option>
-              <option value="_vsuBulwark">vs. Bulwark</option>
-              <option value="_vsuKatbus">vs. Katbus</option>
-              <option value="_vsuLocust">vs. Locust</option>
-              <option value="_vsuKraken">vs. Kraken</option>
-              <option value="_vsuValkyrie">vs. Valkyrie</option>
-              <option value="_vsuArtillery">vs. Artillery</option>
-              <option value="_vsuAdvancedbot">vs. Advancedbot</option>
-              <option value="_vsuAdvancedDestroyer">vs. AdvancedDestroyer</option>
-            </select>
-            <select name="vsTraitSlug" id="vsTraitSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-              <option value="" selected>NONE</option>
-              <option value="_vscSwm">vs. Swarming</option>
-              <option value="_vscPrc">vs. Piercing</option>
-              <option value="_vscHlk">vs. Hulking</option>
-              <option value="_vscShr">vs. Shattering</option>
-              <option value="_vscFly">vs. Flying</option>
-              <option value="_vscHnt">vs. Hunting</option>
-            </select>
-            <select name="vsTechSlug" id="vsTechSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-              <option value="" selected>NONE</option>
-              <option value="_vstFd">vs. Foundry</option>
-              <option value="_vstAFd">vs. Advanced Foundry</option>
-              <option value="_vst2Fd">vs. Double Foundry</option>
-              <option value="_vstSf">vs. Starforge</option>
-              <option value="_vstASf">vs. Advanced Starforge</option>
-              <option value="_vst2Sf">vs. Double Starforge</option>
-              <option value="_vstT2">vs. Double Tier 2</option>
-              <option value="_vstT2AFd">vs. Double Tier 2 and Foundry</option>
-              <option value="_vstT2ASf">vs. Double Tier 2 and Starforge</option>
-              <option value="_vstT3">vs. Double Tier 3</option>
-              <option value="_vstAll">vs. Everything</option>
-            </select>
-            <select name="vsManuSlug" id="vsManuSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-              <option value="" selected>NONE</option>
-              <option value="_vsmNP">vs. North Performance</option>
-              <option value="_vsmFHC">vs. Far Horizon Collective</option>
-              <option value="_vsmGV">vs. Ghosts of Venus</option>
-              <option value="_vsmSen">vs. Senkeishu Ltd.</option>
-              <option value="_vsmIaS">vs. Irons and Sons</option>
-              <option value="_vsmCor">vs. Corona Central Systems</option>
-              <option value="_vsmHU">vs. Heavy Union Alliance</option>
-            </select>
-            <select name="stanceSlug" id="stanceSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-              <option value="" selected>NONE</option>
-              <option value="_aNeut">vs. Neutral</option>
-              <option value="_aDef">vs. Defender</option>
-              <option value="_aAgg">vs. Aggressor</option>
-            </select>
-            <select name="vsSkillSlug" id="vsSkillSlug" class="form-select form-select-sm" style="width: 125px" disabled>
-              <option value="" selected>NONE</option>
-              <option value="_vssLow">vs. Lower Skill</option>
-              <option value="_vssNear">vs. Similar Skill</option>
-              <option value="_vssHigh">vs. Higher Skill</option>
-            </select>
+          <div class="dropdown" id="regFilterTechSlug">
+            <button class="dropbtn" id="regFilterTechButton">
+              <img src="res/images/techtiers/core.png" width="25" height="25">
+              <span>Core</span>
+            </button>
+            <div class="dropdown-content" style="height: 300px">
+              <div id="regFilterTechSlugAll">
+                <img src="res/images/techtiers/any.png" width="25" height="25"> Any
+              </div>
+              <div id="regFilterTechSlugCore">
+                <img src="res/images/techtiers/core.png" width="25" height="25"> Core
+              </div>
+              <div id="regFilterTechSlugFoundry">
+                <img src="res/images/techtiers/foundry.png" width="25" height="25"> Foundry
+              </div>
+              <div id="regFilterTechSlugAdvFoundry">
+                <img src="res/images/techtiers/advancedfoundry.png" width="25" height="25"> Adv Foundry
+              </div>
+              <div id="regFilterTechSlugStarforge">
+                <img src="res/images/techtiers/starforge.png" width="25" height="25"> Starforge
+              </div>
+              <div id="regFilterTechSlugAdvStarforge">
+                <img src="res/images/techtiers/advancedstarforge.png" width="25" height="25"> Adv Starforge
+              </div>
+            </div>
+          </div>
+          <div class="dropdown" id="regFilterTraitSlug">
+            <button class="dropbtn" id="regFilterTraitButton">
+              <img src="res/images/traits/any.png" width="25" height="25">
+              <span>Any</span>
+            </button>
+            <div class="dropdown-content" style="height: 300px">
+              <div id="regFilterTraitSlugAll">
+                <img src="res/images/traits/any.png" width="25" height="25"> Any
+              </div>
+              <div id="regFilterTraitSlugSwarming">
+                <img src="res/images/traits/small.png" width="25" height="25"> SMALL
+              </div>
+              <div id="regFilterTraitSlugPiercing">
+                <img src="res/images/traits/antibig.png" width="25" height="25"> ANTI-BIG
+              </div>
+              <div id="regFilterTraitSlugHulking">
+                <img src="res/images/traits/big.png" width="25" height="25"> BIG
+              </div>
+              <div id="regFilterTraitSlugShattering">
+                <img src="res/images/traits/splash.png" width="25" height="25"> SPLASH
+              </div>
+              <div id="regFilterTraitSlugFlying">
+                <img src="res/images/traits/air.png" width="25" height="25"> AIR
+              </div>
+              <div id="regFilterTraitSlugHunting">
+                <img src="res/images/traits/antiair.png" width="25" height="25"> ANTI-AIR
+              </div>
+            </div>
+          </div>
+          <div class="dropdown" id="regFilterManuSlug">
+            <button class="dropbtn" id="regFilterManuButton">
+              <img src="res/images/manufacturers/any.png" width="60" height="25">
+            </button>
+            <div class="dropdown-content" style="height: 300px">
+              <div id="regFilterManuSlugAll">
+                <img src="res/images/manufacturers/any.png" width="120" height="50">
+              </div>
+              <div id="regFilterManuSlugNP">
+                <img src="res/images/manufacturers/northperformance.png" width="120" height="50">
+              </div>
+              <div id="regFilterManuSlugFHC">
+                <img src="res/images/manufacturers/farhorizoncollective.png" width="120" height="50">
+              </div>
+              <div id="regFilterManuSlugGoV">
+                <img src="res/images/manufacturers/ghostsofvenus.png" width="120" height="50">
+              </div>
+              <div id="regFilterManuSlugSen">
+                <img src="res/images/manufacturers/senkaishulimited.png" width="120" height="50">
+              </div>
+              <div id="regFilterManuSlugInS">
+                <img src="res/images/manufacturers/ironandsons.png" width="120" height="50">
+              </div>
+              <div id="regFilterManuSlugCCS">
+                <img src="res/images/manufacturers/coronacentralsystems.png" width="120" height="50">
+              </div>
+              <div id="regFilterManuSlugHUA">
+                <img src="res/images/manufacturers/heavyunionalliance.png" width="120" height="50">
+              </div>
+            </div>
           </div>
         </div>
 
@@ -389,28 +683,19 @@
       </div>
 
       <hr />
-      <div id="results">
-        <p class="section-label">Simulation Results</p>
-        <p class="text-justified"><a href="#top">Back to top</a></p>
-        <p class="text-justified">
-          This section shows the actual values resulting from a set of simulations.
-          Select a bot to view simulations containing that bot.
-          Select Raw Points or Means and Errors to show the data as a scatter or error bar plot.
-          The initial set is reduced to a maximum of 15000 data points to reduce clutter, with bot selection possibly reducing that count further.
-          Data are charted on the x-axis by count of the selected bot count and on the y-axis by score differential.
-        <p class="text-justified">
-          Two lines are drawn over the data.
-          The blue line shows the linear regression result from the previous section for the selected bot.
-          This shows the estimated increase in score for adding additional bots.
-          The orange line similarly shows the normalized percentage value from the previous section.
-          This line is more directly comparable across bots.
-        </p>
-
-        <div id="container-res-filters">
+      <div id="stats">
+        <div id="statstext">
+          <p class="section-label">Individual Stat Weights</p>
+          <p class="text-justified"><a href="#top">Back to top</a></p>
+          <p class="text-justified">
+            Here is where I will put the charts that describe the relative impact of each stat in a unit's kit.
+          </p>
+        </div>
+        <div id="container-stat-filters">
           <div class="col">
             <div class="d-flex align-items-center">
               <span id="hint-span" class="text-muted">Select Bot: </span>
-              <select name="selectBotSlug" id="selectBotSlug" class="form-select form-select-sm" style="width: 100px">
+              <select name="selectStatSlug" id="selectStatSlug" class="form-select form-select-sm" style="width: 100px">
                 <option value="0" selected>Crab</option>
                 <option value="1">Hunter</option>
                 <option value="2">Recall</option>
@@ -438,12 +723,12 @@
                 <option value="24">Raider</option>
                 <option value="25">Turret</option>
                 <option value="26">Heavy Ballista</option>
-                <option value="27">Predator</option>
+                <option value="27">Gargantua</option>
                 <option value="28">Sniper</option>
                 <option value="29">Advanced Blink</option>
                 <option value="30">Assaultbot</option>
-                <option value="31">Behemoth</option>
-                <option value="32">Gargantua</option>
+                <option value="31">Advancedbot</option>
+                <option value="32">Behemoth</option>
                 <option value="33">Butterfly</option>
                 <option value="34">Dragonfly</option>
                 <option value="35">Falcon</option>
@@ -456,186 +741,249 @@
                 <option value="42">Katbus</option>
                 <option value="43">Locust</option>
                 <option value="44">Kraken</option>
-                <option value="45">Valkyrie</option>
-                <option value="46">Artillery</option>
-                <option value="47">Advancedbot</option>
-                <option value="48">Advanced Destroyer</option>
-                <option value="49">Skill</option>
+                <option value="45">Predator</option>
+                <option value="46">Valkyrie</option>
+                <option value="47">Advanced Destroyer</option>
+                <option value="48">Artillery</option>
               </select>
+            </div>
+            <br/>
+            <div class="d-flex align-items-center">
+              <span id="hint-span" class="text-muted">Select Comparison: </span>
+              <select name="selectCompareSlug" id="selectCompareSlug" class="form-select form-select-sm" style="width: 130px">
+                <option value="5" selected>All Bots</option>
+                <option value="0">Core</option>
+                <option value="1">Foundry</option>
+                <option value="2">Advanced Foundry</option>
+                <option value="3">Starforge</option>
+                <option value="4">Advanced Starforge</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div id="viz-stats">
+        </div>
+      </div>
+
+      <hr />
+      <div id="correlation">
+        <p class="section-label">Correlations</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="text-justified">
+          This section provides the results of each bot (the same values as provided in the previous section) along with one-directional correlations with the other bots.
+          The values presented for a selected bot are the gained or lost points of score for that bot type when combined with the other listed bot.
+
+        <div id="container-cor-filters">
+          <div class="col">
+            <div class="d-flex align-items-center">
+              <span id="hint-span" class="text-muted">Select Bot: </span>
+              <select name="selectCorSlug" id="selectCorSlug" class="form-select form-select-sm" style="width: 100px">
+                <option value="0" selected>Crab</option>
+                <option value="1">Hunter</option>
+                <option value="2">Recall</option>
+                <option value="3">Recall Hunter</option>
+                <option value="4">Scorpion</option>
+                <option value="5">Beetle</option>
+                <option value="6">Blink</option>
+                <option value="7">Blink Hunter</option>
+                <option value="8">Gunbot</option>
+                <option value="9">Missilebot</option>
+                <option value="10">Wasp</option>
+                <option value="11">Hornet</option>
+                <option value="12">Knight</option>
+                <option value="13">Crossbow</option>
+                <option value="14">Ballista</option>
+                <option value="15">King Crab</option>
+                <option value="16">Crusader</option>
+                <option value="17">Bomber</option>
+                <option value="18">Shocker</option>
+                <option value="19">Recall Shocker</option>
+                <option value="20">Mortar</option>
+                <option value="21">Swift Shocker</option>
+                <option value="22">Heavy Hunter</option>
+                <option value="23">Destroyer</option>
+                <option value="24">Raider</option>
+                <option value="25">Turret</option>
+                <option value="26">Heavy Ballista</option>
+                <option value="27">Gargantua</option>
+                <option value="28">Sniper</option>
+                <option value="29">Advanced Blink</option>
+                <option value="30">Assaultbot</option>
+                <option value="31">Advancedbot</option>
+                <option value="32">Behemoth</option>
+                <option value="33">Butterfly</option>
+                <option value="34">Dragonfly</option>
+                <option value="35">Falcon</option>
+                <option value="36">Airship</option>
+                <option value="37">Advanced Recall</option>
+                <option value="38">Mammoth</option>
+                <option value="39">Stinger</option>
+                <option value="40">Flak Turret</option>
+                <option value="41">Bulwark</option>
+                <option value="42">Katbus</option>
+                <option value="43">Locust</option>
+                <option value="44">Kraken</option>
+                <option value="45">Predator</option>
+                <option value="46">Valkyrie</option>
+                <option value="47">Advanced Destroyer</option>
+                <option value="48">Artillery</option>
+              </select>
+            </div>
+            <br/>
+            <div class="d-flex align-items-center">
+              <span id="hint-span" class="text-muted">Select Grouping: </span>
+              <select name="selectCorGroupSlug" id="selectCorGroupSlug" class="form-select form-select-sm" style="width: 130px">
+                <option value="0" selected>Bot</option>
+                <option value="1">Trait</option>
+                <option value="2">Tech Tier</option>
+                <option value="3">Manufacturer</option>
+              </select>
+            </div>
           </div>
           <p></p>
-          <div>
-            <span id="hint-span" class="text-muted">Show data as:</span>
-            <button type="button" id="points-button" class="btn btn-outline-secondary btn-xs">Raw Points</button>
-            <button type="button" id="means-button" class="btn btn-outline-secondary btn-xs">Means and Errors</button>
-            <p></p>
-          </div>
-          <div id="container-viz-results">
-            <div id="viz-results"></div>
-            <div id="table-results"></div>
+          <div id="container-viz-correlation">
+            <div id="viz-correlation"></div>
+            <div id="table-correlation"></div>
           </div>
         </div>
       </div>
 
-    </div>
-    <hr />
-    <div id="ladder">
-      <p class="section-label">Mock Ladder</p>
-      <p class="text-justified"><a href="#top">Back to top</a></p>
-      <p class="text-justified">
-        A mock ladder based on a simple Elo MMR system and Battle Aces league tiering shows how the results of the analysis might map onto a live ladder.
-        The ladder consists of 3500 players, each playing a single deck with a randomly generated "true skill" value.
-        Players play 10000 games against opponents selected for nearby ladder score.
-      </p>
-      <p class="text-justified">
-        Press a league button to show the ranked list of players in that league.
-        Ladder score indicates displayed rank "in-game".
-        MMR indicates the Elo score used to determine match making (this is to allow emulating ladder thresholding like what was used in beta1, though it is not used in the present simulation).
-        Expected rank shows the projected power of a player based on their combination of skill and deck selection.
-        Skill is the true MMR value of a player without regard to deck.
-      </p>
-      <p class="text-justified">
-        Below the main table are summaries of bot usage in various leagues.
-        On the left, bots are ranked by popularity in the selected league.
-        On the right, bot popularity is shown across all leagues with Iron on the left extreme and Top Ace on the right.
-      </p>
-      <p></p>
-      <div id="container-viz-ladder">
-        <div class="hr-sect">
-          <button type="button" id="iron-button" class="btn btn-outline-secondary btn-xs">Iron League</button>
-          <button type="button" id="bronze-button" class="btn btn-outline-secondary btn-xs">Bronze League</button>
-          <button type="button" id="silver-button" class="btn btn-outline-secondary btn-xs">Silver League</button>
-          <button type="button" id="gold-button" class="btn btn-outline-secondary btn-xs">Gold League</button>
-          <button type="button" id="platinum-button" class="btn btn-outline-secondary btn-xs">Platinum League</button>
-          <button type="button" id="emerald-button" class="btn btn-outline-secondary btn-xs">Emerald League</button>
-          <button type="button" id="diamond-button" class="btn btn-outline-secondary btn-xs">Diamond League</button>
-          <button type="button" id="topace-button" class="btn btn-outline-secondary btn-xs">Top Ace</button>
-        </div>
+      <hr />
+      <div id="ladder">
+        <p class="section-label">Mock Ladder</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="text-justified">
+          A mock ladder based on a simple Elo MMR system and Battle Aces league tiering shows how the results of the analysis might map onto a live ladder.
+          The ladder consists of 3500 players, each playing a single deck with a randomly generated "true skill" value.
+          Players play 10000 games against opponents selected for nearby ladder score.
+        </p>
+        <p class="text-justified">
+          Press a league button to show the ranked list of players in that league.
+          Ladder score indicates displayed rank "in-game".
+          MMR indicates the Elo score used to determine match making (this is to allow emulating ladder thresholding like what was used in beta1, though it is not used in the present simulation).
+          Expected rank shows the projected power of a player based on their combination of skill and deck selection.
+          Skill is the true MMR value of a player without regard to deck.
+        </p>
+        <p class="text-justified">
+          Below the main table are summaries of bot usage in various leagues.
+          On the left, bots are ranked by popularity in the selected league.
+          On the right, bot popularity is shown across all leagues with Iron on the left extreme and Top Ace on the right.
+        </p>
         <p></p>
-        <div id="table-ladder-notes"></div>
-        <p></p>
-        <div id="viz-ladder"></div>
-        <div id="table-ladder"></div>
-        <p></p>
-        <div class="overflow-auto">
-          <div class="row row-cols-2" style="width:950px">
-            <div id="table-ladder-summary" class="col" style="width: 16%"></div>
-            <div id="viz-ladder-summary" class="col" style="width: 84%"></div>
+        <div id="container-viz-ladder">
+          <div class="hr-sect">
+            <button type="button" id="iron-button" class="btn btn-outline-secondary btn-xs">Iron League</button>
+            <button type="button" id="bronze-button" class="btn btn-outline-secondary btn-xs">Bronze League</button>
+            <button type="button" id="silver-button" class="btn btn-outline-secondary btn-xs">Silver League</button>
+            <button type="button" id="gold-button" class="btn btn-outline-secondary btn-xs">Gold League</button>
+            <button type="button" id="platinum-button" class="btn btn-outline-secondary btn-xs">Platinum League</button>
+            <button type="button" id="emerald-button" class="btn btn-outline-secondary btn-xs">Emerald League</button>
+            <button type="button" id="diamond-button" class="btn btn-outline-secondary btn-xs">Diamond League</button>
+            <button type="button" id="topace-button" class="btn btn-outline-secondary btn-xs">Top Ace</button>
+          </div>
+          <p></p>
+          <div id="table-ladder-notes"></div>
+          <p></p>
+          <div id="viz-ladder"></div>
+          <div id="table-ladder"></div>
+          <p></p>
+          <div class="overflow-auto">
+            <div class="row row-cols-2" style="width:950px">
+              <div id="table-ladder-summary" class="col" style="width: 16%"></div>
+              <div id="viz-ladder-summary" class="col" style="width: 84%"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <hr />
-    <div id="reports">
-      <p class="section-label">Battle Reports</p>
-      <p class="text-justified"><a href="#top">Back to top</a></p>
-      <p class="text-justified">
-        This section allows the viewing of a reduced set of 1000 simulations.
-        Select a report in the dialogue to the right (1-1000).
-      </p>
-      <p class="text-justified">
-        Below the selection is a bar showing the score comparison between both players and their army compositions.
-        On the left is a scroll-able field showing the position and approximate actions of each bot.
-        Track forward and backward in time by using the lower scrollbar or the timer dialogue.
-      </p>
-      <p class="text-justified">
-        Reports are shown with 1 second resolution.
-        Each second, the bots position is updated and its highest priority action is recorded.
-        Not all activity is visible, however the reports give a good idea of how timing and position within the simulation corresponds to live gameplay.
-      </p>
-      <div class="overflow-auto">
-        <div id="viz-report" style="width: 950"></div>
+      <hr />
+      <div id="howitworks">
+        <p class="section-label">Under the Hood</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="text-justified">
+          This section will go into a bit more detail about the workings of the model and the assumptions that underpin it. <b>TODO</b>
+        </p>
       </div>
-    </div>
 
-    <hr />
-    <div id="howitworks">
-      <p class="section-label">Under the Hood</p>
-      <p class="text-justified"><a href="#top">Back to top</a></p>
-      <p class="text-justified">
-        This section will go into a bit more detail about the workings of the model and the assumptions that underpin it. <b>TODO</b>
-      </p>
-    </div>
+      <hr />
+      <div id="future">
+        <p class="section-label">Future Work</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <ul>
+        <li>Version 0.9:</li>
+          <ul>
+            <li>Add aggressive and defensive positioning logic,</li>
+            <li>Add defensive combat logic,</li>
+            <li>Randomize unit stats per simulation,</li>
+            <li>Add unit stats per simulation to regression analysis,</li>
+            <li>Add automated validation for the PRNG,</li>
+            <li>Add automated validation for basic unit combos,</li>
+          </ul>
+        <br>
+        <li>Version 1.0:</li>
+          <ul>
+            <li>DONE Add new beta 2 bots,</li>
+            <li>DONE Update bot stats for beta 2,</li>
+            <li>CLI option for generating specific deck match-ups,</li>
+            <li>CLI option for generating specific deck match-ups,</li>
+            <li>Add unit movement (kiting) between attack cooldowns,</li>
+            <li>DONE Program OVERCLOCK_START and OVERCLOCK_STOP events,</li>
+            <li>DONE Program BLINK_START and BLINK_STOP events,</li>
+            <li>DONE Program RECALL_START and RECALL_STOP events,</li>
+            <li>DONE Program SETUP_START and SETUP_STOP events,</li>
+            <li>DONE Program UNSETUP_START and UNSETUP_STOP events,</li>
+            <li>DONE Program DETONATE events,</li>
+            <li>DONE Logic for ability use: Detonate,</li>
+            <li>Logic for ability use: aggressive Overclock (use on cooldown),</li>
+            <li>Logic for ability use: defensive Overclock (same as aggro),</li>
+            <li>Logic for ability use: aggressive Blink (Blink to get in range of target),</li>
+            <li>Logic for ability use: defensive Blink (Blink back on low HP),</li>
+            <li>Logic for ability use: aggressive Recall (none),</li>
+            <li>Logic for ability use: defensive Recall (Recall on low HP),</li>
+            <li>DONE Logic for ability use: aggressive Setup (leapfrog),</li>
+            <li>Logic for ability use: defensive Setup (static defense),</li>
+            <li>Update seeding to randomize results for release,</li>
+            <li>DONE Identify event linked list memory leak,</li>
+            <li>Fix splash over-damage on overlapping units in motion,</li>
+            <li>Fix units moving when dead,</li>
+            <li>Fix untargetable units at map boundary,</li>
+            <li>Reduce time spent deconflicting units/finding open positions,</li>
+            <li>Improve packing of melee units on their targets,</li>
+            <li>Optimize event processing (create/destroy and targetting) for speed,</li>
+            <li>Implement and compare Glicko/Glicko2 with Elo performance for ladder,</li>
+            <li>Multi-thread report writing,</li>
+            <li>Multi-thread ladder match-making,</li>
+            <li>SIMD for matrix library (maybe),</li>
+            <li>Make code presentable,</li>
+          </ul>
+        <br>
+        <li>Version 2.0:</li>
+          <ul>
+            <li>Human-ish APM,</li>
+            <li>Human-ish kiting and stutter stepping,</li>
+            <li>Human-ish focus fire,</li>
+            <li>Human-ish ability use,</li>
+            <li>Fuzzy logic to scale Human-ness with Skill setting,</li>
+            <li>Iterate ladder in "days" of a gaussian number of games, with players changing decks each day,</li>
+            <li>Add to a subset of players a tendancy to copy Top Ace decks from the previous day,</li>
+            <li>Add a chance for higher skill players to pick high performing bots,</li>
+            <li>Generalize Monte Carlo code and fully separate from BA data, allowing reuse on other titles,</li>
+          </ul>
+        </ul>
+        <li>Version 3.0 (ie: optional stuff I may never get to):</li>
+          <ul>
+            <li>Javascript version of sim, allowing users to plug in bots and get a summary of outcomes,</li>
+            <li>Create page for comparing simulations between patches,</li>
+          </ul>
+        </ul>
+      </div>
 
-    <hr />
-    <div id="future">
-      <p class="section-label">Future Work</p>
-      <p class="text-justified"><a href="#top">Back to top</a></p>
-      <ul>
-      <li>Version 0.9:</li>
-        <ul>
-          <li>Add aggressive and defensive positioning logic,</li>
-          <li>Add defensive combat logic,</li>
-          <li>Randomize unit stats per simulation,</li>
-          <li>Add unit stats per simulation to regression analysis,</li>
-          <li>Add automated validation for the PRNG,</li>
-          <li>Add automated validation for basic unit combos,</li>
-        </ul>
-      <br>
-      <li>Version 1.0:</li>
-        <ul>
-          <li>DONE Add new beta 2 bots,</li>
-          <li>Update bot stats for beta 2,</li>
-          <li>CLI option for generating specific deck match-ups,</li>
-          <li>CLI option for generating specific deck match-ups,</li>
-          <li>Add unit movement (kiting) between attack cooldowns,</li>
-          <li>Program OVERCLOCK_START and OVERCLOCK_STOP events,</li>
-          <li>Program BLINK_START and BLINK_STOP events,</li>
-          <li>Program RECALL_START and RECALL_STOP events,</li>
-          <li>Program SETUP_START and SETUP_STOP events,</li>
-          <li>Program UNSETUP_START and UNSETUP_STOP events,</li>
-          <li>Program DETONATE events,</li>
-          <li>Logic for ability use: Detonate,</li>
-          <li>Logic for ability use: aggressive Overclock (use on cooldown),</li>
-          <li>Logic for ability use: defensive Overclock (same as aggro),</li>
-          <li>Logic for ability use: aggressive Blink (Blink to get in range of target),</li>
-          <li>Logic for ability use: defensive Blink (Blink back on low HP),</li>
-          <li>Logic for ability use: aggressive Recall (none),</li>
-          <li>Logic for ability use: defensive Recall (Recall on low HP),</li>
-          <li>Logic for ability use: aggressive Setup (leapfrog),</li>
-          <li>Logic for ability use: defensive Setup (static defense),</li>
-          <li>Update seeding to randomize results for release,</li>
-          <li>Identify event linked list memory leak,</li>
-          <li>Fix splash over-damage on overlapping units in motion,</li>
-          <li>Fix units moving when dead,</li>
-          <li>Fix untargetable units at map boundary,</li>
-          <li>Reduce time spent deconflicting units/finding open positions,</li>
-          <li>Improve packing of melee units on their targets,</li>
-          <li>Optimize event processing (create/destroy and targetting) for speed,</li>
-          <li>Implement and compare Glicko/Glicko2 with Elo performance for ladder,</li>
-          <li>Multi-thread report writing,</li>
-          <li>Multi-thread ladder match-making,</li>
-          <li>SIMD for matrix library (maybe),</li>
-          <li>Make code presentable,</li>
-        </ul>
-      <br>
-      <li>Version 2.0:</li>
-        <ul>
-          <li>Human-ish APM,</li>
-          <li>Human-ish kiting and stutter stepping,</li>
-          <li>Human-ish focus fire,</li>
-          <li>Human-ish ability use,</li>
-          <li>Fuzzy logic to scale Human-ness with Skill setting,</li>
-          <li>Iterate ladder in "days" of a gaussian number of games, with players changing decks each day,</li>
-          <li>Add to a subset of players a tendancy to copy Top Ace decks from the previous day,</li>
-          <li>Add a chance for higher skill players to pick high performing bots,</li>
-          <li>Generalize Monte Carlo code and fully separate from BA data, allowing reuse on other titles,</li>
-        </ul>
-      </ul>
-      <li>Version 3.0 (ie: optional stuff I may never get to):</li>
-        <ul>
-          <li>Javascript version of sim, allowing users to plug in bots and get a summary of outcomes,</li>
-          <li>Create page for comparing simulations between patches,</li>
-        </ul>
-      </ul>
-    </div>
-
-    <hr />
-    <div id="contact">
-      <p class="section-label">Contact Info</p>
-      <p class="text-justified"><a href="#top">Back to top</a></p>
-      <p class="text-justified"> - <a href="https://www.reddit.com/user/Hi_Dayvie/">reddit</a> - <a href="https://github.com/JackieFae">GitHub</a> - </p>
+      <hr />
+      <div id="contact">
+        <p class="section-label">Contact Info</p>
+        <p class="text-justified"><a href="#top">Back to top</a></p>
+        <p class="text-justified"> - <a href="https://www.reddit.com/user/Hi_Dayvie/">reddit</a> - <a href="https://github.com/JackieFae">GitHub</a> - </p>
+      </div>
     </div>
   </body>
 </html>
