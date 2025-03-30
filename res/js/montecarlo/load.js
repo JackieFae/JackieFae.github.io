@@ -5,6 +5,8 @@
 //
 
 const loaded = {
+  abilityTemps: false,    // Load of ability data used in the last simulation.
+  botTemps: false,        // Load of unit data used in the last simulation.
   basicCount: false,      // Load of full Monte Carlo iteration count complete.
   basicRegression: false, // Load of full Monte Carlo model analysis complete.
   basicResults: false,    // Load of example results from full Monte Carlo complete.
@@ -20,8 +22,9 @@ loadBasicData();
 
 function loadBasicData()
 {
+  loadAbilityData();
+  loadBotData();
   loadBasicCounts();
-  loadBasicRegression();
   loadBasicResults();
 }
 
@@ -33,6 +36,108 @@ function loadSpecificData()
     loadLadder();
     loadReports(0);
   }
+}
+
+function loadAbilityData()
+{
+  Promise.all([
+    d3.csv(pathRoot + 'tmpabi_all.csv'),
+  ]).then(([abilityData]) => {
+    GlobalData.abilities = [];
+    abilityData.forEach(function(d, i) {
+      GlobalData.abilities[i] = {};
+      GlobalData.abilities[i].ID = +d.ID;
+      GlobalData.abilities[i].Name = d.Name;
+      GlobalData.abilities[i].Windup = +d.Windup;
+      GlobalData.abilities[i].Cooldown = +d.Cooldown;
+      GlobalData.abilities[i].Range = +d.Range;
+      GlobalData.abilities[i].Duration = +d.Duration;
+      GlobalData.abilities[i].ChargeCount = +d.ChargeCount;
+      GlobalData.abilities[i].Value0 = +d.Value0;
+      GlobalData.abilities[i].Value1 = +d.Value1;
+      GlobalData.abilities[i].Value2 = +d.Value2;
+      GlobalData.abilities[i].Value3 = +d.Value3;
+    });
+
+    //console.log(GlobalData.abilities);
+    loaded.abilityTemps = true;
+    loadBasicRegression();
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+function loadBotData()
+{
+  Promise.all([
+    d3.csv(pathRoot + 'tmpbot_all.csv'),
+  ]).then(([botData]) => {
+    GlobalData.bots = [];
+    botData.forEach(function(d, i) {
+      GlobalData.bots[i] = {};
+      GlobalData.bots[i].ID = +d.ID;
+      GlobalData.bots[i].Name = d.Name;
+      GlobalData.bots[i].Manu = +d.Manu;
+      GlobalData.bots[i].Tech = +d.Tech;
+      GlobalData.bots[i].Matter = +d.Matter;
+      GlobalData.bots[i].Energy = +d.Energy;
+      GlobalData.bots[i].ResTotal = +d.Matter + 2.5 * +d.Energy;
+      GlobalData.bots[i].Bandwidth = +d.Bandwidth;
+      GlobalData.bots[i].Time = +d.Time;
+      GlobalData.bots[i].Health = +d.Health;
+      GlobalData.bots[i].Walking = +d.Walking;
+      GlobalData.bots[i].Flying = +d.Flying;
+      GlobalData.bots[i].Swarming = +d.Swarming;
+      GlobalData.bots[i].Piercing = +d.Piercing;
+      GlobalData.bots[i].Hulking = +d.Hulking;
+      GlobalData.bots[i].Shattering = +d.Shattering;
+      GlobalData.bots[i].Hunting = +d.Hunting;
+      GlobalData.bots[i].Radius = +d.Radius;
+      GlobalData.bots[i].Speed = +d.Speed;
+      GlobalData.bots[i].Damage = +d.Damage;
+      GlobalData.bots[i].DmgGrounded = +d.DmgGrounded;
+      GlobalData.bots[i].DamageFlying = +d.DamageFlying;
+      GlobalData.bots[i].DamageSwarming = +d.DamageSwarming;
+      GlobalData.bots[i].DamagePiercing = +d.DamagePiercing;
+      GlobalData.bots[i].DamageHulking = +d.DamageHulking;
+      GlobalData.bots[i].DamageShattering = +d.DamageShattering;
+      GlobalData.bots[i].DamageHunting = +d.DamageHunting;
+      GlobalData.bots[i].DamageBonusID0 = +d.DamageBonusID0;
+      GlobalData.bots[i].DamageBonus0 = +d.DamageBonus0;
+      GlobalData.bots[i].DamageBonusID1 = +d.DamageBonusID1;
+      GlobalData.bots[i].DamageBonus1 = +d.DamageBonus1;
+      GlobalData.bots[i].DamageBonusID2 = +d.DamageBonusID2;
+      GlobalData.bots[i].DamageBonus2 = +d.DamageBonus2;
+      GlobalData.bots[i].DamageBonusID3 = +d.DamageBonusID3;
+      GlobalData.bots[i].DamageBonus3 = +d.DamageBonus3;
+      GlobalData.bots[i].Duration = +d.Duration;
+      GlobalData.bots[i].Windup = +d.Windup;
+      GlobalData.bots[i].Recoil = +d.Recoil;
+      GlobalData.bots[i].WeaponSpeed = +d.WeaponSpeed;
+      GlobalData.bots[i].Range = +d.Range;
+      GlobalData.bots[i].Splash = +d.Splash;
+      GlobalData.bots[i].TgtGrounded = +d.TgtGrounded;
+      GlobalData.bots[i].TgtFlying = +d.TgtFlying;
+      GlobalData.bots[i].TgtSwarming = +d.TgtSwarming;
+      GlobalData.bots[i].TgtPiercing = +d.TgtPiercing;
+      GlobalData.bots[i].TgtHulking = +d.TgtHulking;
+      GlobalData.bots[i].TgtShattering = +d.TgtShattering;
+      GlobalData.bots[i].TgtHunting = +d.TgtHunting;
+      GlobalData.bots[i].Overclock = +d.Overclock;
+      GlobalData.bots[i].Blink = +d.Blink;
+      GlobalData.bots[i].Recall = +d.Recall;
+      GlobalData.bots[i].Setup = +d.Setup;
+      GlobalData.bots[i].Detonate = +d.Detonate;
+      GlobalData.bots[i].Unsetup = +d.Unsetup;
+      GlobalData.bots[i].Destruct = +d.Destruct;
+    });
+
+    //console.log(GlobalData.bots);
+    loaded.botTemps = true;
+    loadBasicRegression();
+  }).catch((error) => {
+    console.log(error);
+  });
 }
 
 function loadBasicCounts()
@@ -48,7 +153,7 @@ function loadBasicCounts()
     });
 
     loaded.basicCount = true;
-    loadSpecificData(); // Attempt to load specifics.
+    loadBasicRegression(); // Attempt to load specifics.
   }).catch((error) => {
     console.log(error);
   });
@@ -61,65 +166,116 @@ function loadBasicResults()
   ]).then(([resData]) => {
     GlobalData.resultDataBase = [];
     resData.forEach(function(d, i) {
-      var botidx = 0;
+      var scoreIdx = 0;
+      var botIdx = 0;
       GlobalData.resultDataBase[i] = {};
       GlobalData.resultDataBase[i].idx = +d.Index;
-      GlobalData.resultDataBase[i].res = +d.Result;
+      GlobalData.resultDataBase[i].totalScore = +d.TotalScore;
+      GlobalData.resultDataBase[i].scores = [];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.CrabScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.HunterScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.RecallScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Recall HunterScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ScorpionScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.BeetleScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.BlinkScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Blink HunterScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.GunbotScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.MissilebotScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.WaspScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.HornetScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.KnightScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.CrossbowScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.BallistaScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["King CrabScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.CrusaderScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.BomberScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ShockerScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Recall ShockerScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.MortarScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Swift ShockerScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Heavy HunterScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.DestroyerScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.RaiderScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.TurretScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Heavy BallistaScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.GargantuaScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.SniperScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Advanced BlinkScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.AssaultbotScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.AdvancedbotScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.BehemothScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ButterflyScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.DragonflyScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.FalconScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.AirshipScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Advanced RecallScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.MammothScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.StingerScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Flak TurretScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.BulwarkScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.KatbusScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.LocustScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.KrakenScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.PredatorScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ValkyrieScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Advanced DestroyerScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ArtilleryScore;
       GlobalData.resultDataBase[i].vars = [];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Crab;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Hunter;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Recall;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Recall Hunter"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Scorpion;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Beetle;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Blink;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Blink Hunter"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Gunbot;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Missilebot;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Wasp;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Hornet;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Knight;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Crossbow;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Ballista;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["King Crab"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Crusader;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Bomber;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Shocker;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Recall Shocker"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Mortar;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Swift Shocker"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Heavy Hunter"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Destroyer;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Raider;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Turret;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Heavy Ballista"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Predator;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Sniper;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Advanced Blink"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Assaultbot;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Behemoth;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Gargantua;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Butterfly;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Dragonfly;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Falcon;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Airship;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Advanced Recall"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Mammoth;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Stinger;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Flak Turret"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Bulwark;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Katbus;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Locust;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Kraken;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Valkyrie;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Artillery;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Advancedbot;
-      GlobalData.resultDataBase[i].vars[botidx++] = +d["Advanced Destroyer"];
-      GlobalData.resultDataBase[i].vars[botidx++] = +d.Skill;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Crab;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Hunter;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Recall;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Recall Hunter"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Scorpion;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Beetle;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Blink;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Blink Hunter"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Gunbot;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Missilebot;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Wasp;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Hornet;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Knight;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Crossbow;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Ballista;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["King Crab"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Crusader;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Bomber;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Shocker;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Recall Shocker"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Mortar;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Swift Shocker"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Heavy Hunter"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Destroyer;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Raider;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Turret;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Heavy Ballista"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Gargantua;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Sniper;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Advanced Blink"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Assaultbot;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Advancedbot;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Behemoth;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Butterfly;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Dragonfly;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Falcon;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Airship;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Advanced Recall"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Mammoth;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Stinger;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Flak Turret"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Bulwark;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Katbus;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Locust;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Kraken;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Predator;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Valkyrie;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Advanced Destroyer"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Artillery;
+      //GlobalData.resultDataBase[i].vars[botidx++] = +d.Skill;
     });
 
     loaded.basicResult = true;
-    loadSpecificData(); // Attempt to load specifics.
+    loadBasicRegression(); // Attempt to load specifics.
   }).catch((error) => {
     console.log(error);
   });
@@ -127,33 +283,123 @@ function loadBasicResults()
 
 function loadBasicRegression()
 {
-  Promise.all([
-    d3.csv(pathRoot + 'linreg_all.csv'),
-  ]).then(([regDataBase]) => {
-    GlobalData.regDataBase = [];
-    GlobalData.interceptBase = regDataBase[0].NormalizedMarginalValue;
-    regDataBase.forEach(function(d, i) {
-      if(i != 0)
-      {
-        GlobalData.regDataBase[i-1] = {};
-        GlobalData.regDataBase[i-1].name = d.Name;
-        GlobalData.regDataBase[i-1].value = +d.MarginalValue;
-        GlobalData.regDataBase[i-1].normValue = parseInt(+d.NormalizedMarginalValue * 100);
-        GlobalData.regDataBase[i-1].pctAdv = parseInt(+d.AdvantagedIterations);
-        GlobalData.regDataBase[i-1].winAdv = parseInt(+d.AdvantagedWins);
-        GlobalData.regDataBase[i-1].pctDis = parseInt(+d.DisadvantagedIterations);
-        GlobalData.regDataBase[i-1].winDis = parseInt(+d.DisadvantagedWins);
-        GlobalData.regDataBase[i-1].pctNtrl = parseInt(+d.NeutralIterations);
-        GlobalData.regDataBase[i-1].winNtrl = parseInt(+d.NeutralWins);
-        GlobalData.regDataBase[i-1].pickPct = 100 - parseInt(+d.NeutralIterations);
-      }
-    });
+  if(loaded.abilityTemps && loaded.basicCount && loaded.botTemps && loaded.basicResult)
+  {
+    Promise.all([
+      d3.csv(pathRoot + 'linreg_all.csv'),
+    ]).then(([regDataBase]) => {
+      GlobalData.regDataBase = [];
+      var varCount = 2 * (botCount + 2);
+      regDataBase.forEach(function(d, i) {
+        var botIdx = parseInt(i / varCount);
+        var valueIdx = i % varCount;
+        if(GlobalData.regDataBase[botIdx] == null)
+        {
+          GlobalData.regDataBase[botIdx] = [];
+        }
+        GlobalData.regDataBase[botIdx][valueIdx] = {};
+        GlobalData.regDataBase[botIdx][valueIdx].ID = botIdx;
+        GlobalData.regDataBase[botIdx][valueIdx].name = d.Name;
+        GlobalData.regDataBase[botIdx][valueIdx].Score = +d.Score;
+        GlobalData.regDataBase[botIdx][valueIdx].Stddev = +d.StdDev;
+        GlobalData.regDataBase[botIdx][valueIdx].AvgScore = +d.AvgScore;
+        GlobalData.regDataBase[botIdx][valueIdx].AvgStddev = +d.AvgStdDev;
+        GlobalData.regDataBase[botIdx][valueIdx].Weight = +d.Weight;
+        GlobalData.regDataBase[botIdx][valueIdx].WeightRes = parseInt(+d.Weight / GlobalData.bots[botIdx].ResTotal * 100);
+        GlobalData.regDataBase[botIdx][valueIdx].WeightBW = parseInt(+d.Weight / GlobalData.bots[botIdx].Bandwidth);
+        GlobalData.regDataBase[botIdx][valueIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
+        GlobalData.regDataBase[botIdx][valueIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
+        GlobalData.regDataBase[botIdx][valueIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
+        GlobalData.regDataBase[botIdx][valueIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
+        GlobalData.regDataBase[botIdx][valueIdx].NeutralIterations = parseInt(+d.NeutralIterations);
+        GlobalData.regDataBase[botIdx][valueIdx].NeutralWins = parseInt(+d.NeutralWins);
+        GlobalData.regDataBase[botIdx][valueIdx].PickPct = 100 - parseInt(+d.NeutralIterations);
+        GlobalData.regDataBase[botIdx][valueIdx].ScoreDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].StddevDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].AvgScoreDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].AvgStddevDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].WeightDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].WeightResDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].WeightBWDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].AdvantagedIterationsDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].AdvantagedWinsDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].DisadvantagedIterationsDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].DisadvantagedWinsDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].NeutralIterationsDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].NeutralWinsDiff = 0;
+        GlobalData.regDataBase[botIdx][valueIdx].PickPctDiff = 0;
+      });
 
-    loaded.basicRegression = true;
-    loadSpecificData(); // Attempt to load specifics.
-  }).catch((error) => {
-    console.log(error);
-  });
+      loaded.basicRegression = true;
+      loadSpecificData(); // Attempt to load specifics.
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+}
+
+//
+// Temp stats data
+//
+GlobalData.regStats = [];
+for(var botIdx = 0; botIdx < 49; ++botIdx)
+{
+  GlobalData.regStats[botIdx] = {};
+  //GlobalData.regStats[botIdx].ID = botIdx;
+  //GlobalData.regStats[botIdx].Name = 0;
+  //GlobalData.regStats[botIdx].Manu = 0;
+  //GlobalData.regStats[botIdx].Tech = 0;
+  GlobalData.regStats[botIdx].Matter = 0.0;
+  GlobalData.regStats[botIdx].Energy = 0.0;
+  //GlobalData.regStats[botIdx].ResTotal = 0.0;
+  GlobalData.regStats[botIdx].Bandwidth = 0.0;
+  //GlobalData.regStats[botIdx].Time = 0.0;
+  GlobalData.regStats[botIdx].Health = 0.0;
+  GlobalData.regStats[botIdx].Walking = 0.0;
+  GlobalData.regStats[botIdx].Flying = 0.0;
+  GlobalData.regStats[botIdx].Swarming = 0.0;
+  GlobalData.regStats[botIdx].Piercing = 0.0;
+  GlobalData.regStats[botIdx].Hulking = 0.0;
+  GlobalData.regStats[botIdx].Shattering = 0.0;
+  GlobalData.regStats[botIdx].Hunting = 0.0;
+  GlobalData.regStats[botIdx].Radius = 0.0;
+  GlobalData.regStats[botIdx].Speed = 0.0;
+  GlobalData.regStats[botIdx].Damage = 0.0;
+  GlobalData.regStats[botIdx].DmgGrounded = 0.0;
+  GlobalData.regStats[botIdx].DamageFlying = 0.0;
+  GlobalData.regStats[botIdx].DamageSwarming = 0.0;
+  GlobalData.regStats[botIdx].DamagePiercing = 0.0;
+  GlobalData.regStats[botIdx].DamageHulking = 0.0;
+  GlobalData.regStats[botIdx].DamageShattering = 0.0;
+  GlobalData.regStats[botIdx].DamageHunting = 0.0;
+  GlobalData.regStats[botIdx].DamageBonusID0 = 0.0;
+  GlobalData.regStats[botIdx].DamageBonus0 = 0.0;
+  GlobalData.regStats[botIdx].DamageBonusID1 = 0.0;
+  GlobalData.regStats[botIdx].DamageBonus1 = 0.0;
+  GlobalData.regStats[botIdx].DamageBonusID2 = 0.0;
+  GlobalData.regStats[botIdx].DamageBonus2 = 0.0;
+  GlobalData.regStats[botIdx].DamageBonusID3 = 0.0;
+  GlobalData.regStats[botIdx].DamageBonus3 = 0.0;
+  GlobalData.regStats[botIdx].Duration = 0.0;
+  GlobalData.regStats[botIdx].Windup = 0.0;
+  GlobalData.regStats[botIdx].Recoil = 0.0;
+  GlobalData.regStats[botIdx].WeaponSpeed = 0.0;
+  GlobalData.regStats[botIdx].Range = 0.0;
+  GlobalData.regStats[botIdx].Splash = 0.0;
+  GlobalData.regStats[botIdx].TgtGrounded = 0.0;
+  GlobalData.regStats[botIdx].TgtFlying = 0.0;
+  GlobalData.regStats[botIdx].TgtSwarming = 0.0;
+  GlobalData.regStats[botIdx].TgtPiercing = 0.0;
+  GlobalData.regStats[botIdx].TgtHulking = 0.0;
+  GlobalData.regStats[botIdx].TgtShattering = 0.0;
+  GlobalData.regStats[botIdx].TgtHunting = 0.0;
+  GlobalData.regStats[botIdx].Overclock = 0.0;
+  GlobalData.regStats[botIdx].Blink = 0.0;
+  GlobalData.regStats[botIdx].Recall = 0.0;
+  GlobalData.regStats[botIdx].Setup = 0.0;
+  GlobalData.regStats[botIdx].Detonate = 0.0;
+  GlobalData.regStats[botIdx].Unsetup = 0.0;
+  GlobalData.regStats[botIdx].Destruct = 0.0;
 }
 
 function loadData(i)
@@ -185,7 +431,11 @@ function loadData(i)
     loaded.count = true;
     if(loaded.count && loaded.results && loaded.regression)
     {
+      drawBuilder(); // deck.js
       drawRegression(); // regression.js
+      computeCompareStats();
+      drawStats(); // stats.js
+      drawCorrelation(); // correlation.js
       drawResults(resultSelection); // results.js
     }
   }).catch((error) => {
@@ -193,48 +443,118 @@ function loadData(i)
   });
 
   Promise.all([
-    d3.csv(pathRoot + 'linreg' + path + '.csv'),
+    d3.csv(pathRoot + 'linreg_combo.csv'),
   ]).then(([regData]) => {
     GlobalData.regData = [];
-    GlobalData.intercept = regData[0].NormalizedMarginalValue;
-    GlobalData.varCount = 2;
-    var idx = 0
+    //GlobalData.regStats = [];
+    var numStats = 7; // TODO: Make equal to stat count
+    var varCount = 2 * (botCount + 2) + numStats;
     regData.forEach(function(d, i) {
-      if((i != 0) && ((i-1) % GlobalData.varCount == 0))
+      var botIdx = parseInt(i / varCount);
+      var valueIdx = i % varCount;
+      if((valueIdx < botIdx) || (botIdx + numStats < valueIdx))
       {
-        GlobalData.regData[idx] = {};
-        GlobalData.regData[idx].name = d.Name;
-        GlobalData.regData[idx].MarginalValue = +d.MarginalValue;
-        GlobalData.regData[idx].NormalizedMarginalValue = parseInt(+d.NormalizedMarginalValue * 100);
-        GlobalData.regData[idx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
-        GlobalData.regData[idx].AdvantagedWins = parseInt(+d.AdvantagedWins);
-        GlobalData.regData[idx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
-        GlobalData.regData[idx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
-        GlobalData.regData[idx].NeutralIterations = parseInt(+d.NeutralIterations);
-        GlobalData.regData[idx].NeutralWins = parseInt(+d.NeutralWins);
-        GlobalData.regData[idx].NeutralIterations = 100 - parseInt(+d.NeutralIterations);
-        GlobalData.regData[idx].MarginalValueDiff = +d.MarginalValue - GlobalData.regDataBase[i-1].value;
-        GlobalData.regData[idx].NormalizedMarginalValueDiff = parseInt(+d.NormalizedMarginalValue * 100) - GlobalData.regDataBase[i-1].normValue;
-        GlobalData.regData[idx].AdvantagedIterationsDiff = parseInt(+d.AdvantagedIterations) - GlobalData.regDataBase[i-1].pctAdv;
-        GlobalData.regData[idx].AdvantagedWinsDiff = parseInt(+d.AdvantagedWins) - GlobalData.regDataBase[i-1].winAdv;
-        GlobalData.regData[idx].DisadvantagedIterationsDiff = parseInt(+d.DisadvantagedIterations) - GlobalData.regDataBase[i-1].pctDis;
-        GlobalData.regData[idx].DisadvantagedWinsDiff = parseInt(+d.DisadvantagedWins) - GlobalData.regDataBase[i-1].winDis;
-        GlobalData.regData[idx].NeutralIterationsDiff = parseInt(+d.NeutralIterations) - GlobalData.regDataBase[i-1].pctNtrl;
-        GlobalData.regData[idx].NeutralWinsDiff = parseInt(+d.NeutralWins) - GlobalData.regDataBase[i-1].winNtrl;
-        GlobalData.regData[idx].PickPct = 100 - parseInt(+d.NeutralIterations);
-        GlobalData.regData[idx].PickPctDiff = 100 - parseInt(+d.NeutralIterations) - GlobalData.regDataBase[i-1].pickPct;
-        idx++;
+        if(GlobalData.regData[botIdx] == null)
+        {
+          GlobalData.regData[botIdx] = [];
+        }
+        GlobalData.regData[botIdx][valueIdx] = {};
+        GlobalData.regData[botIdx][valueIdx].ID = botIdx;
+        GlobalData.regData[botIdx][valueIdx].correlationID = valueIdx;
+        GlobalData.regData[botIdx][valueIdx].name = d.Name;
+        GlobalData.regData[botIdx][valueIdx].Score = +d.Score;
+        GlobalData.regData[botIdx][valueIdx].Stddev = +d.StdDev;
+        GlobalData.regData[botIdx][valueIdx].AvgScore = +d.AvgScore;
+        GlobalData.regData[botIdx][valueIdx].AvgStddev = +d.AvgStdDev;
+        GlobalData.regData[botIdx][valueIdx].Weight = +d.Weight;
+        GlobalData.regData[botIdx][valueIdx].WeightRes = parseInt(+d.Weight / GlobalData.bots[botIdx].ResTotal * 100);
+        GlobalData.regData[botIdx][valueIdx].WeightBW = parseInt(+d.Weight / GlobalData.bots[botIdx].Bandwidth);
+        GlobalData.regData[botIdx][valueIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
+        GlobalData.regData[botIdx][valueIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
+        GlobalData.regData[botIdx][valueIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
+        GlobalData.regData[botIdx][valueIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
+        GlobalData.regData[botIdx][valueIdx].NeutralIterations = parseInt(+d.NeutralIterations);
+        GlobalData.regData[botIdx][valueIdx].NeutralWins = parseInt(+d.NeutralWins);
+        GlobalData.regData[botIdx][valueIdx].PickPct = (botIdx == valueIdx) ? GlobalData.regDataBase[botIdx][botIdx].PickPct : 100 - parseInt(+d.DisadvantagedIterations + +d.NeutralIterations);
+        GlobalData.regData[botIdx][valueIdx].ScoreDiff = +d.Score - GlobalData.regDataBase[botIdx][botIdx].Score;
+        GlobalData.regData[botIdx][valueIdx].StddevDiff = +d.StdDev - GlobalData.regDataBase[botIdx][botIdx].Stddev;
+        GlobalData.regData[botIdx][valueIdx].AvgScoreDiff = +d.AvgScore - GlobalData.regDataBase[botIdx][botIdx].AvgScore;
+        GlobalData.regData[botIdx][valueIdx].AvgStddevDiff = +d.AvgStdDev - GlobalData.regDataBase[botIdx][botIdx].AvgStddev;
+        GlobalData.regData[botIdx][valueIdx].WeightDiff = 0;
+        GlobalData.regData[botIdx][valueIdx].WeightResDiff = 0;
+        GlobalData.regData[botIdx][valueIdx].WeightBWDiff = 0;
+        GlobalData.regData[botIdx][valueIdx].AdvantagedIterationsDiff = parseInt(+d.AdvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedIterations;
+        GlobalData.regData[botIdx][valueIdx].AdvantagedWinsDiff = parseInt(+d.AdvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedWins;
+        GlobalData.regData[botIdx][valueIdx].DisadvantagedIterationsDiff = parseInt(+d.DisadvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedIterations;
+        GlobalData.regData[botIdx][valueIdx].DisadvantagedWinsDiff = parseInt(+d.DisadvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedWins;
+        GlobalData.regData[botIdx][valueIdx].NeutralIterationsDiff = parseInt(+d.NeutralIterations) - GlobalData.regDataBase[botIdx][botIdx].NeutralIterations;
+        GlobalData.regData[botIdx][valueIdx].NeutralWinsDiff = parseInt(+d.NeutralWins) - GlobalData.regDataBase[botIdx][botIdx].NeutralWins;
+        GlobalData.regData[botIdx][valueIdx].PickPctDiff = GlobalData.regData[botIdx][valueIdx].PickPct - GlobalData.regDataBase[botIdx][botIdx].PickPct;
+      }
+      else
+      {
+        if(GlobalData.regStats[botIdx] == null)
+        {
+          GlobalData.regStats[botIdx] = {};
+        }
+        GlobalData.regStats[botIdx][d.Name] = +d.Weight;
+
+        if(GlobalData.regData[botIdx] == null)
+        {
+          GlobalData.regData[botIdx] = [];
+        }
+        if(GlobalData.regData[botIdx][botIdx] == null)
+        {
+          GlobalData.regData[botIdx][botIdx] = {};
+          GlobalData.regData[botIdx][botIdx].ID = botIdx;
+          GlobalData.regData[botIdx][botIdx].correlationID = valueIdx;
+          GlobalData.regData[botIdx][botIdx].name = botNameLookup[botIdx];
+          GlobalData.regData[botIdx][botIdx].Score = +d.Score;
+          GlobalData.regData[botIdx][botIdx].Stddev = +d.StdDev;
+          GlobalData.regData[botIdx][botIdx].AvgScore = +d.AvgScore;
+          GlobalData.regData[botIdx][botIdx].AvgStddev = +d.AvgStdDev;
+          GlobalData.regData[botIdx][botIdx].Weight = +d.Weight;
+          GlobalData.regData[botIdx][botIdx].WeightRes = parseInt(+d.Weight / GlobalData.bots[botIdx].ResTotal * 100);
+          GlobalData.regData[botIdx][botIdx].WeightBW = parseInt(+d.Weight / GlobalData.bots[botIdx].Bandwidth);
+          GlobalData.regData[botIdx][botIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
+          GlobalData.regData[botIdx][botIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
+          GlobalData.regData[botIdx][botIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
+          GlobalData.regData[botIdx][botIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
+          GlobalData.regData[botIdx][botIdx].NeutralIterations = parseInt(+d.NeutralIterations);
+          GlobalData.regData[botIdx][botIdx].NeutralWins = parseInt(+d.NeutralWins);
+          GlobalData.regData[botIdx][botIdx].PickPct = (botIdx == valueIdx) ? GlobalData.regDataBase[botIdx][botIdx].PickPct : 100 - parseInt(+d.DisadvantagedIterations + +d.NeutralIterations);
+          GlobalData.regData[botIdx][botIdx].ScoreDiff = +d.Score - GlobalData.regDataBase[botIdx][botIdx].Score;
+          GlobalData.regData[botIdx][botIdx].StddevDiff = +d.StdDev - GlobalData.regDataBase[botIdx][botIdx].Stddev;
+          GlobalData.regData[botIdx][botIdx].AvgScoreDiff = +d.AvgScore - GlobalData.regDataBase[botIdx][botIdx].AvgScore;
+          GlobalData.regData[botIdx][botIdx].AvgStddevDiff = +d.AvgStdDev - GlobalData.regDataBase[botIdx][botIdx].AvgStddev;
+          GlobalData.regData[botIdx][botIdx].WeightDiff = 0;
+          GlobalData.regData[botIdx][botIdx].WeightResDiff = 0;
+          GlobalData.regData[botIdx][botIdx].WeightBWDiff = 0;
+          GlobalData.regData[botIdx][botIdx].AdvantagedIterationsDiff = parseInt(+d.AdvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedIterations;
+          GlobalData.regData[botIdx][botIdx].AdvantagedWinsDiff = parseInt(+d.AdvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedWins;
+          GlobalData.regData[botIdx][botIdx].DisadvantagedIterationsDiff = parseInt(+d.DisadvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedIterations;
+          GlobalData.regData[botIdx][botIdx].DisadvantagedWinsDiff = parseInt(+d.DisadvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedWins;
+          GlobalData.regData[botIdx][botIdx].NeutralIterationsDiff = parseInt(+d.NeutralIterations) - GlobalData.regDataBase[botIdx][botIdx].NeutralIterations;
+          GlobalData.regData[botIdx][botIdx].NeutralWinsDiff = parseInt(+d.NeutralWins) - GlobalData.regDataBase[botIdx][botIdx].NeutralWins;
+          GlobalData.regData[botIdx][botIdx].PickPctDiff = GlobalData.regData[botIdx][valueIdx].PickPct - GlobalData.regDataBase[botIdx][botIdx].PickPct;
+        }
       }
     });
 
+    console.log(GlobalData);
     loaded.regression = true;
     if(loaded.count && loaded.results && loaded.regression)
     {
+      drawBuilder(); // deck.js
       drawRegression(); // regression.js
+      computeCompareStats();
+      drawStats(); // stats.js
+      drawCorrelation(); // correlation.js
       drawResults(resultSelection); // results.js
     }
   }).catch((error) => {
     console.log(error);
+    console.log(GlobalData);
     regressionGraph.selectAll('*').remove();
     regressionTable.selectAll('*').remove();
     regressionGraph.append('g').append('text').attr('class', 'svg_text')
@@ -255,7 +575,11 @@ function loadData(i)
     loaded.results = true;
     if(loaded.count && loaded.results && loaded.regression)
     {
+      drawBuilder(); // deck.js
       drawRegression(); // regression.js
+      computeCompareStats();
+      drawStats(); // stats.js
+      drawCorrelation(); // correlation.js
       drawResults(resultSelection); // results.js
     }
   }).catch((error) => {
@@ -303,7 +627,7 @@ function loadLadder()
         }
       });
 
-      for(var unitIdx = 0; unitIdx < botNameLookup.length; ++unitIdx)
+      for(var unitIdx = 0; unitIdx < botCount; ++unitIdx)
       {
         GlobalData.ladderTotals[unitIdx] = [];
         GlobalData.ladderData.forEach(function(d, i) {
@@ -320,7 +644,10 @@ function loadLadder()
             GlobalData.ladderTotals[unitIdx][i].rate += (d.asf == unitIdx ? 1 : 0);
             GlobalData.ladderTotals[unitIdx][i].rate += (d.fsf == unitIdx ? 1 : 0);
           });
-          GlobalData.ladderTotals[unitIdx][i].rate /= GlobalData.ladderData[i].length;
+          if(GlobalData.ladderData[i].length != 0)
+          {
+            GlobalData.ladderTotals[unitIdx][i].rate /= GlobalData.ladderData[i].length;
+          }
         });
       }
 
@@ -381,6 +708,13 @@ function loadReports(reportIdx)
           GlobalData.reportData[i].net = +d.Net;
           GlobalData.reportData[i].p1Score = +d.P1Score;
           GlobalData.reportData[i].p2Score = +d.P2Score;
+          GlobalData.reportData[i].p1BotScores = [];
+          GlobalData.reportData[i].p2BotScores = [];
+          for(var j = 0; j < botCount; ++j)
+          {
+            GlobalData.reportData[i].p1BotScores[j] = +d["P1"+botNameLookup[j]+"Score"];
+            GlobalData.reportData[i].p2BotScores[j] = +d["P2"+botNameLookup[j]+"Score"];
+          }
         });
 
         loaded.report = true;
