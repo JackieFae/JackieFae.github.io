@@ -1,14 +1,6 @@
 
 const leagueCutoff = [ 0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 999999];
 const ladderHeader = ["Rank", "Ladder Score", "Player ID", "MMR", "Win %", "Expected Rank", "Skill", "Deck",];/*"Core 1", "Core 2", "Foundry", "Adv Foundry", "Flex Foundry", "Starforge", "Adv Starforge", "Flex Starforge", ];*/
-const ladderDummy = [
-  { id: 0, rank: 1000.0, mmr:  500.0, winPct: 50.0, skill:  505.0, core1:  1, core2:  2, fd: 12, afd: 24, ffd: 14, sf: 33, asf: 41, fsf: 35, },
-  { id: 1, rank: 1000.0, mmr:  650.0, winPct: 50.0, skill:  599.0, core1:  4, core2:  3, fd: 14, afd: 27, ffd: 19, sf: 34, asf: 44, fsf: 31, },
-  { id: 2, rank: 1000.0, mmr:  450.0, winPct: 50.0, skill:  433.0, core1:  6, core2:  2, fd: 13, afd: 24, ffd: 25, sf: 31, asf: 43, fsf: 40, },
-  { id: 3, rank: 1000.0, mmr: 1500.0, winPct: 50.0, skill: 1505.0, core1:  3, core2: 11, fd: 17, afd: 25, ffd: 13, sf: 29, asf: 39, fsf: 32, },
-  { id: 4, rank: 1000.0, mmr: 1650.0, winPct: 50.0, skill: 1599.0, core1:  9, core2:  8, fd: 15, afd: 28, ffd: 20, sf: 32, asf: 38, fsf: 34, },
-  { id: 5, rank: 1000.0, mmr: 2450.0, winPct: 50.0, skill: 2433.0, core1:  6, core2:  7, fd: 21, afd: 26, ffd: 27, sf: 30, asf: 42, fsf: 33, },
-];
 
 var leagueSelection = 7;
 var ladderSelect = null;
@@ -259,12 +251,11 @@ function drawLadderGraph()
   svg.append("g")
     .attr("transform", `translate(${minWidth},0)`)
     .call(d3.axisLeft(y).tickFormat((d) => d+'%'));
-
-  for(var unitIdx = 0; unitIdx < botNameLookup.length; ++unitIdx)
+  for(var unitIdx = 0; unitIdx < botCount; ++unitIdx)
   {
     for(var league = 0; league < leagueCutoff.length-2; ++ league)
     {
-      const leagueLine = svg.append('line').attr('class', 'svg_line')
+      svg.append('line').attr('class', 'svg_line')
         .classed('soften', true)
         .attr('alt', unitIdx)
         .attr("x1", minWidth + league / (leagueCutoff.length-2) * (maxWidth - minWidth))
