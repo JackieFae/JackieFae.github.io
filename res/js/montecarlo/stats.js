@@ -6,80 +6,16 @@
 // table below the others.
 
 //
-// Temp stats data
-//
-//GlobalData.regStats = [];
-//for(var botIdx = 0; botIdx < 49; ++botIdx)
-//{
-//  GlobalData.regStats[botIdx] = {};
-//  //GlobalData.regStats[botIdx].ID = botIdx;
-//  //GlobalData.regStats[botIdx].Name = 0;
-//  //GlobalData.regStats[botIdx].Manu = 0;
-//  //GlobalData.regStats[botIdx].Tech = 0;
-//  GlobalData.regStats[botIdx].Matter = 0.5;
-//  GlobalData.regStats[botIdx].Energy = 2.5;
-//  //GlobalData.regStats[botIdx].ResTotal = 0.0;
-//  GlobalData.regStats[botIdx].Bandwidth = 3.0;
-//  //GlobalData.regStats[botIdx].Time = 0.0001;
-//  GlobalData.regStats[botIdx].Health = 0.04;
-//  GlobalData.regStats[botIdx].Walking = 0.1;
-//  GlobalData.regStats[botIdx].Flying = 0.1;
-//  GlobalData.regStats[botIdx].Swarming = 0.1;
-//  GlobalData.regStats[botIdx].Piercing = 0.1;
-//  GlobalData.regStats[botIdx].Hulking = 0.1;
-//  GlobalData.regStats[botIdx].Shattering = 0.1;
-//  GlobalData.regStats[botIdx].Hunting = 0.1;
-//  GlobalData.regStats[botIdx].Radius = 0.5;
-//  GlobalData.regStats[botIdx].Speed = 5.0;
-//  GlobalData.regStats[botIdx].Damage = 0.25;
-//  GlobalData.regStats[botIdx].DmgGrounded = 0.1;
-//  GlobalData.regStats[botIdx].DamageFlying = 0.1;
-//  GlobalData.regStats[botIdx].DamageSwarming = 0.1;
-//  GlobalData.regStats[botIdx].DamagePiercing = 0.1;
-//  GlobalData.regStats[botIdx].DamageHulking = 0.1;
-//  GlobalData.regStats[botIdx].DamageShattering = 0.1;
-//  GlobalData.regStats[botIdx].DamageHunting = 0.1;
-//  GlobalData.regStats[botIdx].DamageBonusID0 = 0.001;
-//  GlobalData.regStats[botIdx].DamageBonus0 = 0.01;
-//  GlobalData.regStats[botIdx].DamageBonusID1 = 0.001;
-//  GlobalData.regStats[botIdx].DamageBonus1 = 0.01;
-//  GlobalData.regStats[botIdx].DamageBonusID2 = 0.001;
-//  GlobalData.regStats[botIdx].DamageBonus2 = 0.01;
-//  GlobalData.regStats[botIdx].DamageBonusID3 = 0.001;
-//  GlobalData.regStats[botIdx].DamageBonus3 = 0.01;
-//  GlobalData.regStats[botIdx].Duration = 0.01;
-//  GlobalData.regStats[botIdx].Windup = 0.2;
-//  GlobalData.regStats[botIdx].Recoil = 0.2;
-//  GlobalData.regStats[botIdx].WeaponSpeed = 0.01;
-//  GlobalData.regStats[botIdx].Range = 7.0;
-//  GlobalData.regStats[botIdx].Splash = 0.1;
-//  GlobalData.regStats[botIdx].TgtGrounded = 0.5;
-//  GlobalData.regStats[botIdx].TgtFlying = 0.1;
-//  GlobalData.regStats[botIdx].TgtSwarming = 0.01;
-//  GlobalData.regStats[botIdx].TgtPiercing = 0.01;
-//  GlobalData.regStats[botIdx].TgtHulking = 0.01;
-//  GlobalData.regStats[botIdx].TgtShattering = 0.01;
-//  GlobalData.regStats[botIdx].TgtHunting = 0.01;
-//  GlobalData.regStats[botIdx].Overclock = 0.1;
-//  GlobalData.regStats[botIdx].Blink = 0.1;
-//  GlobalData.regStats[botIdx].Recall = 0.1;
-//  GlobalData.regStats[botIdx].Setup = 0.1;
-//  GlobalData.regStats[botIdx].Detonate = 0.1;
-//  GlobalData.regStats[botIdx].Unsetup = 0.1;
-//  GlobalData.regStats[botIdx].Destruct = 0.1;
-//}
-
-//
 // Variables
 //
 
 // Global constants
 const cPieRadius = 120;
 const cWireMinRadius = 25;
-const cWireNormLowRadius = 65;
+const cWireNormLowRadius = 50;
 const cWireNormRadius = 75;
-const cWireNormHighRadius = 85;
-const cWireMaxRadius = 100;
+const cWireNormHighRadius = 100;
+const cWireMaxRadius = 125;
 const cWireOverRadius = 125;
 const cWireIconRadius = 110;
 const cStatsGraphCutoff = 0.99;
@@ -90,17 +26,16 @@ const largeArc = d3.arc()
   .innerRadius(0)
   .outerRadius(1.1*cPieRadius);
 const pie = d3.pie()
-  .value(function(d) { return d.wtPct; })
+  .value(function(d) { return d.absWtPct; })
 
 // Color scale
-var colour = ["#a6a6a6", "#ff7b00", "#000000"]; // TODO: Make this reflect user's global colour selection.
+var colour = ["#a6a6a6", "#ff7b00", "#2191ec", "#000000"]; // TODO: Make this reflect user's global colour selection.
 
 // Stats for selected bot.
-var sortStatData = {};
 var cropStatData = {};
 var unsortStatData = {};
 var selectedScore = 0;
-var compareBot = {};
+var compareTotals = {};
 
 // User selection values.
 var statBotSelected = 0; // Crab
@@ -126,48 +61,42 @@ function selectStatBot()
 // TODO: Comparison select dropdown.
 d3.select("#selectCompareSlug").on("change", function() {
   computeCompareStats();
+  drawWireframeChart();
 });
 
 function computeCompareStats()
 {
   statCompareSelect = parseInt(d3.select("#selectCompareSlug").property("value"));
 
-  var dummyConst = 1.0/statCount;
-  var comparedBots = botTechMap[statCompareSelect+1] - botTechMap[statCompareSelect];
+  var startIdx = botTechMap[statCompareSelect]
+  var compareCount = botTechMap[statCompareSelect+1] - botTechMap[statCompareSelect];
   if(statCompareSelect == botTechMap.length - 1)
   {
-    comparedBots = botNameLookup.length;
+    startIdx = 0;
+    compareCount = botNameLookup.length;
   }
+  var countInv = 1.0 / compareCount;
+  var compareBots = [];
+  compareTotals = {};
 
-  var scoreTotal = 0.0;
-  for(var i = botTechMap[statCompareSelect]; i < botTechMap[statCompareSelect+1]; ++i)
+  for(var botIdx = startIdx; botIdx < startIdx + compareCount; ++botIdx)
   {
-    scoreTotal += GlobalData.regData[i][i].Score;
-  }
-  scoreTotal /= comparedBots;
-  var scoreAvg = scoreTotal * dummyConst;
-
-  for(const property in GlobalData.regStats[statBotSelected])
-  {
-    if(compareBot[property] == null)
+    var res = computeStats(botIdx);
+    compareBots[botIdx] = res.base;
+    for(var statIdx = 0; statIdx < compareBots[botIdx].length; ++statIdx)
     {
-      compareBot[property] = {};
-      compareBot[property].value = 0.0;
-      compareBot[property].score = scoreAvg;
-      compareBot[property].weight = 0.0;
-      compareBot[property].wtPct = dummyConst;
-    }
-
-    for(var botIdx = 0; botIdx < comparedBots; ++botIdx)
-    {
-      if(GlobalData.bots[botIdx][property] != 0.0)
+      var statName = compareBots[botIdx][statIdx].name;
+      if(compareTotals[statName] == null)
       {
-        compareBot[property].value += GlobalData.bots[botIdx][property];
+        compareTotals[statName] = {name: statName, ID: statIdx, weight: 0.0, absScore: 0.0, score: 0.0, absWtPct: 0.0, wtPct: 0.0, value: 0.0};
       }
+      compareTotals[statName].value += GlobalData.bots[botIdx][statName] * countInv;
+      compareTotals[statName].weight += compareBots[botIdx][statIdx].weight * countInv;
+      compareTotals[statName].absScore += compareBots[botIdx][statIdx].absScore * countInv;
+      compareTotals[statName].score += compareBots[botIdx][statIdx].score * countInv;
+      compareTotals[statName].absWtPct += compareBots[botIdx][statIdx].absWtPct * countInv;
+      compareTotals[statName].wtPct += compareBots[botIdx][statIdx].wtPct * countInv;
     }
-
-    compareBot[property].value /= comparedBots;
-    compareBot[property].weight = scoreAvg / compareBot[property].value;
   }
 }
 
@@ -221,55 +150,56 @@ const statsTable = statsTableView.append('div')
 //
 function drawStats()
 {
-  computeStats();
+  var res = computeStats(statBotSelected);
+  cropStatData = res.cropped;
+  unsortStatData = res.unsorted;
   drawPieChart();
   drawWireframeChart();
   drawStatHighlight();
   drawStatTable();
 }
 
-function computeStats()
+function computeStats(botIdx)
 {
   var statCount = 0;
-  var unsortedStatData = [];
+  var results = {base: [], sorted: [], cropped: [], unsorted: []};
 
   selectedScore = 1;
-  for(const property in GlobalData.regStats[statBotSelected])
+  for(const property in GlobalData.regStats[botIdx])
   {
-    selectedScore += GlobalData.regStats[statBotSelected][property] * GlobalData.bots[statBotSelected][property];
+    selectedScore += Math.abs(GlobalData.regStats[botIdx][property] * GlobalData.bots[botIdx][property]);
   };
 
-  for(const property in GlobalData.regStats[statBotSelected])
+  for(const property in GlobalData.regStats[botIdx])
   {
-    unsortedStatData[statCount] = {};
-    unsortedStatData[statCount].ID = statCount;
-    unsortedStatData[statCount].weight = GlobalData.regStats[statBotSelected][property];
-    unsortedStatData[statCount].score = GlobalData.regStats[statBotSelected][property] * GlobalData.bots[statBotSelected][property];
-    unsortedStatData[statCount].wtPct = unsortedStatData[statCount].score / selectedScore;
-    unsortedStatData[statCount].name = property;
+    results.base[statCount] = {};
+    results.base[statCount].ID = statCount;
+    results.base[statCount].weight = GlobalData.regStats[botIdx][property];
+    results.base[statCount].absScore = Math.abs(GlobalData.regStats[botIdx][property] * GlobalData.bots[botIdx][property]);
+    results.base[statCount].score = GlobalData.regStats[botIdx][property] * GlobalData.bots[botIdx][property];
+    results.base[statCount].absWtPct = results.base[statCount].absScore / selectedScore;
+    results.base[statCount].wtPct = results.base[statCount].score / selectedScore;
+    results.base[statCount].name = property;
     statCount++;
   };
 
-  sortStatData = unsortedStatData.slice().sort((a,b) => d3.descending(a.wtPct, b.wtPct));
-
+  results.sorted = results.base.slice().sort((a,b) => d3.descending(a.absWtPct, b.absWtPct));
   var pctTotal = 0;
-  var smallCutoff = 0;
-  console.log(pctTotal);
-  for(var i = 0; i < sortStatData.length; ++i)
+  var smallCutoff = results.sorted.length;
+  for(var i = 0; i < results.sorted.length; ++i)
   {
-    pctTotal += sortStatData[i].wtPct;
-    console.log(pctTotal);
-    if(pctTotal > cStatsGraphCutoff)
+    pctTotal += results.sorted[i].absWtPct;
+    if((pctTotal > cStatsGraphCutoff) || (results.sorted[i].absWtPct < 0.01))
     {
       smallCutoff = i+1;
       break;
     }
   }
 
-  cropStatData = sortStatData.slice(0, smallCutoff);
+  results.cropped = results.sorted.slice(0, smallCutoff);
   var cropScore = 0;
   var cropPct = 0;
-  for(var i = 0; i < sortStatData.length; ++i)
+  for(var i = 0; i < results.sorted.length; ++i)
   {
     if(i < smallCutoff)
     {
@@ -277,19 +207,21 @@ function computeStats()
     }
     else
     {
-      cropScore += sortStatData[i].score;
-      cropPct += sortStatData[i].wtPct;
+      cropScore += results.sorted[i].absScore;
+      cropPct += results.sorted[i].absWtPct;
     }
   }
 
-  cropStatData[smallCutoff] = {};
-  cropStatData[smallCutoff].ID = statIndex.Extra;
-  cropStatData[smallCutoff].weight = 0.0;
-  cropStatData[smallCutoff].score = cropScore;
-  cropStatData[smallCutoff].wtPct = cropPct;
-  cropStatData[smallCutoff].name = "Extra";
+  results.cropped[smallCutoff] = {};
+  results.cropped[smallCutoff].ID = statIndex.Extra;
+  results.cropped[smallCutoff].weight = 0.0;
+  results.cropped[smallCutoff].absScore = cropScore;
+  results.cropped[smallCutoff].absWtPct = cropPct;
+  results.cropped[smallCutoff].name = "Extra";
 
-  unsortStatData = cropStatData.slice().sort((a,b) => d3.ascending(a.ID, b.ID));
+  results.unsorted = results.cropped.slice().sort((a,b) => d3.ascending(a.ID, b.ID));
+
+  return results;
 }
 
 //
@@ -307,13 +239,13 @@ function drawPieChart()
       .append('g')
         .attr('class', 'svg_arc');
   pieSlice.append('path')
-    .attr('fill', colour[0])
     .attr("stroke", '#303030')
     .style("stroke-width", "2px")
-    .style("opacity", 1.0)
+    .style("opacity", 0.7)
     .attr('d', smallArc)
-    .on('mouseenter', function(d, i) { setStatHighlight(this, i.data.ID, true); })
-    .on('mouseleave', function() { setStatHighlight(this, -1, false); });
+      .style('fill', function(d, i) {return (d.data.weight >= 0.0) ? colour[1] : colour[2];})
+      .on('mouseenter', function(d, i) { setStatHighlight(this, i.data.ID, true); })
+      .on('mouseleave', function() { setStatHighlight(this, -1, false); });
   pieSlice.append('g')
     .append('image').attr('class', 'svg_image')
       .attr('width', 35)
@@ -362,35 +294,62 @@ function drawWireframeChart()
   }
 
   var botVertices = [];
+  var compareVertices = [];
+  var factor = 1.5;
   for(var i = 0; i < vertexCount+1; ++i)
   {
     if(i < unsortStatData.length-1)
     {
-      var diff = unsortStatData[i].wtPct - compareBot[unsortStatData[i].name].wtPct;
-      var factor = 0.1;
-      if(diff < 0.0)
+      var botScoreScale = cWireNormRadius;
+      var compareScoreScale = cWireNormRadius;
+      if(unsortStatData[i].wtPct >= 0.0)
       {
-        factor = 0.6;
+        botScoreScale += factor * unsortStatData[i].wtPct * (cWireMaxRadius - cWireNormRadius);
       }
-      var ratio = 0.5 + 0.5 * Math.tanh(factor * diff / compareBot[unsortStatData[i].name].wtPct)
-      var botScoreScale = cWireMinRadius + ratio * (cWireOverRadius - cWireMinRadius);
-      botVertices[i] = {x: botScoreScale * Math.sin(2*Math.PI * i / vertexCount), y: -botScoreScale * Math.cos(2*Math.PI * i / vertexCount)};
+      else
+      {
+        botScoreScale += factor * unsortStatData[i].wtPct * (cWireNormRadius - cWireMinRadius);
+      }
+
+      if(compareTotals[unsortStatData[i].name].wtPct >= 0.0)
+      {
+        compareScoreScale += factor * compareTotals[unsortStatData[i].name].wtPct * (cWireMaxRadius - cWireNormRadius);
+      }
+      else
+      {
+        compareScoreScale += factor * compareTotals[unsortStatData[i].name].wtPct * (cWireNormRadius - cWireMinRadius);
+      }
+      botVertices[i]     = {x: botScoreScale     * Math.sin(2*Math.PI * i / vertexCount), y: -botScoreScale     * Math.cos(2*Math.PI * i / vertexCount)};
+      compareVertices[i] = {x: compareScoreScale * Math.sin(2*Math.PI * i / vertexCount), y: -compareScoreScale * Math.cos(2*Math.PI * i / vertexCount)};
     }
     else if(i == unsortStatData.length-1)
     {
-      var diff = unsortStatData[0].wtPct - compareBot[unsortStatData[0].name].wtPct;
-      var factor = 0.1;
-      if(diff < 0.0)
+      var botScoreScale = cWireNormRadius;
+      var compareScoreScale = cWireNormRadius;
+      if(unsortStatData[0].wtPct >= 0.0)
       {
-        factor = 0.5;
+        botScoreScale += factor * unsortStatData[0].wtPct * (cWireMaxRadius - cWireNormRadius);
       }
-      var ratio = 0.5 + 0.5 * Math.tanh(factor * diff / compareBot[unsortStatData[0].name].wtPct)
-      var botScoreScale = cWireMinRadius + ratio * (cWireOverRadius - cWireMinRadius);
-      botVertices[i] = {x: 0.0, y: -botScoreScale};
+      else
+      {
+        botScoreScale += factor * unsortStatData[0].wtPct * (cWireNormRadius - cWireMinRadius);
+      }
+
+      if(compareTotals[unsortStatData[0].name].wtPct >= 0.0)
+      {
+        compareScoreScale += factor * compareTotals[unsortStatData[0].name].wtPct * (cWireMaxRadius - cWireNormRadius);
+      }
+      else
+      {
+        compareScoreScale += factor * compareTotals[unsortStatData[0].name].wtPct * (cWireNormRadius - cWireMinRadius);
+      }
+      botVertices[unsortStatData.length-1]     = {x: 0.0, y: -botScoreScale};
+      compareVertices[unsortStatData.length-1] = {x: 0.0, y: -compareScoreScale};
     }
     else
     {
       botVertices[i] = {x: 0.0, y: 0.0 };
+      compareVertices[i] = {x: 0.0, y: 0.0};
     }
   }
 
@@ -410,7 +369,7 @@ function drawWireframeChart()
   wireframe.append("path")
     .attr("class", "svg_line")
     .attr("fill", "none")
-    .style("stroke-width", "1.0")
+    .style("stroke-width", "3.0")
     .attr("d", drawLine(normVertices));
     
   wireframe.append("path")
@@ -429,23 +388,41 @@ function drawWireframeChart()
   wireframe.append("path")
     .attr("class", "svg_line")
     .classed('selected', true)
-    .attr("fill", '#ff7b00')
+    .attr("fill", colour[1])
     .style("stroke-width", "3.0")
-    .style('opacity', 0.2)
+    .style('opacity', 0.3)
     .attr("d", drawLine(botVertices));
+
   wireframe.append("path")
     .attr("class", "svg_line")
     .classed('selected', true)
     .attr("fill", "none")
-    .style("stroke-width", "3.0")
+    .style("stroke-width", "2.0")
     .attr("d", drawLine(botVertices));
+
+  wireframe.append("path")
+    .attr("class", "svg_line")
+    .classed('highlighted', true)
+    .attr("fill", 'none')
+    .style("stroke-width", "1.0")
+    .style('opacity', 0.2)
+    .attr("d", drawLine(compareVertices));
+
+  wireframe.append("path")
+    .attr("class", "svg_line")
+    .classed('highlighted', true)
+    .attr("fill", 'none')
+    .style("stroke-width", "2.0")
+    .attr("d", drawLine(compareVertices));
 }
 
 function setStatHighlight(obj, statIdx, enlarge)
 {
   if(statPieHighlight != statIdx)
   {
-    d3.select(obj).attr('d', enlarge ? largeArc : smallArc).attr('fill', enlarge ? ((statIdx == statIndex.Extra) ? colour[2] : colour[1]) : colour[0] ); 
+    d3.select(obj).attr('d', enlarge ? largeArc : smallArc)
+        .attr('fill', function(d, i) {return enlarge ? ((statIdx == statIndex.Extra) ? colour[3] : (d.data.weight < 0.0 ? colour[2] : colour[1])) : colour[0];})
+        .style('opacity', (enlarge ? 1.0 : 0.7)); 
     statPieHighlight = statIdx;
     drawStatHighlight();
   }
@@ -506,7 +483,7 @@ function drawStatHighlight()
           .text(parseInt(100.0*value)/100.0);
       newCell = row.append('td').attr('class', 'table_cell').style('width', '40%')
         .attr('alt', "Compare Value")
-        .text(parseInt(100.0*compareBot[statNameLookup[statPieHighlight]].value)/100.0);
+        .text(parseInt(100.0*compareTotals[statNameLookup[statPieHighlight]].value)/100.0);
 
       row = statsHighlightTable.append('tbody').append('tr')
       newCell = row.append('td').attr('class', 'table_cell').style('width', '20%')
@@ -519,7 +496,7 @@ function drawStatHighlight()
           .text(parseInt(100.0*weight)/100.0);
       newCell = row.append('td').attr('class', 'table_cell').style('width', '40%')
         .attr('alt', "Compare Value")
-        .text(parseInt(100.0*compareBot[statNameLookup[statPieHighlight]].weight)/100.0);
+        .text(parseInt(100.0*compareTotals[statNameLookup[statPieHighlight]].weight)/100.0);
 
       row = statsHighlightTable.append('tbody').append('tr')
       newCell = row.append('td').attr('class', 'table_cell').style('width', '20%')
@@ -532,7 +509,7 @@ function drawStatHighlight()
           .text(parseInt(100.0*score)/100.0);
       newCell = row.append('td').attr('class', 'table_cell').style('width', '40%')
         .attr('alt', "Compare Value")
-        .text(parseInt(100.0*compareBot[statNameLookup[statPieHighlight]].score)/100.0);
+        .text(parseInt(100.0*compareTotals[statNameLookup[statPieHighlight]].score)/100.0);
 
       row = statsHighlightTable.append('tbody').append('tr')
       newCell = row.append('td').attr('class', 'table_cell').style('width', '20%')
@@ -542,10 +519,10 @@ function drawStatHighlight()
       newCell = row.append('td').attr('class', 'table_cell').style('width', '40%')
         .append('text')
           .attr('alt', "Percent")
-          .text(parseInt(100.0*percent)/100.0);
+          .text(parseInt(100.0*percent) + "%");
       newCell = row.append('td').attr('class', 'table_cell').style('width', '40%')
         .attr('alt', "Compare Percent")
-        .text(parseInt(100.0*compareBot[statNameLookup[statPieHighlight]].wtPct)/100.0);
+        .text(parseInt(100.0*compareTotals[statNameLookup[statPieHighlight]].wtPct) + "%");
     }
   }
 }

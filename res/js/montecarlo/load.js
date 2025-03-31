@@ -513,9 +513,9 @@ function loadData(i)
           GlobalData.regData[botIdx][botIdx].Stddev = +d.StdDev;
           GlobalData.regData[botIdx][botIdx].AvgScore = +d.AvgScore;
           GlobalData.regData[botIdx][botIdx].AvgStddev = +d.AvgStdDev;
-          GlobalData.regData[botIdx][botIdx].Weight = +d.Weight;
-          GlobalData.regData[botIdx][botIdx].WeightRes = parseInt(+d.Weight / GlobalData.bots[botIdx].ResTotal * 100);
-          GlobalData.regData[botIdx][botIdx].WeightBW = parseInt(+d.Weight / GlobalData.bots[botIdx].Bandwidth);
+          GlobalData.regData[botIdx][botIdx].Weight = 0.0;
+          GlobalData.regData[botIdx][botIdx].WeightRes = 0.0;
+          GlobalData.regData[botIdx][botIdx].WeightBW = 0.0;
           GlobalData.regData[botIdx][botIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
           GlobalData.regData[botIdx][botIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
           GlobalData.regData[botIdx][botIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
@@ -538,10 +538,13 @@ function loadData(i)
           GlobalData.regData[botIdx][botIdx].NeutralWinsDiff = parseInt(+d.NeutralWins) - GlobalData.regDataBase[botIdx][botIdx].NeutralWins;
           GlobalData.regData[botIdx][botIdx].PickPctDiff = GlobalData.regData[botIdx][valueIdx].PickPct - GlobalData.regDataBase[botIdx][botIdx].PickPct;
         }
+        // TODO: Add the others.
+        GlobalData.regData[botIdx][botIdx].Weight += +d.Weight * GlobalData.bots[botIdx][d.Name];
+        GlobalData.regData[botIdx][botIdx].WeightRes += +d.Weight * GlobalData.bots[botIdx][d.Name] / GlobalData.bots[botIdx].ResTotal;
+        GlobalData.regData[botIdx][botIdx].WeightBW += +d.Weight * GlobalData.bots[botIdx][d.Name] / GlobalData.bots[botIdx].Bandwidth;
       }
     });
 
-    console.log(GlobalData);
     loaded.regression = true;
     if(loaded.count && loaded.results && loaded.regression)
     {
@@ -554,7 +557,6 @@ function loadData(i)
     }
   }).catch((error) => {
     console.log(error);
-    console.log(GlobalData);
     regressionGraph.selectAll('*').remove();
     regressionTable.selectAll('*').remove();
     regressionGraph.append('g').append('text').attr('class', 'svg_text')
