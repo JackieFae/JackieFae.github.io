@@ -348,8 +348,8 @@ function drawReportScores()
     }
   }
   var scoreStep = Math.min(reportTimeStep+1, GlobalData.reportSummary[0].duration);
-  var p1Score = GlobalData.reportData[scoreStep].p1Score - p1Res;
-  var p2Score = GlobalData.reportData[scoreStep].p2Score - p2Res;
+  var p1Score = Math.max(0.0, GlobalData.reportData[scoreStep].p1Score - p1Res); // TODO: Note that this cannot represent sim-specific values for res cost.
+  var p2Score = Math.max(0.0, GlobalData.reportData[scoreStep].p2Score - p2Res);
   var scoreTotal = p1Res + p1Score + p2Res + p2Score;
   var svg = reportScore.append('svg').style('width', '866px').style('height', '41px')
     .append('g')
@@ -585,10 +585,10 @@ function drawReportDeck(deck, unitList, unitAlive, unitTotal, teamIdx)
       var scoreStep = Math.min(reportTimeStep+1, GlobalData.reportSummary[0].duration);
       var botCost = GlobalData.bots[d].ResTotal;
       var botResValue = unitAlive[i] * botCost;
-      var botScore = GlobalData.reportData[scoreStep].p1BotScores[d] - botResValue;
+      var botScore = Math.max(0.0, GlobalData.reportData[scoreStep].p1BotScores[d] - botResValue);
       if(teamIdx == 1)
       {
-        botScore = GlobalData.reportData[scoreStep].p2BotScores[d] - botResValue;
+        botScore = Math.max(0.0, GlobalData.reportData[scoreStep].p2BotScores[d] - botResValue);
       }
       var botMaxScore = Math.max(unitTotal[i] * botCost, botScore);
       var resScoreRatio = botResValue / (unitTotal[i] * botCost + botMaxScore);
