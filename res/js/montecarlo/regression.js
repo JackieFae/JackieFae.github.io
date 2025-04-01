@@ -452,13 +452,13 @@ function writeTableText(tableCell, value, valueDiff, id, precision)
   else if(valueDiff < 0)
   {
     tableCell.append('text').attr('alt', id).text(value + ' (');
-    tableCell.append('text').attr('class', 'tertiary').attr('alt', id).text('- ' + parseInt(Math.abs(valueDiff)*Math.pow(10, precision))/Math.pow(10, precision));
+    tableCell.append('text').attr('class', 'tertiary').attr('alt', id).text('- ' + Math.round(Math.abs(valueDiff)*Math.pow(10, precision))/Math.pow(10, precision));
     tableCell.append('text').attr('alt', id).text(')');
   }
   else
   {
     tableCell.append('text').attr('alt', id).text(value + ' (');
-    tableCell.append('text').attr('class', 'secondary').attr('alt', id).text('+ ' + parseInt(valueDiff*Math.pow(10, precision))/Math.pow(10, precision));
+    tableCell.append('text').attr('class', 'secondary').attr('alt', id).text('+ ' + Math.round(valueDiff*Math.pow(10, precision))/Math.pow(10, precision));
     tableCell.append('text').attr('alt', id).text(')');
   }
 }
@@ -472,13 +472,13 @@ function writeTablePercent(tableCell, value, valueDiff, id, precision)
   else if(valueDiff < 0)
   {
     tableCell.append('text').attr('alt', id).text(value + '% (');
-    tableCell.append('text').attr('class', 'tertiary').attr('alt', id).text('- ' + parseInt(Math.abs(valueDiff)*Math.pow(10, precision))/Math.pow(10, precision) + '%');
+    tableCell.append('text').attr('class', 'tertiary').attr('alt', id).text('- ' + Math.round(Math.abs(valueDiff)*Math.pow(10, precision))/Math.pow(10, precision) + '%');
     tableCell.append('text').attr('alt', id).text(')');
   }
   else
   {
     tableCell.append('text').attr('alt', id).text(value + '% (');
-    tableCell.append('text').attr('class', 'secondary').attr('alt', id).text('+ ' + parseInt(valueDiff*Math.pow(10, precision))/Math.pow(10, precision) + '%');
+    tableCell.append('text').attr('class', 'secondary').attr('alt', id).text('+ ' + Math.round(valueDiff*Math.pow(10, precision))/Math.pow(10, precision) + '%');
     tableCell.append('text').attr('alt', id).text(')');
   }
 }

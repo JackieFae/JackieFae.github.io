@@ -402,13 +402,13 @@ const statImageLookup = [
   'res/images/stats/' + statNameLookup[11].toLowerCase().replace(/\s+/g,'') + '.png', // Radius
   'res/images/stats/' + statNameLookup[12].toLowerCase().replace(/\s+/g,'') + '.png', // Speed
   'res/images/stats/' + statNameLookup[13].toLowerCase().replace(/\s+/g,'') + '.png', // Damage
-  'res/images/stats/' + statNameLookup[14].toLowerCase().replace(/\s+/g,'') + '.png', // Damage vs. Ground
-  'res/images/stats/' + statNameLookup[15].toLowerCase().replace(/\s+/g,'') + '.png', // Damage vs Flying
-  'res/images/stats/' + statNameLookup[16].toLowerCase().replace(/\s+/g,'') + '.png', // Damage vs. Swarming
-  'res/images/stats/' + statNameLookup[17].toLowerCase().replace(/\s+/g,'') + '.png', // Damage vs. Piercing
-  'res/images/stats/' + statNameLookup[18].toLowerCase().replace(/\s+/g,'') + '.png', // Damage vs. Hulking
-  'res/images/stats/' + statNameLookup[19].toLowerCase().replace(/\s+/g,'') + '.png', // Damage vs. Shattering
-  'res/images/stats/' + statNameLookup[20].toLowerCase().replace(/\s+/g,'') + '.png', // Damage vs. Hunting
+  'res/images/stats/dmgvs' + traitNameLookup[ 0].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Ground
+  'res/images/stats/dmgvs' + traitNameLookup[ 1].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs Flying
+  'res/images/stats/dmgvs' + traitNameLookup[ 2].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Swarming
+  'res/images/stats/dmgvs' + traitNameLookup[ 3].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Piercing
+  'res/images/stats/dmgvs' + traitNameLookup[ 4].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Hulking
+  'res/images/stats/dmgvs' + traitNameLookup[ 5].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Shattering
+  'res/images/stats/dmgvs' + traitNameLookup[ 6].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Hunting
   'res/images/stats/' + statNameLookup[21].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 0
   'res/images/stats/' + statNameLookup[22].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 0
   'res/images/stats/' + statNameLookup[23].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 1
@@ -421,14 +421,15 @@ const statImageLookup = [
   'res/images/stats/' + statNameLookup[30].toLowerCase().replace(/\s+/g,'') + '.png', // Windup
   'res/images/stats/' + statNameLookup[31].toLowerCase().replace(/\s+/g,'') + '.png', // Recoil
   'res/images/stats/' + statNameLookup[32].toLowerCase().replace(/\s+/g,'') + '.png', // Weapon Speed
-  'res/images/stats/' + statNameLookup[33].toLowerCase().replace(/\s+/g,'') + '.png', // Splash
-  'res/images/stats/' + statNameLookup[34].toLowerCase().replace(/\s+/g,'') + '.png', // TgtGround
-  'res/images/stats/' + statNameLookup[35].toLowerCase().replace(/\s+/g,'') + '.png', // TgtFlying
-  'res/images/stats/' + statNameLookup[36].toLowerCase().replace(/\s+/g,'') + '.png', // TgtSwarming
-  'res/images/stats/' + statNameLookup[37].toLowerCase().replace(/\s+/g,'') + '.png', // TgtPiercing
-  'res/images/stats/' + statNameLookup[38].toLowerCase().replace(/\s+/g,'') + '.png', // TgtHulking
-  'res/images/stats/' + statNameLookup[39].toLowerCase().replace(/\s+/g,'') + '.png', // TgtShattering
-  'res/images/stats/' + statNameLookup[41].toLowerCase().replace(/\s+/g,'') + '.png', // TgtHunting
+  'res/images/stats/' + statNameLookup[33].toLowerCase().replace(/\s+/g,'') + '.png', // Range
+  'res/images/stats/' + statNameLookup[34].toLowerCase().replace(/\s+/g,'') + '.png', // Splash
+  'res/images/stats/tgt' + traitNameLookup[ 0].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtGround
+  'res/images/stats/tgt' + traitNameLookup[ 1].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtFlying
+  'res/images/stats/tgt' + traitNameLookup[ 2].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtSwarming
+  'res/images/stats/tgt' + traitNameLookup[ 3].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtPiercing
+  'res/images/stats/tgt' + traitNameLookup[ 4].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtHulking
+  'res/images/stats/tgt' + traitNameLookup[ 5].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtShattering
+  'res/images/stats/tgt' + traitNameLookup[ 6].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtHunting
   'res/images/abilities/' + statNameLookup[42].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + statNameLookup[43].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + statNameLookup[44].toLowerCase().replace(/\s+/g,'') + '.png',

@@ -116,8 +116,8 @@ function drawCorrelationGraph(graph, table, data)
     var friendRows = Math.ceil(binnedData[i].friend.length / friendScale);
     var friendImageScale = 40 * 4.0 / friendScale;
     binnedData[i].friend.forEach((d, j) => {
-      var y = parseInt(j % friendRows)+1;
-      var x = parseInt(j / friendRows);
+      var y = Math.floor(j % friendRows)+1;
+      var x = Math.floor(j / friendRows);
       var ref = botImageLookup[d.correlationID];
       var name = botNameLookup[d.correlationID];
       svg.append('image').attr('class', 'svg_image')
@@ -137,8 +137,8 @@ function drawCorrelationGraph(graph, table, data)
     var foeRows = Math.ceil(binnedData[i].foe.length / foeScale);
     var foeImageScale = 40 * 4.0 / foeScale;
     binnedData[i].foe.forEach((d, j) => {
-      var y = parseInt(j % foeRows);
-      var x = parseInt(j / foeRows);
+      var y = Math.floor(j % foeRows);
+      var x = Math.floor(j / foeRows);
       var ref = botImageLookup[d.correlationID - 50];
       var name = botNameLookup[d.correlationID - 50];
       svg.append('image').attr('class', 'svg_image')

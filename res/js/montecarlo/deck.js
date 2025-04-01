@@ -265,7 +265,7 @@ function drawDeck(deckSelectionSvg, player)
     else
     {
       x = (slotIdx-2) % 3 + 1;
-      y = parseInt((slotIdx-2) / 3);
+      y = Math.floor((slotIdx-2) / 3);
     }
 
     drawCard(deckSvg, x, y, slotIdx, deckSelections[cardIdx], player);
@@ -282,7 +282,7 @@ function drawDeck(deckSelectionSvg, player)
       var suffix = showDeckResources ? '%' : '';
       var netPower  = computeCardPower(cardIdx, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]);
       wtText.classed('bright', true)
-        .text(parseInt(netPower) + suffix);
+        .text(Math.floor(netPower) + suffix);
     }
 
     drawStartSelectRect(deckSvg, player, slotIdx, deckSelections[cardIdx], x, y);
@@ -305,7 +305,7 @@ function drawSelect(deckSelectionSvg, player, slotIdx)
 {
   // Size of selection grid.
   var cols = 4;
-  var rows = Math.ceil(parseInt(botTechMap[deckSelectedMaxTech] - botTechMap[deckSelectedMinTech] + 1) / cols);
+  var rows = Math.ceil(Math.floor(botTechMap[deckSelectedMaxTech] - botTechMap[deckSelectedMinTech] + 1) / cols);
 
   // Clear and remake the deck grid.
   clearSvg(deckSelectionSvg);
@@ -329,7 +329,7 @@ function drawSelect(deckSelectionSvg, player, slotIdx)
   {
     // Compute bot position in selection grid.
     var x = (botIdx + 1 - botTechMap[deckSelectedMinTech]) % cols;
-    var y = parseInt((botIdx + 1 - botTechMap[deckSelectedMinTech]) / cols);
+    var y = Math.floor((botIdx + 1 - botTechMap[deckSelectedMinTech]) / cols);
 
     // Draw bot card slot and image.
     var repeat = false;
@@ -401,7 +401,7 @@ function drawCard(deckSvg, x, y, slotIdx, botIdx, playerTeam, coloured = true, r
     else
     {
       subX = (refIdx-2) % 3 + 1;
-      subY = parseInt((refIdx-2) / 3);
+      subY = Math.floor((refIdx-2) / 3);
     }
 
     drawCardReference(deckSvg, x, y, subX, subY, slotIdx, botIdx, refIdx, playerTeam);
@@ -580,14 +580,14 @@ function drawCardHighlight(detailSvg, cardIdx)
         .style("text-anchor", "middle")
         .attr('x', cardWidth * 3.0 / 4.0 + 20.0)
         .attr('y', (cardHeight - largeIconSize * 0.9) / 2.0 + 100.0)
-        .text(parseInt(netPower) + suffix);
+        .text(Math.floor(netPower) + suffix);
       var wtTextSum  = cardSvg.append('text').attr('class', 'svg_text')
         .classed('bright', true)
         .style('font-size', '30px')
         .style("text-anchor", "middle")
         .attr('x', cardWidth * 3.0 / 4.0 + 20.0)
         .attr('y', (cardHeight - largeIconSize * 0.9) / 2.0 + 140.0)
-        .text('(' + parseInt(basePower) + sign + parseInt(diffPower) + suffix + ')');
+        .text('(' + Math.floor(basePower) + sign + Math.floor(diffPower) + suffix + ')');
     }
 
     for(var refIdx = 0 ; refIdx < (2 * cDeckSize); ++refIdx)
@@ -605,7 +605,7 @@ function drawCardHighlight(detailSvg, cardIdx)
       else
       {
         subX = (posIdx-2) % 3 + 1;
-        subY = parseInt((posIdx-2) / 3);
+        subY = Math.floor((posIdx-2) / 3);
       }
       cardSvg.append("path").attr("class", "svg_line")
         .classed("selected", refTeam == cDeckPlayer)
@@ -653,14 +653,14 @@ function drawCardHighlight(detailSvg, cardIdx)
             wtText.append("tspan").attr('class', 'svg_text')
               .classed('selected', playerTeam == cDeckOpponent)
               .classed('highlighted', playerTeam == cDeckPlayer)
-              .text('+' + parseInt(wt) + '' + suffix);
+              .text('+' + Math.floor(wt) + '' + suffix);
           }
           else if(wtRatio < -0.05)
           {
             wtText.classed('bright', true).append("tspan").attr('class', 'svg_text')
               .classed('selected', playerTeam == cDeckPlayer)
               .classed('highlighted', playerTeam == cDeckOpponent)
-              .text(parseInt(wt) + suffix);
+              .text(Math.floor(wt) + suffix);
           }
           else
           {
