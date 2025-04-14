@@ -92,16 +92,23 @@ function loadBotData()
       GlobalData.bots[i].Hulking = +d.Hulking;
       GlobalData.bots[i].Shattering = +d.Shattering;
       GlobalData.bots[i].Hunting = +d.Hunting;
+      GlobalData.bots[i].Passive = +d.Passive;
       GlobalData.bots[i].Radius = +d.Radius;
       GlobalData.bots[i].Speed = +d.Speed;
       GlobalData.bots[i].Damage = +d.Damage;
-      GlobalData.bots[i].DmgGrounded = +d.DmgGrounded;
+      GlobalData.bots[i].DamageWalking = +d.DamageWalking;
       GlobalData.bots[i].DamageFlying = +d.DamageFlying;
       GlobalData.bots[i].DamageSwarming = +d.DamageSwarming;
       GlobalData.bots[i].DamagePiercing = +d.DamagePiercing;
       GlobalData.bots[i].DamageHulking = +d.DamageHulking;
       GlobalData.bots[i].DamageShattering = +d.DamageShattering;
       GlobalData.bots[i].DamageHunting = +d.DamageHunting;
+      GlobalData.bots[i].DamagePassive = +d.DamagePassive;
+      GlobalData.bots[i].DamageTier1 = +d.DamageTier1;
+      GlobalData.bots[i].DamageTier2 = +d.DamageTier2;
+      GlobalData.bots[i].DamageTier3 = +d.DamageTier3;
+      GlobalData.bots[i].DamageFoundry = +d.DamageFoundry;
+      GlobalData.bots[i].DamageStarforge = +d.DamageStarforge;
       GlobalData.bots[i].DamageBonusID0 = +d.DamageBonusID0;
       GlobalData.bots[i].DamageBonus0 = +d.DamageBonus0;
       GlobalData.bots[i].DamageBonusID1 = +d.DamageBonusID1;
@@ -116,13 +123,19 @@ function loadBotData()
       GlobalData.bots[i].WeaponSpeed = +d.WeaponSpeed;
       GlobalData.bots[i].Range = +d.Range;
       GlobalData.bots[i].Splash = +d.Splash;
-      GlobalData.bots[i].TgtGrounded = +d.TgtGrounded;
+      GlobalData.bots[i].TgtWalking = +d.TgtWalking;
       GlobalData.bots[i].TgtFlying = +d.TgtFlying;
       GlobalData.bots[i].TgtSwarming = +d.TgtSwarming;
       GlobalData.bots[i].TgtPiercing = +d.TgtPiercing;
       GlobalData.bots[i].TgtHulking = +d.TgtHulking;
       GlobalData.bots[i].TgtShattering = +d.TgtShattering;
       GlobalData.bots[i].TgtHunting = +d.TgtHunting;
+      GlobalData.bots[i].TgtPassive = +d.TgtPassive;
+      GlobalData.bots[i].TgtTier1 = +d.TgtTier1;
+      GlobalData.bots[i].TgtTier2 = +d.TgtTier2;
+      GlobalData.bots[i].TgtTier3 = +d.TgtTier3;
+      GlobalData.bots[i].TgtFoundry = +d.TgtFoundry;
+      GlobalData.bots[i].TgtStarforge = +d.TgtStarforge;
       GlobalData.bots[i].Overclock = +d.Overclock;
       GlobalData.bots[i].Blink = +d.Blink;
       GlobalData.bots[i].Recall = +d.Recall;
@@ -130,6 +143,7 @@ function loadBotData()
       GlobalData.bots[i].Detonate = +d.Detonate;
       GlobalData.bots[i].Unsetup = +d.Unsetup;
       GlobalData.bots[i].Destruct = +d.Destruct;
+      GlobalData.bots[i]["Guardian Shield"] = +d["Guardian Shield"];
     });
 
     //console.log(GlobalData.bots);
@@ -174,6 +188,7 @@ function loadBasicResults()
       GlobalData.resultDataBase[i].scores = [];
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.CrabScore;
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.HunterScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Guardian ShieldScore"];
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.RecallScore;
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Recall HunterScore"];
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ScorpionScore;
@@ -205,6 +220,8 @@ function loadBasicResults()
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.AssaultbotScore;
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.AdvancedbotScore;
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.BehemothScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Advanced MortarScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.BlasterScore;
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ButterflyScore;
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.DragonflyScore;
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.FalconScore;
@@ -219,11 +236,13 @@ function loadBasicResults()
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.KrakenScore;
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.PredatorScore;
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ValkyrieScore;
-      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Advanced DestroyerScore"];
       GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ArtilleryScore;
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d["Advanced DestroyerScore"];
+      GlobalData.resultDataBase[i].scores[scoreIdx++] = +d.ShadeScore;
       GlobalData.resultDataBase[i].vars = [];
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Crab;
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Hunter;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Guardian Shield"];
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Recall;
       GlobalData.resultDataBase[i].vars[botIdx++] = +d["Recall Hunter"];
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Scorpion;
@@ -255,6 +274,8 @@ function loadBasicResults()
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Assaultbot;
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Advancedbot;
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Behemoth;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Advanced Mortar"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Blaster;
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Butterfly;
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Dragonfly;
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Falcon;
@@ -269,8 +290,9 @@ function loadBasicResults()
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Kraken;
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Predator;
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Valkyrie;
-      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Advanced Destroyer"];
       GlobalData.resultDataBase[i].vars[botIdx++] = +d.Artillery;
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d["Advanced Destroyer"];
+      GlobalData.resultDataBase[i].vars[botIdx++] = +d.Shade;
       //GlobalData.resultDataBase[i].vars[botidx++] = +d.Skill;
     });
 
@@ -305,8 +327,8 @@ function loadBasicRegression()
         GlobalData.regDataBase[botIdx][valueIdx].AvgScore = +d.AvgScore;
         GlobalData.regDataBase[botIdx][valueIdx].AvgStddev = +d.AvgStdDev;
         GlobalData.regDataBase[botIdx][valueIdx].Weight = +d.Weight;
-        GlobalData.regDataBase[botIdx][valueIdx].WeightRes = parseInt(+d.Weight / GlobalData.bots[botIdx].ResTotal * 100);
-        GlobalData.regDataBase[botIdx][valueIdx].WeightBW = parseInt(+d.Weight / GlobalData.bots[botIdx].Bandwidth);
+        GlobalData.regDataBase[botIdx][valueIdx].WeightRes = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].ResTotal) * 100);
+        GlobalData.regDataBase[botIdx][valueIdx].WeightBW = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].Bandwidth));
         GlobalData.regDataBase[botIdx][valueIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
         GlobalData.regDataBase[botIdx][valueIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
         GlobalData.regDataBase[botIdx][valueIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
@@ -342,7 +364,7 @@ function loadBasicRegression()
 // Temp stats data
 //
 GlobalData.regStats = [];
-for(var botIdx = 0; botIdx < 49; ++botIdx)
+for(var botIdx = 0; botIdx < botCount; ++botIdx)
 {
   GlobalData.regStats[botIdx] = {};
   //GlobalData.regStats[botIdx].ID = botIdx;
@@ -365,7 +387,7 @@ for(var botIdx = 0; botIdx < 49; ++botIdx)
   GlobalData.regStats[botIdx].Radius = 0.0;
   GlobalData.regStats[botIdx].Speed = 0.0;
   GlobalData.regStats[botIdx].Damage = 0.0;
-  GlobalData.regStats[botIdx].DmgGrounded = 0.0;
+  GlobalData.regStats[botIdx].DamageWalking = 0.0;
   GlobalData.regStats[botIdx].DamageFlying = 0.0;
   GlobalData.regStats[botIdx].DamageSwarming = 0.0;
   GlobalData.regStats[botIdx].DamagePiercing = 0.0;
@@ -386,7 +408,7 @@ for(var botIdx = 0; botIdx < 49; ++botIdx)
   GlobalData.regStats[botIdx].WeaponSpeed = 0.0;
   GlobalData.regStats[botIdx].Range = 0.0;
   GlobalData.regStats[botIdx].Splash = 0.0;
-  GlobalData.regStats[botIdx].TgtGrounded = 0.0;
+  GlobalData.regStats[botIdx].TgtWalking = 0.0;
   GlobalData.regStats[botIdx].TgtFlying = 0.0;
   GlobalData.regStats[botIdx].TgtSwarming = 0.0;
   GlobalData.regStats[botIdx].TgtPiercing = 0.0;
@@ -400,6 +422,7 @@ for(var botIdx = 0; botIdx < 49; ++botIdx)
   GlobalData.regStats[botIdx].Detonate = 0.0;
   GlobalData.regStats[botIdx].Unsetup = 0.0;
   GlobalData.regStats[botIdx].Destruct = 0.0;
+  GlobalData.regStats[botIdx]["Guardian Shield"] = 0.0;
 }
 
 function loadData(i)
@@ -447,58 +470,60 @@ function loadData(i)
   ]).then(([regData]) => {
     GlobalData.regData = [];
     //GlobalData.regStats = [];
-    var numStats = 7; // TODO: Make equal to stat count
+    var numStats = 8; // TODO: Make equal to stat count
     var varCount = 2 * (botCount + 2) + numStats;
     regData.forEach(function(d, i) {
       var botIdx = parseInt(i / varCount);
       var valueIdx = i % varCount;
+
+      // Map weights in bot at botIdx from other bots and skill/aggression.
       if((valueIdx < botIdx) || (botIdx + numStats < valueIdx))
       {
         if(GlobalData.regData[botIdx] == null)
         {
           GlobalData.regData[botIdx] = [];
         }
-        GlobalData.regData[botIdx][valueIdx] = {};
-        GlobalData.regData[botIdx][valueIdx].ID = botIdx;
-        GlobalData.regData[botIdx][valueIdx].correlationID = valueIdx;
-        GlobalData.regData[botIdx][valueIdx].name = d.Name;
-        GlobalData.regData[botIdx][valueIdx].Score = +d.Score;
-        GlobalData.regData[botIdx][valueIdx].Stddev = +d.StdDev;
-        GlobalData.regData[botIdx][valueIdx].AvgScore = +d.AvgScore;
-        GlobalData.regData[botIdx][valueIdx].AvgStddev = +d.AvgStdDev;
-        GlobalData.regData[botIdx][valueIdx].Weight = +d.Weight;
-        GlobalData.regData[botIdx][valueIdx].WeightRes = parseInt(+d.Weight / GlobalData.bots[botIdx].ResTotal * 100);
-        GlobalData.regData[botIdx][valueIdx].WeightBW = parseInt(+d.Weight / GlobalData.bots[botIdx].Bandwidth);
-        GlobalData.regData[botIdx][valueIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
-        GlobalData.regData[botIdx][valueIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
-        GlobalData.regData[botIdx][valueIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
-        GlobalData.regData[botIdx][valueIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
-        GlobalData.regData[botIdx][valueIdx].NeutralIterations = parseInt(+d.NeutralIterations);
-        GlobalData.regData[botIdx][valueIdx].NeutralWins = parseInt(+d.NeutralWins);
-        GlobalData.regData[botIdx][valueIdx].PickPct = (botIdx == valueIdx) ? GlobalData.regDataBase[botIdx][botIdx].PickPct : 100 - parseInt(+d.DisadvantagedIterations + +d.NeutralIterations);
-        GlobalData.regData[botIdx][valueIdx].ScoreDiff = +d.Score - GlobalData.regDataBase[botIdx][botIdx].Score;
-        GlobalData.regData[botIdx][valueIdx].StddevDiff = +d.StdDev - GlobalData.regDataBase[botIdx][botIdx].Stddev;
-        GlobalData.regData[botIdx][valueIdx].AvgScoreDiff = +d.AvgScore - GlobalData.regDataBase[botIdx][botIdx].AvgScore;
-        GlobalData.regData[botIdx][valueIdx].AvgStddevDiff = +d.AvgStdDev - GlobalData.regDataBase[botIdx][botIdx].AvgStddev;
-        GlobalData.regData[botIdx][valueIdx].WeightDiff = 0;
-        GlobalData.regData[botIdx][valueIdx].WeightResDiff = 0;
-        GlobalData.regData[botIdx][valueIdx].WeightBWDiff = 0;
-        GlobalData.regData[botIdx][valueIdx].AdvantagedIterationsDiff = parseInt(+d.AdvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedIterations;
-        GlobalData.regData[botIdx][valueIdx].AdvantagedWinsDiff = parseInt(+d.AdvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedWins;
-        GlobalData.regData[botIdx][valueIdx].DisadvantagedIterationsDiff = parseInt(+d.DisadvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedIterations;
-        GlobalData.regData[botIdx][valueIdx].DisadvantagedWinsDiff = parseInt(+d.DisadvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedWins;
-        GlobalData.regData[botIdx][valueIdx].NeutralIterationsDiff = parseInt(+d.NeutralIterations) - GlobalData.regDataBase[botIdx][botIdx].NeutralIterations;
-        GlobalData.regData[botIdx][valueIdx].NeutralWinsDiff = parseInt(+d.NeutralWins) - GlobalData.regDataBase[botIdx][botIdx].NeutralWins;
-        GlobalData.regData[botIdx][valueIdx].PickPctDiff = GlobalData.regData[botIdx][valueIdx].PickPct - GlobalData.regDataBase[botIdx][botIdx].PickPct;
-      }
-      else
-      {
-        if(GlobalData.regStats[botIdx] == null)
+        var mapValueIdx = valueIdx;
+        if(botIdx + numStats < mapValueIdx)
         {
-          GlobalData.regStats[botIdx] = {};
+          mapValueIdx -= numStats;
         }
-        GlobalData.regStats[botIdx][d.Name] = +d.Weight;
-
+        GlobalData.regData[botIdx][mapValueIdx] = {};
+        GlobalData.regData[botIdx][mapValueIdx].ID = botIdx;
+        GlobalData.regData[botIdx][mapValueIdx].correlationID = mapValueIdx;
+        GlobalData.regData[botIdx][mapValueIdx].name = d.Name;
+        GlobalData.regData[botIdx][mapValueIdx].Score = +d.Score;
+        GlobalData.regData[botIdx][mapValueIdx].Stddev = +d.StdDev;
+        GlobalData.regData[botIdx][mapValueIdx].AvgScore = +d.AvgScore;
+        GlobalData.regData[botIdx][mapValueIdx].AvgStddev = +d.AvgStdDev;
+        GlobalData.regData[botIdx][mapValueIdx].Weight = +d.Weight;
+        GlobalData.regData[botIdx][mapValueIdx].WeightRes = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].ResTotal) * 100);
+        GlobalData.regData[botIdx][mapValueIdx].WeightBW = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].Bandwidth));
+        GlobalData.regData[botIdx][mapValueIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
+        GlobalData.regData[botIdx][mapValueIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
+        GlobalData.regData[botIdx][mapValueIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
+        GlobalData.regData[botIdx][mapValueIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
+        GlobalData.regData[botIdx][mapValueIdx].NeutralIterations = parseInt(+d.NeutralIterations);
+        GlobalData.regData[botIdx][mapValueIdx].NeutralWins = parseInt(+d.NeutralWins);
+        GlobalData.regData[botIdx][mapValueIdx].PickPct = (botIdx == mapValueIdx) ? GlobalData.regDataBase[botIdx][botIdx].PickPct : 100 - parseInt(+d.DisadvantagedIterations + +d.NeutralIterations);
+        GlobalData.regData[botIdx][mapValueIdx].ScoreDiff = +d.Score - GlobalData.regDataBase[botIdx][botIdx].Score;
+        GlobalData.regData[botIdx][mapValueIdx].StddevDiff = +d.StdDev - GlobalData.regDataBase[botIdx][botIdx].Stddev;
+        GlobalData.regData[botIdx][mapValueIdx].AvgScoreDiff = +d.AvgScore - GlobalData.regDataBase[botIdx][botIdx].AvgScore;
+        GlobalData.regData[botIdx][mapValueIdx].AvgStddevDiff = +d.AvgStdDev - GlobalData.regDataBase[botIdx][botIdx].AvgStddev;
+        GlobalData.regData[botIdx][mapValueIdx].WeightDiff = 0;
+        GlobalData.regData[botIdx][mapValueIdx].WeightResDiff = 0;
+        GlobalData.regData[botIdx][mapValueIdx].WeightBWDiff = 0;
+        GlobalData.regData[botIdx][mapValueIdx].AdvantagedIterationsDiff = parseInt(+d.AdvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedIterations;
+        GlobalData.regData[botIdx][mapValueIdx].AdvantagedWinsDiff = parseInt(+d.AdvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedWins;
+        GlobalData.regData[botIdx][mapValueIdx].DisadvantagedIterationsDiff = parseInt(+d.DisadvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedIterations;
+        GlobalData.regData[botIdx][mapValueIdx].DisadvantagedWinsDiff = parseInt(+d.DisadvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedWins;
+        GlobalData.regData[botIdx][mapValueIdx].NeutralIterationsDiff = parseInt(+d.NeutralIterations) - GlobalData.regDataBase[botIdx][botIdx].NeutralIterations;
+        GlobalData.regData[botIdx][mapValueIdx].NeutralWinsDiff = parseInt(+d.NeutralWins) - GlobalData.regDataBase[botIdx][botIdx].NeutralWins;
+        GlobalData.regData[botIdx][mapValueIdx].PickPctDiff = GlobalData.regData[botIdx][mapValueIdx].PickPct - GlobalData.regDataBase[botIdx][botIdx].PickPct;
+      }
+      else // Map stat weights in bot at botIdx
+      {
+        // Copy common values from base regData.
         if(GlobalData.regData[botIdx] == null)
         {
           GlobalData.regData[botIdx] = [];
@@ -516,13 +541,13 @@ function loadData(i)
           GlobalData.regData[botIdx][botIdx].Weight = 0.0;
           GlobalData.regData[botIdx][botIdx].WeightRes = 0.0;
           GlobalData.regData[botIdx][botIdx].WeightBW = 0.0;
-          GlobalData.regData[botIdx][botIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
-          GlobalData.regData[botIdx][botIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
-          GlobalData.regData[botIdx][botIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
-          GlobalData.regData[botIdx][botIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
-          GlobalData.regData[botIdx][botIdx].NeutralIterations = parseInt(+d.NeutralIterations);
-          GlobalData.regData[botIdx][botIdx].NeutralWins = parseInt(+d.NeutralWins);
-          GlobalData.regData[botIdx][botIdx].PickPct = (botIdx == valueIdx) ? GlobalData.regDataBase[botIdx][botIdx].PickPct : 100 - parseInt(+d.DisadvantagedIterations + +d.NeutralIterations);
+          GlobalData.regData[botIdx][botIdx].AdvantagedIterations = GlobalData.regDataBase[botIdx][botIdx].AdvantagedIterations;
+          GlobalData.regData[botIdx][botIdx].AdvantagedWins = GlobalData.regDataBase[botIdx][botIdx].AdvantagedWins;
+          GlobalData.regData[botIdx][botIdx].DisadvantagedIterations = GlobalData.regDataBase[botIdx][botIdx].DisadvantagedIterations;
+          GlobalData.regData[botIdx][botIdx].DisadvantagedWins = GlobalData.regDataBase[botIdx][botIdx].DisadvantagedWins;
+          GlobalData.regData[botIdx][botIdx].NeutralIterations = GlobalData.regDataBase[botIdx][botIdx].NeutralIterations;
+          GlobalData.regData[botIdx][botIdx].NeutralWins = GlobalData.regDataBase[botIdx][botIdx].NeutralWins;
+          GlobalData.regData[botIdx][botIdx].PickPct = GlobalData.regDataBase[botIdx][botIdx].PickPct;
           GlobalData.regData[botIdx][botIdx].ScoreDiff = +d.Score - GlobalData.regDataBase[botIdx][botIdx].Score;
           GlobalData.regData[botIdx][botIdx].StddevDiff = +d.StdDev - GlobalData.regDataBase[botIdx][botIdx].Stddev;
           GlobalData.regData[botIdx][botIdx].AvgScoreDiff = +d.AvgScore - GlobalData.regDataBase[botIdx][botIdx].AvgScore;
@@ -530,21 +555,384 @@ function loadData(i)
           GlobalData.regData[botIdx][botIdx].WeightDiff = 0;
           GlobalData.regData[botIdx][botIdx].WeightResDiff = 0;
           GlobalData.regData[botIdx][botIdx].WeightBWDiff = 0;
-          GlobalData.regData[botIdx][botIdx].AdvantagedIterationsDiff = parseInt(+d.AdvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedIterations;
-          GlobalData.regData[botIdx][botIdx].AdvantagedWinsDiff = parseInt(+d.AdvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedWins;
-          GlobalData.regData[botIdx][botIdx].DisadvantagedIterationsDiff = parseInt(+d.DisadvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedIterations;
-          GlobalData.regData[botIdx][botIdx].DisadvantagedWinsDiff = parseInt(+d.DisadvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedWins;
-          GlobalData.regData[botIdx][botIdx].NeutralIterationsDiff = parseInt(+d.NeutralIterations) - GlobalData.regDataBase[botIdx][botIdx].NeutralIterations;
-          GlobalData.regData[botIdx][botIdx].NeutralWinsDiff = parseInt(+d.NeutralWins) - GlobalData.regDataBase[botIdx][botIdx].NeutralWins;
-          GlobalData.regData[botIdx][botIdx].PickPctDiff = GlobalData.regData[botIdx][valueIdx].PickPct - GlobalData.regDataBase[botIdx][botIdx].PickPct;
+          GlobalData.regData[botIdx][botIdx].AdvantagedIterationsDiff = 0;
+          GlobalData.regData[botIdx][botIdx].AdvantagedWinsDiff = 0;
+          GlobalData.regData[botIdx][botIdx].DisadvantagedIterationsDiff = 0;
+          GlobalData.regData[botIdx][botIdx].DisadvantagedWinsDiff = 0;
+          GlobalData.regData[botIdx][botIdx].NeutralIterationsDiff = 0;
+          GlobalData.regData[botIdx][botIdx].NeutralWinsDiff = 0;
+          GlobalData.regData[botIdx][botIdx].PickPctDiff = 0;
         }
-        // TODO: Add the others.
+
+        // Load specific stat data.
+        if(GlobalData.regStats[botIdx] == null)
+        {
+          GlobalData.regStats[botIdx] = {};
+        }
+        GlobalData.regStats[botIdx][d.Name] = +d.Weight;
+        // TODO: Load other specific stats values for stats table?
+
+        // Compose total weight as the sum of stats.
         GlobalData.regData[botIdx][botIdx].Weight += +d.Weight * GlobalData.bots[botIdx][d.Name];
-        GlobalData.regData[botIdx][botIdx].WeightRes += +d.Weight * GlobalData.bots[botIdx][d.Name] / GlobalData.bots[botIdx].ResTotal;
-        GlobalData.regData[botIdx][botIdx].WeightBW += +d.Weight * GlobalData.bots[botIdx][d.Name] / GlobalData.bots[botIdx].Bandwidth;
+        GlobalData.regData[botIdx][botIdx].WeightRes += +d.Weight * GlobalData.bots[botIdx][d.Name] / Math.max(1.0, GlobalData.bots[botIdx].ResTotal) * 100.0;
+        GlobalData.regData[botIdx][botIdx].WeightBW += +d.Weight * GlobalData.bots[botIdx][d.Name] / Math.max(1.0, GlobalData.bots[botIdx].Bandwidth);
       }
     });
 
+    GlobalData.comparisons = {};
+    GlobalData.comparisons.tech = [];
+    GlobalData.comparisons.trait = [];
+    GlobalData.comparisons.manu = [];
+
+    for(var techIdx = techIndex.core; techIdx < techCount; ++techIdx)
+    {
+      var compareCount = 0;
+      GlobalData.comparisons.tech[techIdx] = {};
+      GlobalData.comparisons.tech[techIdx].correlations = [];
+      GlobalData.comparisons.tech[techIdx].ID = techIdx;
+      GlobalData.comparisons.tech[techIdx].name = techNameLookup[techIdx];
+
+      for(var botIdx = 0; botIdx < botCount; ++botIdx)
+      {
+        if(GlobalData.bots[botIdx].Tech == techIdx)
+        {
+          compareCount++;
+
+          // Get sum of bot values.
+          for(const property in GlobalData.regData[botIdx][botIdx])
+          {
+            if(property != "name" && property != "ID" && property != "correlationID")
+            {
+              if(!GlobalData.comparisons.tech[techIdx][property])
+              {
+                GlobalData.comparisons.tech[techIdx][property] = 0;
+              }
+              GlobalData.comparisons.tech[techIdx][property] += GlobalData.regData[botIdx][botIdx][property];
+            }
+          }
+
+          // Get sum of bot correlations
+          for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+          {
+            GlobalData.comparisons.tech[techIdx].correlations[corrIdx] = {};
+            for(const property in GlobalData.regData[botIdx][corrIdx])
+            {
+              if(property != "name" && property != "ID" && property != "correlationID")
+              {
+                if(!GlobalData.comparisons.tech[techIdx].correlations[corrIdx][property])
+                {
+                  GlobalData.comparisons.tech[techIdx].correlations[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.tech[techIdx].correlations[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
+              }
+            }
+          }
+        }
+      }
+
+      // Compute the averages.
+      var countInv = 1.0 / compareCount;
+      for(const property in GlobalData.comparisons.tech[techIdx])
+      {
+        if(property != "name" && property != "ID" && property != "correlations" && property != "correlationsOther")
+        {
+          GlobalData.comparisons.tech[techIdx][property] *= countInv;
+        }
+      }
+      for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+      {
+        for(const property in GlobalData.comparisons.tech[techIdx].correlations[corrIdx])
+        {
+          GlobalData.comparisons.tech[techIdx].correlations[corrIdx][property] *= countInv;
+        }
+      }
+
+      compareCount = 0;
+      GlobalData.comparisons.tech[techIdx].correlationsFriend = [];
+      GlobalData.comparisons.tech[techIdx].correlationsFoe = [];
+
+      // Get sum of correlations to other bots.
+      for(var corrIdx = 0; corrIdx < botCount; ++corrIdx)
+      {
+        if(!GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx])
+        {
+          GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx] = {};
+        }
+        if(!GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx])
+        {
+          GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx] = {};
+        }
+
+        for(var botIdx = 0; botIdx < botCount; ++botIdx)
+        {
+          if(GlobalData.bots[botIdx].Tech == techIdx && (botIdx != corrIdx))
+          {
+            compareCount++;
+            for(const property in GlobalData.regData[corrIdx][botIdx])
+            {
+              if(property != "name" && property != "ID" && property != "correlationID")
+              {
+                if(!GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx][property])
+                {
+                  GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
+
+                if(!GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx][property])
+                {
+                  GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
+              }
+            }
+          }
+        }
+
+        countInv = 1.0 / compareCount;
+        for(const property in GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx])
+        {
+          GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx][property] *= countInv;
+        }
+        for(const property in GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx])
+        {
+          GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx][property] *= countInv;
+        }
+      }
+    }
+
+    for(var traitIdx = traitIndex.ground; traitIdx < traitCount; ++traitIdx)
+    {
+      var compareCount = 0;
+      GlobalData.comparisons.trait[traitIdx] = {};
+      GlobalData.comparisons.trait[traitIdx].correlations = [];
+      GlobalData.comparisons.trait[traitIdx].ID = traitIdx;
+      GlobalData.comparisons.trait[traitIdx].name = traitNameLookup[traitIdx];
+
+      for(var botIdx = 0; botIdx < botCount; ++botIdx)
+      {
+        if(GlobalData.bots[botIdx][internalTraitNameLookup[traitIdx]])
+        {
+          compareCount++;
+
+          // Get sum of bot values.
+          for(const property in GlobalData.regData[botIdx][botIdx])
+          {
+            if(property != "name" && property != "ID" && property != "correlationID")
+            {
+              if(!GlobalData.comparisons.trait[traitIdx][property])
+              {
+                GlobalData.comparisons.trait[traitIdx][property] = 0;
+              }
+              GlobalData.comparisons.trait[traitIdx][property] += GlobalData.regData[botIdx][botIdx][property];
+            }
+          }
+
+          // Get sum of bot correlations
+          for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+          {
+            GlobalData.comparisons.trait[traitIdx].correlations[corrIdx] = {};
+            for(const property in GlobalData.regData[botIdx][corrIdx])
+            {
+              if(property != "name" && property != "ID" && property != "correlationID")
+              {
+                if(!GlobalData.comparisons.trait[traitIdx].correlations[corrIdx][property])
+                {
+                  GlobalData.comparisons.trait[traitIdx].correlations[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.trait[traitIdx].correlations[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
+              }
+            }
+          }
+        }
+      }
+
+      // Compute the averages.
+      var countInv = 1.0 / compareCount;
+      for(const property in GlobalData.comparisons.trait[traitIdx])
+      {
+        if(property != "name" && property != "ID" && property != "correlations" && property != "correlationsOther")
+        {
+          GlobalData.comparisons.trait[traitIdx][property] *= countInv;
+        }
+      }
+      for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+      {
+        for(const property in GlobalData.comparisons.trait[traitIdx].correlations[corrIdx])
+        {
+          GlobalData.comparisons.trait[traitIdx].correlations[corrIdx][property] *= countInv;
+        }
+      }
+
+      compareCount = 0;
+      GlobalData.comparisons.trait[traitIdx].correlationsFriend = [];
+      GlobalData.comparisons.trait[traitIdx].correlationsFoe = [];
+
+      // Get sum of correlations to other bots.
+      for(var corrIdx = 0; corrIdx < botCount; ++corrIdx)
+      {
+        if(!GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx])
+        {
+          GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx] = {};
+        }
+        if(!GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx])
+        {
+          GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx] = {};
+        }
+
+        for(var botIdx = 0; botIdx < botCount; ++botIdx)
+        {
+          if(GlobalData.bots[botIdx][internalTraitNameLookup[traitIdx]] && (botIdx != corrIdx))
+          {
+            compareCount++;
+            for(const property in GlobalData.regData[corrIdx][botIdx])
+            {
+              if(property != "name" && property != "ID" && property != "correlationID")
+              {
+                if(!GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx][property])
+                {
+                  GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
+
+                if(!GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx][property])
+                {
+                  GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
+              }
+            }
+          }
+        }
+
+        countInv = 1.0 / compareCount;
+        for(const property in GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx])
+        {
+          GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx][property] *= countInv;
+        }
+        for(const property in GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx])
+        {
+          GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx][property] *= countInv;
+        }
+      }
+    }
+
+    for(var manuIdx = manuIndex.northperformance; manuIdx < manuCount; ++manuIdx)
+    {
+      var compareCount = 0;
+      GlobalData.comparisons.manu[manuIdx] = {};
+      GlobalData.comparisons.manu[manuIdx].correlations = [];
+      GlobalData.comparisons.manu[manuIdx].ID = manuIdx;
+      GlobalData.comparisons.manu[manuIdx].name = manuNameLookup[manuIdx];
+
+      for(var botIdx = 0; botIdx < botCount; ++botIdx)
+      {
+        if(GlobalData.bots[botIdx].Manu == manuIdx)
+        {
+          compareCount++;
+
+          // Get sum of bot values.
+          for(const property in GlobalData.regData[botIdx][botIdx])
+          {
+            if(property != "name" && property != "ID" && property != "correlationID")
+            {
+              if(!GlobalData.comparisons.manu[manuIdx][property])
+              {
+                GlobalData.comparisons.manu[manuIdx][property] = 0;
+              }
+              GlobalData.comparisons.manu[manuIdx][property] += GlobalData.regData[botIdx][botIdx][property];
+            }
+          }
+
+          // Get sum of bot correlations
+          for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+          {
+            GlobalData.comparisons.manu[manuIdx].correlations[corrIdx] = {};
+            for(const property in GlobalData.regData[botIdx][corrIdx])
+            {
+              if(property != "name" && property != "ID" && property != "correlationID")
+              {
+                if(!GlobalData.comparisons.manu[manuIdx].correlations[corrIdx][property])
+                {
+                  GlobalData.comparisons.manu[manuIdx].correlations[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.manu[manuIdx].correlations[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
+              }
+            }
+          }
+        }
+      }
+
+      // Compute the averages.
+      var countInv = 1.0 / compareCount;
+      for(const property in GlobalData.comparisons.manu[manuIdx])
+      {
+        if(property != "name" && property != "ID" && property != "correlations" && property != "correlationsOther")
+        {
+          GlobalData.comparisons.manu[manuIdx][property] *= countInv;
+        }
+      }
+      for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+      {
+        for(const property in GlobalData.comparisons.manu[manuIdx].correlations[corrIdx])
+        {
+          GlobalData.comparisons.manu[manuIdx].correlations[corrIdx][property] *= countInv;
+        }
+      }
+
+      compareCount = 0;
+      GlobalData.comparisons.manu[manuIdx].correlationsFriend = [];
+      GlobalData.comparisons.manu[manuIdx].correlationsFoe = [];
+
+      // Get sum of correlations to other bots.
+      for(var corrIdx = 0; corrIdx < botCount; ++corrIdx)
+      {
+        if(!GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx])
+        {
+          GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx] = {};
+        }
+        if(!GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx])
+        {
+          GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx] = {};
+        }
+
+        for(var botIdx = 0; botIdx < botCount; ++botIdx)
+        {
+          if(GlobalData.bots[botIdx].Manu == manuIdx && (botIdx != corrIdx))
+          {
+            compareCount++;
+            for(const property in GlobalData.regData[corrIdx][botIdx])
+            {
+              if(property != "name" && property != "ID" && property != "correlationID")
+              {
+                if(!GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx][property])
+                {
+                  GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
+
+                if(!GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx][property])
+                {
+                  GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
+              }
+            }
+          }
+        }
+
+        countInv = 1.0 / compareCount;
+        for(const property in GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx])
+        {
+          GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx][property] *= countInv;
+        }
+        for(const property in GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx])
+        {
+          GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx][property] *= countInv;
+        }
+      }
+    }
+
+    console.log(GlobalData);
     loaded.regression = true;
     if(loaded.count && loaded.results && loaded.regression)
     {

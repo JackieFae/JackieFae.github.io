@@ -363,6 +363,9 @@ body {
 .table_cell text {
   filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
 }
+.table_cell text.darken {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(65%) contrast(76%);
+}
 .table_cell text.highlighted {
   filter: invert(46%) sepia(53%) saturate(1282%) hue-rotate(179deg) brightness(94%) contrast(98%);
 }

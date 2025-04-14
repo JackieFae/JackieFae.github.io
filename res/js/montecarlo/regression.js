@@ -44,6 +44,7 @@ d3.select('#regFilterTraitSlugHulking').on('click', () => selectTraitFilter(trai
 d3.select('#regFilterTraitSlugShattering').on('click', () => selectTraitFilter(traitIndex.shattering));
 d3.select('#regFilterTraitSlugFlying').on('click', () => selectTraitFilter(traitIndex.flying));
 d3.select('#regFilterTraitSlugHunting').on('click', () => selectTraitFilter(traitIndex.hunting));
+d3.select('#regFilterTraitSlugPassive').on('click', () => selectTraitFilter(traitIndex.passive));
 
 var manuButton = d3.select('#regFilterManuButton');
 d3.select('#regFilterManuSlugAll').on('click', () => selectManuFilter(manuIndex.any));
@@ -107,7 +108,8 @@ function filterRegressionSelection(data)
                                              || (GlobalData.bots[d.ID].Hulking && (traitFilter == traitIndex.hulking))
                                              || (GlobalData.bots[d.ID].Shattering && (traitFilter == traitIndex.shattering))
                                              || (GlobalData.bots[d.ID].Flying && (traitFilter == traitIndex.flying))
-                                             || (GlobalData.bots[d.ID].Hunting && (traitFilter == traitIndex.hunting))));
+                                             || (GlobalData.bots[d.ID].Hunting && (traitFilter == traitIndex.hunting))
+                                             || (GlobalData.bots[d.ID].Passive && (traitFilter == traitIndex.passive))));
   }
   if(manuFilter != manuIndex.any)
   {
@@ -362,16 +364,16 @@ function setRegressionInputSelect(graph, table, name)
   {
     graph.selectAll(`rect[alt="${regressionHighlight}"]`).classed('highlighted', false);
     graph.selectAll(`image[alt="${regressionHighlight}"]`).classed('highlighted', false);
-    graph.select(`rect[alt="${regressionSelect}"]`).classed('selected', false);
-    graph.select(`image[alt="${regressionSelect}"]`).classed('selected', false);
-    graph.select(`rect[alt="${name}"]`).classed('selected', true);
-    graph.select(`image[alt="${name}"]`).classed('selected', true);
+    graph.selectAll(`rect[alt="${regressionSelect}"]`).classed('selected', false);
+    graph.selectAll(`image[alt="${regressionSelect}"]`).classed('selected', false);
+    graph.selectAll(`rect[alt="${name}"]`).classed('selected', true);
+    graph.selectAll(`image[alt="${name}"]`).classed('selected', true);
 
     table.selectAll(`img[alt="${regressionSelect}"]`).classed('highlighted', false);
     table.selectAll(`text[alt="${regressionSelect}"]`).classed('highlighted', false);
-    table.select(`img[alt="${regressionSelect}"]`).classed('selected', false);
+    table.selectAll(`img[alt="${regressionSelect}"]`).classed('selected', false);
     table.selectAll(`text[alt="${regressionSelect}"]`).classed('selected', false);
-    table.select(`img[alt="${name}"]`).classed('selected', true);
+    table.selectAll(`img[alt="${name}"]`).classed('selected', true);
     table.selectAll(`text[alt="${name}"]`).classed('selected', true);
 
     regressionSelect = name;
@@ -447,17 +449,17 @@ function writeTableText(tableCell, value, valueDiff, id, precision)
 {
   if(valueDiff == 0)
   {
-    tableCell.append('text').attr('alt', id).text(value);
+    tableCell.append('text').attr('alt', id).text(Math.round(value*Math.pow(10, precision))/Math.pow(10, precision));
   }
   else if(valueDiff < 0)
   {
-    tableCell.append('text').attr('alt', id).text(value + ' (');
+    tableCell.append('text').attr('alt', id).text(Math.round(value*Math.pow(10, precision))/Math.pow(10, precision) + ' (');
     tableCell.append('text').attr('class', 'tertiary').attr('alt', id).text('- ' + Math.round(Math.abs(valueDiff)*Math.pow(10, precision))/Math.pow(10, precision));
     tableCell.append('text').attr('alt', id).text(')');
   }
   else
   {
-    tableCell.append('text').attr('alt', id).text(value + ' (');
+    tableCell.append('text').attr('alt', id).text(Math.round(value*Math.pow(10, precision))/Math.pow(10, precision) + ' (');
     tableCell.append('text').attr('class', 'secondary').attr('alt', id).text('+ ' + Math.round(valueDiff*Math.pow(10, precision))/Math.pow(10, precision));
     tableCell.append('text').attr('alt', id).text(')');
   }
@@ -467,17 +469,17 @@ function writeTablePercent(tableCell, value, valueDiff, id, precision)
 {
   if(valueDiff == 0)
   {
-    tableCell.append('text').attr('alt', id).text(value + '%');
+    tableCell.append('text').attr('alt', id).text(Math.round(value*Math.pow(10, precision))/Math.pow(10, precision) + '%');
   }
   else if(valueDiff < 0)
   {
-    tableCell.append('text').attr('alt', id).text(value + '% (');
+    tableCell.append('text').attr('alt', id).text(Math.round(value*Math.pow(10, precision))/Math.pow(10, precision) + '% (');
     tableCell.append('text').attr('class', 'tertiary').attr('alt', id).text('- ' + Math.round(Math.abs(valueDiff)*Math.pow(10, precision))/Math.pow(10, precision) + '%');
     tableCell.append('text').attr('alt', id).text(')');
   }
   else
   {
-    tableCell.append('text').attr('alt', id).text(value + '% (');
+    tableCell.append('text').attr('alt', id).text(Math.round(value*Math.pow(10, precision))/Math.pow(10, precision) + '% (');
     tableCell.append('text').attr('class', 'secondary').attr('alt', id).text('+ ' + Math.round(valueDiff*Math.pow(10, precision))/Math.pow(10, precision) + '%');
     tableCell.append('text').attr('alt', id).text(')');
   }

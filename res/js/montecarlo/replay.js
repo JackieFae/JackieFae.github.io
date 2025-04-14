@@ -7,6 +7,7 @@ const repHeight = 1700.0;
 const boundary = 0.0;
 const repIconLarge = { width: 2.0 * repWidth / simSize, height: 2.0 * repHeight / simSize };
 const repIconSmall = 50;
+const cMaxNumReports = 125;
 
 var reportIdx = 1;
 var reportTimeStep = 0;
@@ -41,7 +42,7 @@ const reportSelect = reportDetail2.append('div').attr('class', 'col')
   .append('input').attr('type', "number")
   .on("change", function(d){
     reportTimeStep = 0;
-    reportIdx = this.value;
+    reportIdx = Math.min(cMaxNumReports, this.value);
     reportGraphOverflow._groups[0][0].scrollLeft = 0.29 * repWidth;
     reportGraphOverflow._groups[0][0].scrollTop = 0.29 * repHeight;
     loadReports(reportIdx - 1);
@@ -138,6 +139,10 @@ function drawReport()
   {
     var act = GlobalData.reportData[reportTimeStep][unitIdx].action;
     var rad = GlobalData.bots[GlobalData.reportData[reportTimeStep][unitIdx].botIdx].Radius;
+    if(rad == 0.0)
+    {
+      rad = 1.0;
+    }
     var topLeftX = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posX * fieldWidth  / GlobalData.reportSummary[0].width - 0.5 * repIconLarge.width;
     var topLeftY = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posY * fieldHeight / GlobalData.reportSummary[0].height - 0.5 * repIconLarge.height;
     var iamgePath = botImageLookup[GlobalData.reportData[reportTimeStep][unitIdx].botIdx];
@@ -161,6 +166,10 @@ function drawReport()
     if(act != 'x')
     {
       var rad = GlobalData.bots[GlobalData.reportData[reportTimeStep][unitIdx].botIdx].Radius;
+      if(rad == 0.0)
+      {
+        rad = 1.0;
+      }
       var topLeftX = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posX * fieldWidth  / GlobalData.reportSummary[0].width  - 0.5 * repIconLarge.width;
       var topLeftY = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posY * fieldHeight / GlobalData.reportSummary[0].height - 0.5 * repIconLarge.height;
       reportGraphBots.append("path")
@@ -190,7 +199,8 @@ function drawReport()
       || (act == 'r')  // Recall
       || (act == 's')  // Setup
       || (act == 'u')  // Unsetup
-      || (act == 'q')) // Destruct
+      || (act == 'q')  // Destruct
+      || (act == 'g')) // GuardianShield
       {
         reportGraphBots.append("path").attr('class', 'svg_report_line')
           .classed(className, true)
@@ -293,6 +303,15 @@ function drawReport()
           .attr('height', (abilityScale * repIconLarge.height) + 'px')
           .attr('href', abilityImageLookup[abilityIndex.unsetup]);
       }
+      else if(act == 'g') // Guardian Shield
+      {
+        reportGraphBots.append('image').attr('class', 'svg_report_image')
+          .attr('x', data[1].x - 0.5 * abilityScale * repIconLarge.width)
+          .attr('y', data[1].y - 0.5 * abilityScale * repIconLarge.height)
+          .attr('width',  (abilityScale * repIconLarge.width)  + 'px')
+          .attr('height', (abilityScale * repIconLarge.height) + 'px')
+          .attr('href', abilityImageLookup[abilityIndex.guardianshield]);
+      }
     }
   }
 
@@ -312,9 +331,9 @@ function drawReport()
 
   reportSelect
     .attr('min', 1)
-    .attr('max', 5000)
+    .attr('max', cMaxNumReports)
     .attr('value', reportIdx);
-  reportSelectDenom.text(" / " + 5000);
+  reportSelectDenom.text(" / " + cMaxNumReports);
 
   drawReportScores();
   drawReportDecks();
@@ -591,8 +610,8 @@ function drawReportDeck(deck, unitList, unitAlive, unitTotal, teamIdx)
         botScore = Math.max(0.0, GlobalData.reportData[scoreStep].p2BotScores[d] - botResValue);
       }
       var botMaxScore = Math.max(unitTotal[i] * botCost, botScore);
-      var resScoreRatio = botResValue / (unitTotal[i] * botCost + botMaxScore);
-      var dmgScoreRatio = botScore / (unitTotal[i] * botCost + botMaxScore);
+      var resScoreRatio = botResValue / Math.max(1.0, (unitTotal[i] * botCost + botMaxScore));
+      var dmgScoreRatio = botScore / Math.max(1.0, (unitTotal[i] * botCost + botMaxScore));
       deck.append('rect').attr('class', 'svg_shape_dark')
         .classed(teamClassShapeRes, true)
         .attr('x', xBase)
@@ -612,8 +631,8 @@ function drawReportDeck(deck, unitList, unitAlive, unitTotal, teamIdx)
                               { x: 0  + xBase,  y: yBase + 77, },
                               { x: 0  + xBase,  y: yBase + 62, },]));
       deck.append("line").attr('class', 'svg_line')
-        .attr("x1", xBase + (unitTotal[i] * botCost) / (unitTotal[i] * botCost + botMaxScore) * 80)
-        .attr("x2", xBase + (unitTotal[i] * botCost) / (unitTotal[i] * botCost + botMaxScore) * 80)
+        .attr("x1", xBase + (unitTotal[i] * botCost) / Math.max(1.0, (unitTotal[i] * botCost + botMaxScore)) * 80)
+        .attr("x2", xBase + (unitTotal[i] * botCost) / Math.max(1.0, (unitTotal[i] * botCost + botMaxScore)) * 80)
         .attr("y1", yBase + 62-10)
         .attr("y2", yBase + 77+10);
       deck.append("line").attr('class', 'svg_line')

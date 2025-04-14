@@ -48,13 +48,66 @@ var statPieHighlight = 0;
 //
 // Select bot to display.
 // Add event listener to the select box
-d3.select("#selectStatSlug").on("change", function() {
-  selectStatBot();
-});
+var statSelectButton = d3.select('#statBotButton');
+d3.select('#statBotCrab').on('click', () => selectStatBot(d3.select("#statBotCrab").attr('value')));
+d3.select('#statBotHunter').on('click', () => selectStatBot(d3.select("#statBotHunter").attr('value')));
+d3.select('#statBotGuardianShield').on('click', () => selectStatBot(d3.select("#statBotGuardianShield").attr('value')));
+d3.select('#statBotRecall').on('click', () => selectStatBot(d3.select("#statBotRecall").attr('value')));
+d3.select('#statBotRecallHunter').on('click', () => selectStatBot(d3.select("#statBotRecallHunter").attr('value')));
+d3.select('#statBotScorpion').on('click', () => selectStatBot(d3.select("#statBotScorpion").attr('value')));
+d3.select('#statBotBeetle').on('click', () => selectStatBot(d3.select("#statBotBeetle").attr('value')));
+d3.select('#statBotBlink').on('click', () => selectStatBot(d3.select("#statBotBlink").attr('value')));
+d3.select('#statBotBlinkHunter').on('click', () => selectStatBot(d3.select("#statBotBlinkHunter").attr('value')));
+d3.select('#statBotGunbot').on('click', () => selectStatBot(d3.select("#statBotGunbot").attr('value')));
+d3.select('#statBotMissilebot').on('click', () => selectStatBot(d3.select("#statBotMissilebot").attr('value')));
+d3.select('#statBotWasp').on('click', () => selectStatBot(d3.select("#statBotWasp").attr('value')));
+d3.select('#statBotHornet').on('click', () => selectStatBot(d3.select("#statBotHornet").attr('value')));
+d3.select('#statBotKnight').on('click', () => selectStatBot(d3.select("#statBotKnight").attr('value')));
+d3.select('#statBotCrossbow').on('click', () => selectStatBot(d3.select("#statBotCrossbow").attr('value')));
+d3.select('#statBotBallista').on('click', () => selectStatBot(d3.select("#statBotBallista").attr('value')));
+d3.select('#statBotKingCrab').on('click', () => selectStatBot(d3.select("#statBotKingCrab").attr('value')));
+d3.select('#statBotCrusader').on('click', () => selectStatBot(d3.select("#statBotCrusader").attr('value')));
+d3.select('#statBotBomber').on('click', () => selectStatBot(d3.select("#statBotBomber").attr('value')));
+d3.select('#statBotShocker').on('click', () => selectStatBot(d3.select("#statBotShocker").attr('value')));
+d3.select('#statBotRecallShocker').on('click', () => selectStatBot(d3.select("#statBotRecallShocker").attr('value')));
+d3.select('#statBotMortar').on('click', () => selectStatBot(d3.select("#statBotMortar").attr('value')));
+d3.select('#statBotSwiftShocker').on('click', () => selectStatBot(d3.select("#statBotSwiftShocker").attr('value')));
+d3.select('#statBotHeavyHunter').on('click', () => selectStatBot(d3.select("#statBotHeavyHunter").attr('value')));
+d3.select('#statBotDestroyer').on('click', () => selectStatBot(d3.select("#statBotDestroyer").attr('value')));
+d3.select('#statBotRaider').on('click', () => selectStatBot(d3.select("#statBotRaider").attr('value')));
+d3.select('#statBotTurret').on('click', () => selectStatBot(d3.select("#statBotTurret").attr('value')));
+d3.select('#statBotHeavyBallista').on('click', () => selectStatBot(d3.select("#statBotHeavyBallista").attr('value')));
+d3.select('#statBotGargantua').on('click', () => selectStatBot(d3.select("#statBotGargantua").attr('value')));
+d3.select('#statBotSniper').on('click', () => selectStatBot(d3.select("#statBotSniper").attr('value')));
+d3.select('#statBotAdvancedBlink').on('click', () => selectStatBot(d3.select("#statBotAdvancedBlink").attr('value')));
+d3.select('#statBotAssaultbot').on('click', () => selectStatBot(d3.select("#statBotAssaultbot").attr('value')));
+d3.select('#statBotAdvancedbot').on('click', () => selectStatBot(d3.select("#statBotAdvancedbot").attr('value')));
+d3.select('#statBotBehemoth').on('click', () => selectStatBot(d3.select("#statBotBehemoth").attr('value')));
+d3.select('#statBotAdvancedMortar').on('click', () => selectStatBot(d3.select("#statBotAdvancedMortar").attr('value')));
+d3.select('#statBotBlaster').on('click', () => selectStatBot(d3.select("#statBotBlaster").attr('value')));
+d3.select('#statBotButterfly').on('click', () => selectStatBot(d3.select("#statBotButterfly").attr('value')));
+d3.select('#statBotDragonfly').on('click', () => selectStatBot(d3.select("#statBotDragonfly").attr('value')));
+d3.select('#statBotFalcon').on('click', () => selectStatBot(d3.select("#statBotFalcon").attr('value')));
+d3.select('#statBotAirship').on('click', () => selectStatBot(d3.select("#statBotAirship").attr('value')));
+d3.select('#statBotAdvancedRecall').on('click', () => selectStatBot(d3.select("#statBotAdvancedRecall").attr('value')));
+d3.select('#statBotMammoth').on('click', () => selectStatBot(d3.select("#statBotMammoth").attr('value')));
+d3.select('#statBotStinger').on('click', () => selectStatBot(d3.select("#statBotStinger").attr('value')));
+d3.select('#statBotFlakTurret').on('click', () => selectStatBot(d3.select("#statBotFlakTurret").attr('value')));
+d3.select('#statBotBulwark').on('click', () => selectStatBot(d3.select("#statBotBulwark").attr('value')));
+d3.select('#statBotKatbus').on('click', () => selectStatBot(d3.select("#statBotKatbus").attr('value')));
+d3.select('#statBotLocust').on('click', () => selectStatBot(d3.select("#statBotLocust").attr('value')));
+d3.select('#statBotKraken').on('click', () => selectStatBot(d3.select("#statBotKraken").attr('value')));
+d3.select('#statBotPredator').on('click', () => selectStatBot(d3.select("#statBotPredator").attr('value')));
+d3.select('#statBotValkyrie').on('click', () => selectStatBot(d3.select("#statBotValkyrie").attr('value')));
+d3.select('#statBotArtillery').on('click', () => selectStatBot(d3.select("#statBotArtillery").attr('value')));
+d3.select('#statBotAdvancedDestroyer').on('click', () => selectStatBot(d3.select("#statBotAdvancedDestroyer").attr('value')));
+d3.select('#statBotShade').on('click', () => selectStatBot(d3.select("#statBotShade").attr('value')));
 
-function selectStatBot()
+function selectStatBot(value)
 {
-  statBotSelected = d3.select("#selectStatSlug").property("value");
+  statSelectButton.select('img').attr('src', botImageLookup[value]);
+  statSelectButton.select('span').text(botNameLookup[value]);
+  statBotSelected = value;
   drawStats();
 }
 
@@ -63,6 +116,65 @@ d3.select("#selectCompareSlug").on("change", function() {
   computeCompareStats();
   drawWireframeChart();
 });
+
+//
+// HTML Linkages
+//
+const statsDisplay = d3.select('#viz-stats').append('div')
+  .style('width', `${width}`)
+  .style('height', '650');
+
+const statsGraphs = statsDisplay.append('div').attr('class', 'overflow-auto')
+  .style('width', '100%')
+  .style('height', '400px');
+
+const statsColumns = statsGraphs.append('div').attr('class', 'row row-cols-3')
+//.attr("transform", `translate(${margin.left},${margin.top})`)
+  .style('width', '99%')
+  .style('height', '400px');
+
+const statsPieChart = statsColumns.append('div').attr('class', 'col')
+  .style('width', '350px')
+  .append('svg')
+    .style('width', '350px')
+    .style('height', '350px');
+
+const statsHighlightColumn = statsColumns.append('div').attr('class', 'col')
+  .style('width', '225px')
+  .style('height', '350px');
+const statsHighlightImages = statsHighlightColumn.append('div').append('svg')
+  .style('width', '225px')
+  .style('height', '160px');
+const statsHighlightTable = statsHighlightColumn.append('div')
+  .append('table')
+    .style('width', '100%');
+
+const statsWireframeChart = statsColumns.append('div').attr('class', 'col')
+  .style('width', '350px')
+  .append('svg')
+    .style('width', '350px')
+    .style('height', '350px');
+
+const statsTableView = statsDisplay.append('div').attr('class', 'overflow-auto')
+  .style('width', '100%')
+  .style('height', '250px');
+const statsTable = statsTableView.append('div')
+  .append('table')
+    .style('width', '100%');
+
+//
+// Draw all elements of unit stats graphics.
+//
+function drawStats()
+{
+  var res = computeStats(statBotSelected);
+  cropStatData = res.cropped;
+  unsortStatData = res.unsorted;
+  drawPieChart();
+  drawWireframeChart();
+  drawStatHighlight();
+  drawStatTable();
+}
 
 function computeCompareStats()
 {
@@ -98,65 +210,6 @@ function computeCompareStats()
       compareTotals[statName].wtPct += compareBots[botIdx][statIdx].wtPct * countInv;
     }
   }
-}
-
-//
-// HTML Linkages
-//
-const statsDisplay = d3.select('#viz-stats').append('div')
-  .style('width', `${width}`)
-  .style('height', '650');
-
-const statsGraphs = statsDisplay.append('div').attr('class', 'overflow-auto')
-  .style('width', '100%')
-  .style('height', '400px');
-
-const statsColumns = statsGraphs.append('div').attr('class', 'row row-cols-3')
-//.attr("transform", `translate(${margin.left},${margin.top})`)
-  .style('width', '99%')
-  .style('height', '400px');
-
-const statsPieChart = statsColumns.append('div').attr('class', 'col')
-  .style('width', '350px')
-  .append('svg')
-    .style('width', '350px')
-    .style('height', '350px');
-
-const statsHighlightColumn = statsColumns.append('div').attr('class', 'col')
-  .style('width', '225px')
-  .style('height', '350px');
-const statsHighlightImages = statsHighlightColumn.append('div').append('svg')
-  .style('width', '225px')
-  .style('height', '120px');
-const statsHighlightTable = statsHighlightColumn.append('div')
-  .append('table')
-    .style('width', '100%');
-
-const statsWireframeChart = statsColumns.append('div').attr('class', 'col')
-  .style('width', '350px')
-  .append('svg')
-    .style('width', '350px')
-    .style('height', '350px');
-
-const statsTableView = statsDisplay.append('div').attr('class', 'overflow-auto')
-  .style('width', '100%')
-  .style('height', '250px');
-const statsTable = statsTableView.append('div')
-  .append('table')
-    .style('width', '100%');
-
-//
-// Draw all elements of unit stats graphics.
-//
-function drawStats()
-{
-  var res = computeStats(statBotSelected);
-  cropStatData = res.cropped;
-  unsortStatData = res.unsorted;
-  drawPieChart();
-  drawWireframeChart();
-  drawStatHighlight();
-  drawStatTable();
 }
 
 function computeStats(botIdx)
@@ -434,10 +487,16 @@ function drawStatHighlight()
   clearSvg(statsHighlightTable);
 
   // Draw selected bot
+  statsHighlightImages.append('g').append('text').attr('class', 'svg_text')
+    .attr('x', 60)
+    .attr('y', 30)
+    .style('font-size', '30px')
+    .style("text-anchor", "middle")
+    .text('\u{2211}' + parseInt(GlobalData.regData[statBotSelected][statBotSelected].Weight));
   statsHighlightImages.append('g')
     .append('image').attr('class', 'svg_image')
       .attr('width', 80)
-      .attr('height', 80)
+      .attr('height', 110)
       .attr("transform", function(d) { return "translate(20, 30)"; })
       .attr('href', botImageLookup[statBotSelected])
       .attr('filter', 'invert(100%)')
@@ -445,7 +504,7 @@ function drawStatHighlight()
   statsHighlightImages.append('g')
     .append('image').attr('class', 'svg_image')
       .attr('width', 80)
-      .attr('height', 80)
+      .attr('height', 110)
       .attr("transform", function(d) { return "translate(100, 30)"; })
       .attr('href', statImageLookup[statPieHighlight])
       .attr('filter', 'invert(100%)')
@@ -456,7 +515,7 @@ function drawStatHighlight()
     // Create table header
     var topStat = statsHighlightTable.append('thead').append('tr');
     topStat.append('th').attr('class', 'table_hr_cornersticky')
-      .text("");
+      .text(statNameLookup[statPieHighlight]);
     topStat.append('th').attr('class', 'table_hr_sticky')
       .text("Bot");
     topStat.append('th').attr('class', 'table_hr_sticky')
@@ -467,6 +526,12 @@ function drawStatHighlight()
       var value = GlobalData.bots[statBotSelected][statNameLookup[statPieHighlight]];
       var weight = GlobalData.regStats[statBotSelected][statNameLookup[statPieHighlight]];
       var score = value * weight;
+      statsHighlightImages.append('g').append('text').attr('class', 'svg_text')
+        .attr('x', 140)
+        .attr('y', 30)
+        .style('font-size', '30px')
+        .style("text-anchor", "middle")
+        .text((score >= 0.0 ? "+" : "") + parseInt(score));
       var percent = score / selectedScore;
       var row = statsHighlightTable.append('tbody').append('tr')
         //.on('mouseenter', () => setRegressionInputHighlight(graph, table, d.name))
@@ -552,41 +617,55 @@ function drawStatTable()
     selectedScore += GlobalData.regStats[statBotSelected][property] * GlobalData.bots[statBotSelected][property];
   };
 
-  for(var statIdx = 0; statIdx < statCount; ++statIdx)
+  var dim = false;
+  for(var tablePass = 0; tablePass < 2; ++tablePass)
   {
-    var row = statsTable.append('tbody').append('tr')
-    var newCell = row.append('td').attr('class', 'table_cell').style('width', '10%')
-    var cellRow = newCell.append('div').attr('class', 'row row-cols-2')
-      cellRow.append('div').attr('class', 'col')
-        .style('width', '10%')
-        .append('img')
-          .attr('src', statImageLookup[statIdx])
-          .attr('alt', statNameLookup[statIdx]);
-      //.append('text')
-      //  .attr('alt', "Symbol")
-      //  .text(statImageLookup[statIdx]);
-    newCell = row.append('td').attr('class', 'table_cell').style('width', '20%')
-      .append('text')
-        .attr('alt', "Measure Value")
-        .text(statNameLookup[statIdx]);
-    var value = GlobalData.bots[statBotSelected][statNameLookup[statIdx]];
-    var weight = GlobalData.regStats[statBotSelected][statNameLookup[statIdx]];
-    var score = weight*value;
-    newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
-      .append('text')
-        .attr('alt', "Value")
-        .text(parseInt(100.0*value)/100.0);
-    newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
-      .append('text')
-        .attr('alt', "Weight")
-        .text(parseInt(100.0*weight)/100.0);
-    newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
-      .append('text')
-        .attr('alt', "Score")
-        .text(parseInt(100.0*score)/100.0);
-    newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
-      .append('text')
-        .attr('alt', "Percent")
-        .text(parseInt(100.0*score/selectedScore)/100.0);
+    for(var statIdx = 0; statIdx < statCount; ++statIdx)
+    {
+      var value = GlobalData.bots[statBotSelected][statNameLookup[statIdx]];
+      var weight = GlobalData.regStats[statBotSelected][statNameLookup[statIdx]];
+      var score = weight*value;
+      if((!dim && (score != 0.0)) || (dim && (score == 0.0)))
+      {
+        var row = statsTable.append('tbody').append('tr')
+        var newCell = row.append('td').attr('class', 'table_cell').style('width', '10%')
+        var cellRow = newCell.append('div').attr('class', 'row row-cols-2')
+          cellRow.append('div').attr('class', 'col')
+            .style('width', '10%')
+            .append('img')
+              .attr('src', statImageLookup[statIdx])
+              .attr('alt', statNameLookup[statIdx]);
+          //.append('text')
+          //  .attr('alt', "Symbol")
+          //  .text(statImageLookup[statIdx]);
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '20%')
+          .append('text')
+            .attr('class', dim ? 'darken' : '')
+            .attr('alt', "Measure Value")
+            .text(statNameLookup[statIdx]);
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
+          .append('text')
+            .attr('class', dim ? 'darken' : '')
+            .attr('alt', "Value")
+            .text(parseInt(100.0*value)/100.0);
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
+          .append('text')
+            .attr('class', dim ? 'darken' : '')
+            .attr('alt', "Weight")
+            .text(parseInt(100.0*weight)/100.0);
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
+          .append('text')
+            .attr('class', dim ? 'darken' : '')
+            .attr('alt', "Score")
+            .text(parseInt(100.0*score)/100.0);
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
+          .append('text')
+            .attr('class', dim ? 'darken' : '')
+            .attr('alt', "Percent")
+            .text(parseInt(100.0*score/selectedScore)/100.0);
+      }
+    }
+
+    dim = true;
   }
 }

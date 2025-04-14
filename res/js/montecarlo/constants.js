@@ -6,59 +6,64 @@
 const botIndex = {
   crab: 0,
   hunter: 1,
-  recall: 2,
-  recallhunter: 3,
-  scorpion: 4,
-  beetle: 5,
-  blink: 6,
-  blinkhunter: 7,
-  gunbot: 8,
-  missilebot: 9,
-  wasp: 10,
-  hornet: 11,
-  knight: 12,
-  crossbow: 13,
-  ballista: 14,
-  kingcrab: 15,
-  crusader: 16,
-  bomber: 17,
-  shocker: 18,
-  recallshocker: 19,
-  mortar: 20,
-  swiftshocker: 21,
-  heavyhunter: 22,
-  destroyer: 23,
-  raider: 24,
-  turret: 25,
-  heavyballista: 26,
-  gargantua: 27,
-  sniper: 28,
-  advblink: 29,
-  assaultbot: 30,
-  advancedbot: 31,
-  behemoth: 32,
-  butterfly: 33,
-  dragonfly: 34,
-  falcon: 35,
-  airship: 36,
-  advrecall: 37,
-  mammoth: 38,
-  stinger: 39,
-  flakturret: 40,
-  bulwark: 41,
-  katbus: 42,
-  locust: 43,
-  kraken: 44,
-  predator: 45,
-  valkyrie: 46,
-  advdestroyer: 47,
-  artillery: 48,
+  guardianshield: 2,
+  recall: 3,
+  recallhunter: 4,
+  scorpion: 5,
+  beetle: 6,
+  blink: 7,
+  blinkhunter: 8,
+  gunbot: 9,
+  missilebot: 10,
+  wasp: 11,
+  hornet: 12,
+  knight: 13,
+  crossbow: 14,
+  ballista: 15,
+  kingcrab: 16,
+  crusader: 17,
+  bomber: 18,
+  shocker: 19,
+  recallshocker: 20,
+  mortar: 21,
+  swiftshocker: 22,
+  heavyhunter: 23,
+  destroyer: 24,
+  raider: 25,
+  turret: 26,
+  heavyballista: 27,
+  gargantua: 28,
+  sniper: 29,
+  advblink: 30,
+  assaultbot: 31,
+  advancedbot: 32,
+  behemoth: 33,
+  advancedmortar: 34,
+  blaster: 35,
+  butterfly: 36,
+  dragonfly: 37,
+  falcon: 38,
+  airship: 39,
+  advrecall: 40,
+  mammoth: 41,
+  stinger: 42,
+  flakturret: 43,
+  bulwark: 44,
+  katbus: 45,
+  locust: 46,
+  kraken: 47,
+  predator: 48,
+  valkyrie: 49,
+  artillery: 50,
+  advdestroyer: 51,
+  shade: 52,
 };
 
 // Look up unit full name by bot index.
 const botNameLookup = [
   "Crab",
   "Hunter",
+  "Guardian Shield",
   "Recall",
   "Recall Hunter",
   "Scorpion",
@@ -90,6 +95,8 @@ const botNameLookup = [
   "Assaultbot",
   "Advancedbot",
   "Behemoth",
+  "Advanced Mortar",
+  "Blaster",
   "Butterfly",
   "Dragonfly",
   "Falcon",
@@ -104,8 +111,9 @@ const botNameLookup = [
   "Kraken",
   "Predator",
   "Valkyrie",
-  "Advanced Destroyer",
   "Artillery",
+  "Advanced Destroyer",
+  "Shade",
 ];
 
 // Look up unit icon by bot index.
@@ -159,6 +167,10 @@ const botImageLookup = [
   'res/images/units/' + botNameLookup[46].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/units/' + botNameLookup[47].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/units/' + botNameLookup[48].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/units/' + botNameLookup[49].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/units/' + botNameLookup[50].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/units/' + botNameLookup[51].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/units/' + botNameLookup[52].toLowerCase().replace(/\s+/g,'') + '.png',
 ];
 
 const botCount = botNameLookup.length;
@@ -205,6 +217,8 @@ const techImageLookup = [
   ,
 ];
 
+const techCount = techIndex.any;
+
 // Resource Index.
 const resourceIndex = {
   matter: 0,
@@ -238,8 +252,22 @@ const traitIndex = {
   hulking: 4,
   shattering: 5,
   hunting: 6,
-  any: 7,
+  passive: 7,
+  any: 8,
 };
+
+// Look up trait full name by trait index.
+const internalTraitNameLookup = [
+  "Walking",
+  "Flying",
+  "Swarming",
+  "Piercing",
+  "Hulking",
+  "Shattering",
+  "Hunting",
+  "Passive",
+  "Any",
+];
 
 // Look up trait full name by trait index.
 const traitNameLookup = [
@@ -250,6 +278,7 @@ const traitNameLookup = [
   "BIG",
   "SPLASH",
   "ANTI-AIR",
+  "PASSIVE",
   "Any",
 ];
 
@@ -263,7 +292,10 @@ const traitImageLookup = [
   'res/images/traits/' + traitNameLookup[ 5].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
   'res/images/traits/' + traitNameLookup[ 6].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
   'res/images/traits/' + traitNameLookup[ 7].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
+  'res/images/traits/' + traitNameLookup[ 8].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
 ];
+
+const traitCount = traitIndex.any;
 
 const statIndex = {
 //ID: ,
@@ -286,7 +318,7 @@ const statIndex = {
   Radius: 11,
   Speed: 12,
   Damage: 13,
-  DmgGrounded: 14,
+  DamageWalking: 14,
   DamageFlying: 15,
   DamageSwarming: 16,
   DamagePiercing: 17,
@@ -307,7 +339,7 @@ const statIndex = {
   WeaponSpeed: 32,
   Range: 33,
   Splash: 34,
-  TgtGrounded: 35,
+  TgtWalking: 35,
   TgtFlying: 36,
   TgtSwarming: 37,
   TgtPiercing: 38,
@@ -321,7 +353,8 @@ const statIndex = {
   Detonate: 46,
   Unsetup: 47,
   Destruct: 48,
-  Extra: 49,
+  "Guardian Shield": 49,
+  Extra: 50,
 };
 
 const statCount = statIndex.Extra;
@@ -345,10 +378,11 @@ const statNameLookup = [
   "Hulking",
   "Shattering",
   "Hunting",
+  "Passive",
   "Radius",
   "Speed",
   "Damage",
-  "DmgGrounded",
+  "DamageWalking",
   "DamageFlying",
   "DamageSwarming",
   "DamagePiercing",
@@ -369,7 +403,7 @@ const statNameLookup = [
   "WeaponSpeed",
   "Range",
   "Splash",
-  "TgtGrounded",
+  "TgtWalking",
   "TgtFlying",
   "TgtSwarming",
   "TgtPiercing",
@@ -383,6 +417,7 @@ const statNameLookup = [
   "Detonate",
   "Unsetup",
   "Destruct",
+  "Guardian Shield",
   "Extra",
 ];
 
@@ -399,10 +434,11 @@ const statImageLookup = [
   'res/images/traits/' + traitNameLookup[ 4].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
   'res/images/traits/' + traitNameLookup[ 5].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
   'res/images/traits/' + traitNameLookup[ 6].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
+  'res/images/traits/' + traitNameLookup[ 7].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
   'res/images/stats/' + statNameLookup[11].toLowerCase().replace(/\s+/g,'') + '.png', // Radius
   'res/images/stats/' + statNameLookup[12].toLowerCase().replace(/\s+/g,'') + '.png', // Speed
   'res/images/stats/' + statNameLookup[13].toLowerCase().replace(/\s+/g,'') + '.png', // Damage
-  'res/images/stats/dmgvs' + traitNameLookup[ 0].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Ground
+  'res/images/stats/dmgvs' + traitNameLookup[ 0].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Walking
   'res/images/stats/dmgvs' + traitNameLookup[ 1].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs Flying
   'res/images/stats/dmgvs' + traitNameLookup[ 2].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Swarming
   'res/images/stats/dmgvs' + traitNameLookup[ 3].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Piercing
@@ -423,7 +459,7 @@ const statImageLookup = [
   'res/images/stats/' + statNameLookup[32].toLowerCase().replace(/\s+/g,'') + '.png', // Weapon Speed
   'res/images/stats/' + statNameLookup[33].toLowerCase().replace(/\s+/g,'') + '.png', // Range
   'res/images/stats/' + statNameLookup[34].toLowerCase().replace(/\s+/g,'') + '.png', // Splash
-  'res/images/stats/tgt' + traitNameLookup[ 0].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtGround
+  'res/images/stats/tgt' + traitNameLookup[ 0].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtWalking
   'res/images/stats/tgt' + traitNameLookup[ 1].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtFlying
   'res/images/stats/tgt' + traitNameLookup[ 2].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtSwarming
   'res/images/stats/tgt' + traitNameLookup[ 3].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtPiercing
@@ -437,6 +473,7 @@ const statImageLookup = [
   'res/images/abilities/' + statNameLookup[46].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + statNameLookup[47].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + statNameLookup[48].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/abilities/' + statNameLookup[49].toLowerCase().replace(/\s+/g,'') + '.png',
   '', // Extra, dummy image?
 ];
 
@@ -546,6 +583,7 @@ const abilityIndex = {
   recall: 4,
   setup: 5,
   unsetup: 6,
+  guardianshield: 7,
 };
 
 // Lookup ability name by slot index.
@@ -557,6 +595,7 @@ const abilityNameLookup = [
   'Recall',
   'Setup',
   'Unsetup',
+  'Guardian Shield',
 ];
 
 // Lookup ability image by slot index.
@@ -568,6 +607,7 @@ const abilityImageLookup = [
   'res/images/abilities/' + abilityNameLookup[abilityIndex.recall].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + abilityNameLookup[abilityIndex.setup].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + abilityNameLookup[abilityIndex.unsetup].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/abilities/' + abilityNameLookup[abilityIndex.guardianshield].toLowerCase().replace(/\s+/g,'') + '.png',
 ];
 
 const manuIndex = {
@@ -605,3 +645,5 @@ const manuImageLookup = [
   'res/images/manufacturers/' + manuNameLookup[manuIndex.heavyunionalliance].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/manufacturers/' + manuNameLookup[manuIndex.any].toLowerCase().replace(/\s+/g,'') + '.png',
 ];
+
+const manuCount = manuIndex.any;

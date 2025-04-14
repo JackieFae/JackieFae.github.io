@@ -22,12 +22,66 @@ var correlationOutputSelect = null;
 var correlationOutputHighlight = null;
 
 // Add event listener to the select box
-d3.select("#selectCorSlug").on("change", function() {
-  selectCorrelationBase();
-});
+var corrSelectButton = d3.select('#corrBotButton');
+d3.select('#corrBotCrab').on('click', () => selectCorrelationBase(d3.select("#corrBotCrab").attr('value')));
+d3.select('#corrBotHunter').on('click', () => selectCorrelationBase(d3.select("#corrBotHunter").attr('value')));
+d3.select('#corrBotGuardianShield').on('click', () => selectCorrelationBase(d3.select("#corrBotGuardianShield").attr('value')));
+d3.select('#corrBotRecall').on('click', () => selectCorrelationBase(d3.select("#corrBotRecall").attr('value')));
+d3.select('#corrBotRecallHunter').on('click', () => selectCorrelationBase(d3.select("#corrBotRecallHunter").attr('value')));
+d3.select('#corrBotScorpion').on('click', () => selectCorrelationBase(d3.select("#corrBotScorpion").attr('value')));
+d3.select('#corrBotBeetle').on('click', () => selectCorrelationBase(d3.select("#corrBotBeetle").attr('value')));
+d3.select('#corrBotBlink').on('click', () => selectCorrelationBase(d3.select("#corrBotBlink").attr('value')));
+d3.select('#corrBotBlinkHunter').on('click', () => selectCorrelationBase(d3.select("#corrBotBlinkHunter").attr('value')));
+d3.select('#corrBotGunbot').on('click', () => selectCorrelationBase(d3.select("#corrBotGunbot").attr('value')));
+d3.select('#corrBotMissilebot').on('click', () => selectCorrelationBase(d3.select("#corrBotMissilebot").attr('value')));
+d3.select('#corrBotWasp').on('click', () => selectCorrelationBase(d3.select("#corrBotWasp").attr('value')));
+d3.select('#corrBotHornet').on('click', () => selectCorrelationBase(d3.select("#corrBotHornet").attr('value')));
+d3.select('#corrBotKnight').on('click', () => selectCorrelationBase(d3.select("#corrBotKnight").attr('value')));
+d3.select('#corrBotCrossbow').on('click', () => selectCorrelationBase(d3.select("#corrBotCrossbow").attr('value')));
+d3.select('#corrBotBallista').on('click', () => selectCorrelationBase(d3.select("#corrBotBallista").attr('value')));
+d3.select('#corrBotKingCrab').on('click', () => selectCorrelationBase(d3.select("#corrBotKingCrab").attr('value')));
+d3.select('#corrBotCrusader').on('click', () => selectCorrelationBase(d3.select("#corrBotCrusader").attr('value')));
+d3.select('#corrBotBomber').on('click', () => selectCorrelationBase(d3.select("#corrBotBomber").attr('value')));
+d3.select('#corrBotShocker').on('click', () => selectCorrelationBase(d3.select("#corrBotShocker").attr('value')));
+d3.select('#corrBotRecallShocker').on('click', () => selectCorrelationBase(d3.select("#corrBotRecallShocker").attr('value')));
+d3.select('#corrBotMortar').on('click', () => selectCorrelationBase(d3.select("#corrBotMortar").attr('value')));
+d3.select('#corrBotSwiftShocker').on('click', () => selectCorrelationBase(d3.select("#corrBotSwiftShocker").attr('value')));
+d3.select('#corrBotHeavyHunter').on('click', () => selectCorrelationBase(d3.select("#corrBotHeavyHunter").attr('value')));
+d3.select('#corrBotDestroyer').on('click', () => selectCorrelationBase(d3.select("#corrBotDestroyer").attr('value')));
+d3.select('#corrBotRaider').on('click', () => selectCorrelationBase(d3.select("#corrBotRaider").attr('value')));
+d3.select('#corrBotTurret').on('click', () => selectCorrelationBase(d3.select("#corrBotTurret").attr('value')));
+d3.select('#corrBotHeavyBallista').on('click', () => selectCorrelationBase(d3.select("#corrBotHeavyBallista").attr('value')));
+d3.select('#corrBotGargantua').on('click', () => selectCorrelationBase(d3.select("#corrBotGargantua").attr('value')));
+d3.select('#corrBotSniper').on('click', () => selectCorrelationBase(d3.select("#corrBotSniper").attr('value')));
+d3.select('#corrBotAdvancedBlink').on('click', () => selectCorrelationBase(d3.select("#corrBotAdvancedBlink").attr('value')));
+d3.select('#corrBotAssaultbot').on('click', () => selectCorrelationBase(d3.select("#corrBotAssaultbot").attr('value')));
+d3.select('#corrBotAdvancedbot').on('click', () => selectCorrelationBase(d3.select("#corrBotAdvancedbot").attr('value')));
+d3.select('#corrBotBehemoth').on('click', () => selectCorrelationBase(d3.select("#corrBotBehemoth").attr('value')));
+d3.select('#corrBotAdvancedMortar').on('click', () => selectCorrelationBase(d3.select("#corrBotAdvancedMortar").attr('value')));
+d3.select('#corrBotBlaster').on('click', () => selectCorrelationBase(d3.select("#corrBotBlaster").attr('value')));
+d3.select('#corrBotButterfly').on('click', () => selectCorrelationBase(d3.select("#corrBotButterfly").attr('value')));
+d3.select('#corrBotDragonfly').on('click', () => selectCorrelationBase(d3.select("#corrBotDragonfly").attr('value')));
+d3.select('#corrBotFalcon').on('click', () => selectCorrelationBase(d3.select("#corrBotFalcon").attr('value')));
+d3.select('#corrBotAirship').on('click', () => selectCorrelationBase(d3.select("#corrBotAirship").attr('value')));
+d3.select('#corrBotAdvancedRecall').on('click', () => selectCorrelationBase(d3.select("#corrBotAdvancedRecall").attr('value')));
+d3.select('#corrBotMammoth').on('click', () => selectCorrelationBase(d3.select("#corrBotMammoth").attr('value')));
+d3.select('#corrBotStinger').on('click', () => selectCorrelationBase(d3.select("#corrBotStinger").attr('value')));
+d3.select('#corrBotFlakTurret').on('click', () => selectCorrelationBase(d3.select("#corrBotFlakTurret").attr('value')));
+d3.select('#corrBotBulwark').on('click', () => selectCorrelationBase(d3.select("#corrBotBulwark").attr('value')));
+d3.select('#corrBotKatbus').on('click', () => selectCorrelationBase(d3.select("#corrBotKatbus").attr('value')));
+d3.select('#corrBotLocust').on('click', () => selectCorrelationBase(d3.select("#corrBotLocust").attr('value')));
+d3.select('#corrBotKraken').on('click', () => selectCorrelationBase(d3.select("#corrBotKraken").attr('value')));
+d3.select('#corrBotPredator').on('click', () => selectCorrelationBase(d3.select("#corrBotPredator").attr('value')));
+d3.select('#corrBotValkyrie').on('click', () => selectCorrelationBase(d3.select("#corrBotValkyrie").attr('value')));
+d3.select('#corrBotArtillery').on('click', () => selectCorrelationBase(d3.select("#corrBotArtillery").attr('value')));
+d3.select('#corrBotAdvancedDestroyer').on('click', () => selectCorrelationBase(d3.select("#corrBotAdvancedDestroyer").attr('value')));
+d3.select('#corrBotShade').on('click', () => selectCorrelationBase(d3.select("#corrBotShade").attr('value')));
 
-function selectCorrelationBase() {
-  correlationBot = d3.select("#selectCorSlug").property("value");
+function selectCorrelationBase(value)
+{
+  corrSelectButton.select('img').attr('src', botImageLookup[value]);
+  corrSelectButton.select('span').text(botNameLookup[value]);
+  correlationBot = value;//d3.select("#selectCorSlug").property("value");
   drawCorrelation();
 }
 
@@ -57,7 +111,7 @@ function drawCorrelationGraph(graph, table, data)
 
   const filterFriendData = data.slice(botTechMap[0], botTechMap[5]);
   const sortedFriendData = filterFriendData.slice().sort((a,b) => d3.ascending(a[correlationOutputSelect], b[correlationOutputSelect]));
-  const filterFoeData = data.slice(botTechMap[5] + 1/*Skill*/ + botTechMap[0], botTechMap[5] + 1/*Skill*/ + botTechMap[5]);
+  const filterFoeData = data.slice(botTechMap[5] + 2/*Skill & Aggression*/ + botTechMap[0], botTechMap[5] + 2/*Skill & Aggression*/ + botTechMap[5]);
   const sortedFoeData = filterFoeData.slice().sort((a,b) => d3.ascending(a[correlationOutputSelect], b[correlationOutputSelect]));
 
   const graphBot = GlobalData.regData[correlationBot][correlationBot];
@@ -81,12 +135,12 @@ function drawCorrelationGraph(graph, table, data)
       }
     });
     sortedFoeData.forEach((d, j) => {
-      if(d.correlationID != correlationBot + 50)
+      if(d.correlationID != correlationBot + (botCount + 2))
       {
         var outputRatio = d[correlationOutputSelect] / graphBot[correlationOutputSelect];
         if(correlationOutputSelect == "AdvantagedWins" || correlationOutputSelect == "PickPct")
         {
-          var outputRatio = (d[correlationOutputSelect] - graphBot[correlationOutputSelect])/100.0;
+          var outputRatio = (d[correlationOutputSelect] - graphBot[correlationOutputSelect]) / 100.0;
         }
         if((cBinThresholds[i] <= outputRatio) && (outputRatio < cBinThresholds[i+1]))
         {
@@ -96,6 +150,21 @@ function drawCorrelationGraph(graph, table, data)
     });
   }
 
+  // Draw labels for groups.
+  svg.append('g').append('text').attr('class', 'svg_text')
+    .attr('x', -0.5 * cBinHeight)
+    .attr('y', 0)
+    .style('font-size', '20px')
+    .style("text-anchor", "middle")
+    .style('transform', 'rotate(-90deg)')
+    .text('Friends');
+  svg.append('g').append('text').attr('class', 'svg_text')
+    .attr('x', -1.5 * cBinHeight)
+    .attr('y', 0)
+    .style('font-size', '20px')
+    .style("text-anchor", "middle")
+    .style('transform', 'rotate(-90deg)')
+    .text('Foes');
   // Draw lines for bins.
   svg.append("line").attr('class', 'svg_line')
     .attr("x1", 0)
@@ -109,6 +178,13 @@ function drawCorrelationGraph(graph, table, data)
       .attr("x2", i*cBinWidth)
       .attr("y1", 0)
       .attr("y2", 2*cBinHeight);
+    svg.append('g').append('text').attr('class', 'svg_text')
+      .attr('x', i*cBinWidth)
+      .attr('y', -4)
+      .style('font-size', '20px')
+      .style("text-anchor", "middle")
+      .text((cBinThresholds[i] >= 0.0 ? "+" : "") + parseInt(cBinThresholds[i] * 100.0) + "%");
+      
   }
   for(var i = 0; i < cNumBins; ++i)
   {
@@ -139,8 +215,8 @@ function drawCorrelationGraph(graph, table, data)
     binnedData[i].foe.forEach((d, j) => {
       var y = Math.floor(j % foeRows);
       var x = Math.floor(j / foeRows);
-      var ref = botImageLookup[d.correlationID - 50];
-      var name = botNameLookup[d.correlationID - 50];
+      var ref = botImageLookup[d.correlationID - (botCount + 2)];
+      var name = botNameLookup[d.correlationID - (botCount + 2)];
       svg.append('image').attr('class', 'svg_image')
         .attr('x', x*foeImageScale + i * (cBinWidth) + 5)
         .attr('y', y*foeImageScale + cBinHeight)
@@ -154,142 +230,6 @@ function drawCorrelationGraph(graph, table, data)
         .on('click', () => setCorrelationInputSelect(graph, table, name));
     });
   }
-}
-
-function drawCorrelationGraph2(graph, table, data)
-{
-  graph.selectAll('*').remove();
-
-  const graphWidth = botCount * 35 + margin.left + margin.right;
-  graph.attr("width", graphWidth + 35);
-  const svg = graph.append('g')
-    .attr("transform", `translate(${margin.left},${margin.top})`);
-
-  const filterData = data.slice(botTechMap[0], botTechMap[5]);
-  const sortedData = filterData.slice().sort((a,b) => d3.ascending(a[correlationOutputSelect], b[correlationOutputSelect]));
-
-  const yExtents = d3.extent(sortedData, d => d[correlationOutputSelect]);
-  const minYExtent = Math.min(0.0, yExtents[0]);
-  const maxYExtent = Math.max(0.0, yExtents[1]);
-  const minHeight = 0.0;
-  const maxHeight = height;
-  const centerH = (maxHeight - minHeight) * Math.max(0, (maxYExtent)) / (maxYExtent - minYExtent);
-
-  const numRegVars = sortedData.length - 1;
-  const rectSpacing = 1;
-  const rectWidth = (graphWidth / numRegVars) - rectSpacing;
-  var zeroPos = 0;
-  sortedData.forEach((d, i) => {
-    if(d[correlationOutputSelect] < 0.0)
-    {
-      zeroPos = i + 1;
-    }
-  });
-  const centerW = graphWidth * Math.max(0, (zeroPos)) / numRegVars;
-
-  var lineCount = 0;
-  sortedData.forEach(function(d, i) {
-    const botIdx = d.correlationID;
-    if(botIdx != correlationBot)
-    {
-      const plotVal = d[correlationOutputSelect];
-      const plotDiff = d[correlationOutputSelect+"Diff"];
-      const lowerBoundValue = Math.min(-plotVal, 0);
-      const upperBoundValue = Math.max(-plotVal, 0) - lowerBoundValue;
-      const lowerBoundDiff = Math.min(-plotVal, -plotVal + plotDiff);
-      const upperBoundDiff = Math.abs(plotDiff);
-      svg.append('rect').attr('class', 'svg_background')
-        .attr('x', lineCount * (rectWidth + rectSpacing))
-        .attr('y', 40.0 + 0.0)
-        .attr('width', rectWidth)
-        .attr('height', height)
-        .attr('filter', 'invert(97.27%)')
-        .on('mouseenter', () => setCorrelationInputHighlight(graph, table, d.name))
-        .on('mouseleave', () => setCorrelationInputHighlight(graph, table, null))
-        .on('click', () => setCorrelationInputSelect(graph, table, d.name))
-      svg.append('rect').attr('class', 'svg_shape')
-        .attr('x', lineCount * (rectWidth + rectSpacing))
-        .attr('y', 40.0 + centerH + lowerBoundValue / maxYExtent * centerH)
-        .attr('width', rectWidth)
-        .attr('height', upperBoundValue / maxYExtent * centerH)
-        .attr('alt', d.name)
-        .on('mouseenter', () => setCorrelationInputHighlight(graph, table, d.name))
-        .on('mouseleave', () => setCorrelationInputHighlight(graph, table, null))
-        .on('click', () => setCorrelationInputSelect(graph, table, d.name));
-      rectType = '';
-      if(plotDiff < 0)
-      {
-        rectType = 'svg_shape_tertiary';
-      }
-      else if(plotDiff > 0)
-      {
-        rectType = 'svg_shape_secondary';
-      }
-      if(plotDiff != 0)
-      {
-        svg.append('rect').attr('class', rectType)
-          .attr('x', lineCount * (rectWidth + rectSpacing))
-          .attr('y', 40.0 + centerH + lowerBoundDiff / maxYExtent * centerH)
-          .attr('width', rectWidth)
-          .attr('height', upperBoundDiff / maxYExtent * centerH)
-          .attr('alt', d.name)
-          .on('mouseenter', () => setCorrelationInputHighlight(graph, table, d.name))
-          .on('mouseleave', () => setCorrelationInputHighlight(graph, table, null))
-          .on('click', () => setCorrelationInputSelect(graph, table, d.name));
-      }
-      if((d.name != "Intercept") && (d.name != "Skill"))
-      {
-        var offset = 0;
-        if(Math.sign(plotVal) > 0)
-        {
-          offset = -rectWidth + (Math.min(-plotVal, -plotVal + plotDiff) / maxYExtent) * centerH;
-        }
-        else
-        {
-          offset = ((-plotVal + Math.max(plotDiff, 0)) / maxYExtent) * centerH;
-        }
-        svg.append('image').attr('class', 'svg_image')
-          .attr('x', lineCount * (rectWidth + rectSpacing))
-          .attr('y', 40.0 + centerH + offset)
-          .attr('width', rectWidth)
-          .attr('height', rectWidth)
-          .attr('filter', 'invert(100%)')
-          .attr('href', `res/images/units/${d.name.toLowerCase().replace(/\s+/g,'')}.png`)
-          .attr('alt', d.name)
-          .on('mouseenter', () => setCorrelationInputHighlight(graph, table, d.name))
-          .on('mouseleave', () => setCorrelationInputHighlight(graph, table, null))
-          .on('click', () => setCorrelationInputSelect(graph, table, d.name));
-      }
-      lineCount++;
-    }
-  });
-
-  // Add X axis
-  const x = d3.scaleLinear()
-    .domain([1, numRegVars])
-    .range([0, graphWidth]);
-  svg.append("g")
-    .attr("transform", `translate(0,${40.0 + centerH})`)
-    .call(
-      d3.axisBottom(x).tickValues(x.domain()));
-
-  // Add Y axis
-  const y = d3.scaleLinear()
-  .domain(minYExtent, maxYExtent)
-  .range([height, 0]);
-  svg.append("g")
-    .attr("transform", `translate(${centerW},${40.0})`)
-    .call(
-      d3.axisRight(y)
-        .tickValues(y.domain()).tickFormat((d) => d + '%') // Custom format to convert decimal to percentage
-    );
-
-  svg.append('text').attr('class', 'svg_text')
-    .text(GlobalData.count + " / " + GlobalData.countBase + " iterations");
-
-  var temp = correlationSelect;
-  setCorrelationInputSelect(graph, table, null);
-  setCorrelationInputSelect(graph, table, temp);
 }
 
 function drawCorrelationTable(graph, table, data)
@@ -473,16 +413,16 @@ function setCorrelationInputSelect(graph, table, name)
   {
     graph.selectAll(`rect[alt="${correlationHighlight}"]`).classed('highlighted', false);
     graph.selectAll(`image[alt="${correlationHighlight}"]`).classed('highlighted', false);
-    graph.select(`rect[alt="${correlationSelect}"]`).classed('selected', false);
-    graph.select(`image[alt="${correlationSelect}"]`).classed('selected', false);
-    graph.select(`rect[alt="${name}"]`).classed('selected', true);
-    graph.select(`image[alt="${name}"]`).classed('selected', true);
+    graph.selectAll(`rect[alt="${correlationSelect}"]`).classed('selected', false);
+    graph.selectAll(`image[alt="${correlationSelect}"]`).classed('selected', false);
+    graph.selectAll(`rect[alt="${name}"]`).classed('selected', true);
+    graph.selectAll(`image[alt="${name}"]`).classed('selected', true);
 
     table.selectAll(`img[alt="${correlationSelect}"]`).classed('highlighted', false);
     table.selectAll(`text[alt="${correlationSelect}"]`).classed('highlighted', false);
-    table.select(`img[alt="${correlationSelect}"]`).classed('selected', false);
+    table.selectAll(`img[alt="${correlationSelect}"]`).classed('selected', false);
     table.selectAll(`text[alt="${correlationSelect}"]`).classed('selected', false);
-    table.select(`img[alt="${name}"]`).classed('selected', true);
+    table.selectAll(`img[alt="${name}"]`).classed('selected', true);
     table.selectAll(`text[alt="${name}"]`).classed('selected', true);
 
     correlationSelect = name;

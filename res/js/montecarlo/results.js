@@ -9,9 +9,10 @@ const resultGraph = d3.select('#viz-results').append('div').attr('class', 'overf
   .attr("height", height + margin.top + margin.bottom);
 
 // Add event listener to the select box
-var selectButton = d3.select('#scoreBotButton');
+var resultSelectButton = d3.select('#scoreBotButton');
 d3.select('#scoreBotCrab').on('click', () => selectUnit(d3.select("#scoreBotCrab").attr('value')));
 d3.select('#scoreBotHunter').on('click', () => selectUnit(d3.select("#scoreBotHunter").attr('value')));
+d3.select('#scoreBotGuardianShield').on('click', () => selectUnit(d3.select("#scoreBotGuardianShield").attr('value')));
 d3.select('#scoreBotRecall').on('click', () => selectUnit(d3.select("#scoreBotRecall").attr('value')));
 d3.select('#scoreBotRecallHunter').on('click', () => selectUnit(d3.select("#scoreBotRecallHunter").attr('value')));
 d3.select('#scoreBotScorpion').on('click', () => selectUnit(d3.select("#scoreBotScorpion").attr('value')));
@@ -43,6 +44,8 @@ d3.select('#scoreBotAdvancedBlink').on('click', () => selectUnit(d3.select("#sco
 d3.select('#scoreBotAssaultbot').on('click', () => selectUnit(d3.select("#scoreBotAssaultbot").attr('value')));
 d3.select('#scoreBotAdvancedbot').on('click', () => selectUnit(d3.select("#scoreBotAdvancedbot").attr('value')));
 d3.select('#scoreBotBehemoth').on('click', () => selectUnit(d3.select("#scoreBotBehemoth").attr('value')));
+d3.select('#scoreBotAdvancedMortar').on('click', () => selectUnit(d3.select("#scoreBotAdvancedMortar").attr('value')));
+d3.select('#scoreBotBlaster').on('click', () => selectUnit(d3.select("#scoreBotBlaster").attr('value')));
 d3.select('#scoreBotButterfly').on('click', () => selectUnit(d3.select("#scoreBotButterfly").attr('value')));
 d3.select('#scoreBotDragonfly').on('click', () => selectUnit(d3.select("#scoreBotDragonfly").attr('value')));
 d3.select('#scoreBotFalcon').on('click', () => selectUnit(d3.select("#scoreBotFalcon").attr('value')));
@@ -57,12 +60,13 @@ d3.select('#scoreBotLocust').on('click', () => selectUnit(d3.select("#scoreBotLo
 d3.select('#scoreBotKraken').on('click', () => selectUnit(d3.select("#scoreBotKraken").attr('value')));
 d3.select('#scoreBotPredator').on('click', () => selectUnit(d3.select("#scoreBotPredator").attr('value')));
 d3.select('#scoreBotValkyrie').on('click', () => selectUnit(d3.select("#scoreBotValkyrie").attr('value')));
-d3.select('#scoreBotAdvancedDestroyer').on('click', () => selectUnit(d3.select("#scoreBotAdvancedDestroyer").attr('value')));
 d3.select('#scoreBotArtillery').on('click', () => selectUnit(d3.select("#scoreBotArtillery").attr('value')));
+d3.select('#scoreBotAdvancedDestroyer').on('click', () => selectUnit(d3.select("#scoreBotAdvancedDestroyer").attr('value')));
+d3.select('#scoreBotShade').on('click', () => selectUnit(d3.select("#scoreBotShade").attr('value')));
 
 function selectUnit(value) {
-  selectButton.select('img').attr('src', botImageLookup[value]);
-  selectButton.select('span').text(botNameLookup[value]);
+  resultSelectButton.select('img').attr('src', botImageLookup[value]);
+  resultSelectButton.select('span').text(botNameLookup[value]);
   drawResults(value);
 }
 
