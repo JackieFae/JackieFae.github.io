@@ -89,9 +89,13 @@ function drawResults(newSelection)
   filterResults = GlobalData.resultDataBase.filter((d, i) => d.vars[resultSelection] != 0);
   filterResults = filterResults.slice().sort((a,b) => d3.ascending(a.scores[resultSelection], b.scores[resultSelection]));
 
-  var bwCost = GlobalData.bots[resultSelection].Bandwidth;
-  var resCost = GlobalData.bots[resultSelection].ResTotal;
+  var bwCost = Math.max(1.0, GlobalData.bots[resultSelection].Bandwidth);
+  var resCost = Math.max(1.0, GlobalData.bots[resultSelection].ResTotal);
   var counts = [0, parseInt(200.0 / bwCost)];
+  if(GlobalData.bots[resultSelection].Passive)
+  {
+    counts = [0, 2];
+  }
   var maxResult = d3.extent(filterResults, d => d.scores[resultSelection])[1];
   var originY = height;
   var originX = 0;
