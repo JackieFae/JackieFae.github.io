@@ -212,7 +212,7 @@ function drawRegressionGraph(graph, table, data)
 
   // Add X axis
   const x = d3.scaleLinear()
-    .domain([1, numRegVars])
+    .domain([0, numRegVars])
     .range([0, regGraphWidth]);
   svg.append("g")
     .attr("transform", `translate(0,${40.0 + centerH})`)
@@ -230,8 +230,36 @@ function drawRegressionGraph(graph, table, data)
         .tickValues(y.domain()).tickFormat((d) => d + '%') // Custom format to convert decimal to percentage
     );
 
-  svg.append('text').attr('class', 'svg_text')
-    .text(GlobalData.count + " / " + GlobalData.countBase + " iterations");
+  if(regressionOutputSelect == "AvgScore")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Score");
+  }
+  if(regressionOutputSelect == "Weight")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Weight");
+  }
+  if(regressionOutputSelect == "WeightRes")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Weight / Resource");
+  }
+  if(regressionOutputSelect == "WeightBW")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Weight / Bandwidth");
+  }
+  if(regressionOutputSelect == "AdvantagedWins")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Win %");
+  }
+  if(regressionOutputSelect == "PickPct")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Pick %");
+  }
 
   var temp = regressionSelect;
   setRegressionInputSelect(graph, table, null);

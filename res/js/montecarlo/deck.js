@@ -65,7 +65,11 @@ const oppoPower = { core: 0, foundry: 0, advFoundry: 0, starforge: 0, advStarfor
 //// User Interface elements
 ////
 
-// Manage player dimension choice.
+// Manage user dimension choice.
+var measureDeckScore = true; // Show unit value as % of resource cost.
+var measureDeckWinRate = false; // Show unit value as resource per bandwidth.
+
+// Manage user scale choice.
 var showDeckResources = true; // Show unit value as % of resource cost.
 var showDeckBandwidth = false; // Show unit value as resource per bandwidth.
 var showDeckInstances = false;  // Show unit value as resource per instance.
@@ -88,12 +92,30 @@ d3.select('#instance-button').on('click', () => {
   drawDecks();
 });
 
+// Manage user skill choice.
+var deckSkill = 4000.0;
+
 ////
 //// HTML Linkages
 ////
 
 // Deck builder section divisions.
 // Main division
+const deckSkillSelect = d3.select('#div-deckbuilder').append('div').attr('class', 'row row-cols-2')
+  .style('width', '45%')
+  .style('height', '30px');
+const deckSkillLabel = deckSkillSelect.append('div').attr('class', 'col')
+  .style('width', '22%')
+  .append('text').attr('class', 'svg_text')
+    .text("Select Skill:")
+const deckSkillSlider = deckSkillSelect.append('div').attr('class', 'col')
+  .style('width', '75%')
+  .append('input').attr('class', 'slider')
+    .attr('type', 'range')
+    .on("change", function(d){
+      deckSkill = parseInt(this.value);
+      drawBuilder();
+    });
 const deckBuilder = d3.select('#div-deckbuilder').append('div').attr('class', 'row row-cols-2')
   .style('height', '765px');
 // Major sub divisions
@@ -104,8 +126,10 @@ const deckColumn = deckBuilder.append('div').attr('class', 'col')
 const detailColumn = deckBuilder.append('div').attr('class', 'col')
   .style('width', '52.5%');
 // Deck/army comparison division. // TODO Does this need to be 2 columns?
+/* TODO: Re-enable when fixed.
 const deckCompare = d3.select('#div-deckcompare').append('div').attr('class', 'row row-cols-2')
   .style('height', '750px');
+*/
 
 // Player deck selection division.
 const deckPlayerLabel = deckColumn.append('div')
@@ -146,6 +170,7 @@ const deckDetail = detailColumn.append('div').attr('class', 'overflow-auto')
     .style('height', `${cardHeight+2*labelOffset}px`);
 
 // Deck info division. TO BE COMPLETED.
+/*
 const graphColumn = deckCompare.append('div').attr('class', 'col')
   .style('width', '100%');
 // TO BE COMPLETED.
@@ -154,6 +179,7 @@ const deckGraph = graphColumn.append('div').attr('class', 'overflow-auto')
 const deckPlyrGraph = deckGraph.append('div').append('svg').style('width', '100%').style('height', `200px`)
 const deckCompareGraph = deckGraph.append('div').append('svg').style('width', '100%').style('height', `175px`)
 const deckOppoGraph = deckGraph.append('div').append('svg').style('width', '100%').style('height', `200px`)
+*/
 
 ////
 //// Deck Builder Graphics
@@ -164,8 +190,17 @@ const deckOppoGraph = deckGraph.append('div').append('svg').style('width', '100%
 //
 function drawBuilder()
 {
+  // TODO: Complete drawSkillSlider();
   drawDecks();
-  drawComparisons();
+  // TODO: Repair drawComparisons();
+}
+
+//
+//
+//
+function drawSkillSlider()
+{
+  //
 }
 
 //
@@ -294,13 +329,10 @@ function drawDeck(deckLabelSvg, deckSelectionSvg, player)
       .attr('x', slotWidth*x + (slotWidth) / 2.0)
       .attr('y', slotHeight*(y + 1) - (slotHeight - iconSize) / 2.0);
 
-    if(deckSelections[cardIdx] != -1)
-    {
-      var suffix = showDeckResources ? '%' : '';
-      var netPower  = computeCardPower(cardIdx, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]);
-      wtText.classed('bright', true)
-        .text(Math.round(netPower) + suffix);
-    }
+    var suffix = showDeckResources ? '%' : '';
+    var netPower = computeCardPower(cardIdx, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]);
+    wtText.classed('bright', deckSelections[cardIdx] != -1)
+      .text(Math.round(netPower) + suffix);
 
     drawStartSelectRect(deckSvg, player, slotIdx, deckSelections[cardIdx], x, y);
   }
@@ -460,66 +492,102 @@ function drawCardReference(deckSvg, x, y, subX, subY, slotIdx, botIdx, refIdx, p
   }
   else
   {
+    var refWt = 0.0;
+    var slotWt = 0.0;
     // If both slots are filled, compute the direction of the power change.
-    if((botIdx != -1) && (deckSelections[refIdx] != -1))
+    if(botIdx != -1)
     {
-      var weightOffset = (refTeam == playerTeam) ? 0 : botCount + 2;
-      var refWt = GlobalData.regData[botIdx][deckSelections[refIdx] + weightOffset].Weight;
-      var slotWt = GlobalData.regData[botIdx][botIdx].Weight;
-      console.log(botIdx + " refs " + deckSelections[refIdx] + ": " + refWt + " / " + slotWt);
-      if(showDeckInstances)
+      if(deckSelections[refIdx] != -1)
       {
-        // Do nothing.
+        var weightOffset = (refTeam == playerTeam) ? 0 : botCount + 2;
+        refWt = GlobalData.regData[botIdx][deckSelections[refIdx] + weightOffset].Weight;
+        slotWt = GlobalData.regData[botIdx][botIdx].Weight;
+        if(showDeckInstances)
+        {
+          // Do nothing.
+        }
+        else if(showDeckResources)
+        {
+          refWt /= Math.max(1.0, GlobalData.bots[deckSelections[refIdx]].ResTotal);
+          slotWt /= Math.max(1.0, GlobalData.bots[botIdx].ResTotal);
+        }
+        else if(showDeckBandwidth)
+        {
+          refWt /= Math.max(1.0, GlobalData.bots[deckSelections[refIdx]].Bandwidth);
+          slotWt /= Math.max(1.0, GlobalData.bots[botIdx].Bandwidth);
+        }
       }
-      else if(showDeckResources)
+      else // If no selection
       {
-        refWt /= Math.max(1.0, GlobalData.bots[deckSelections[refIdx]].ResTotal);
-        slotWt /= Math.max(1.0, GlobalData.bots[botIdx].ResTotal);
+        refWt = getSpecificSlotOutput(refIdx, slotIdx + slotOffset, botIdx);
+        slotWt = GlobalData.regData[botIdx][botIdx].Weight;
+        if(showDeckInstances)
+        {
+          // Do nothing.
+        }
+        else if(showDeckResources)
+        {
+          slotWt = slotWt * 100.0 / Math.max(1.0, GlobalData.bots[botIdx].ResTotal);
+        }
+        else if(showDeckBandwidth)
+        {
+          slotWt /= Math.max(1.0, GlobalData.bots[botIdx].Bandwidth);
+        }
       }
-      else if(showDeckBandwidth)
+    }
+    else if(botIdx == -1)
+    {
+      // Get incoming values to default slot.
+      // If incoming slot defined, use corrIn
+      if(deckSelections[refIdx] != -1)
       {
-        refWt /= Math.max(1.0, GlobalData.bots[deckSelections[refIdx]].Bandwidth);
-        slotWt /= Math.max(1.0, GlobalData.bots[botIdx].Bandwidth);
+        refWt = getSpecificSlotInput(slotIdx + slotOffset, refIdx, deckSelections[refIdx]);
+        slotWt = getDefaultSlotOutput(slotIdx, slotIdx);
       }
-      var wtRatio = refWt / slotWt;
-      console.log(botIdx + " refs " + deckSelections[refIdx] + ": " + refWt + " / " + slotWt);
-      //var wtRatio = transformBotValue(slotIdx + slotOffset, refIdx) / transformBotValue(slotIdx + slotOffset, slotIdx + slotOffset);
-      // If weight change is within tolerance, draw a neutral symbol.
-      if (-0.05 <= wtRatio && wtRatio <= 0.05)
+      else// If not defined, use corrInSelfFriend/Foe
       {
-        deckSvg.append('circle').attr('class', 'svg_shape')
-          .attr('cx', slotWidth*x + slotWidth*subX/4.0 + slotWidth/8.0)
-          .attr('cy', offsetY + slotHeight*y + slotSubHeight*subY + 0.5*slotSubHeight)
-          .style('r', 2.5)
-          .style('opacity', 1.0);
+        refWt = getDefaultSlotInput(slotIdx + slotOffset, refIdx);
+        slotWt = getDefaultSlotOutput(slotIdx, slotIdx);
       }
-      else if(-0.25 <= wtRatio && wtRatio <= 0.25)
-      {
-        var forPlyrteam = ((playerTeam == cDeckPlayer) && (wtRatio > 0.0)) || ((playerTeam == cDeckOpponent) && (wtRatio < 0.0));
-        deckSvg.append('circle').attr('class', 'svg_shape')
-          .classed('highlighted', !forPlyrteam)
-          .classed('selected', forPlyrteam)
-          .attr('cx', slotWidth*x + slotWidth*subX/4.0 + slotWidth/8.0)
-          .attr('cy', offsetY + slotHeight*y + slotSubHeight*subY + 0.5*slotSubHeight)
-          .style('r', 2.5)
-          .style('opacity', 1.0);
-      }
-      else // If weight change is out of tolerance, draw an up or down arrow as needed.
-      {
-        var onTeam = wtRatio > 0.0 ? (playerTeam == cDeckPlayer) : (playerTeam == cDeckOpponent);
-        var ref = wtRatio > 0.0 ? 'res/images/arrow_up.png' : 'res/images/arrow_down.png';
-        deckSvg.append('image').attr('class', 'svg_report_image')
-          .classed('teamA', onTeam)
-          .classed('teamB', !onTeam)
-          .attr('x', slotWidth*x + slotWidth*subX/4.0 + slotWidth/8.0 - 7.5)
-          .attr('y', offsetY + slotHeight*y + slotSubHeight*subY + 2.5)
-          .attr('width', 15.0)
-          .attr('height', 15.0)
-          .attr('filter', 'invert(100%) saturation(1500%)')
-          .style('opacity', 1.0)
-          .attr('href', ref)//onTeam ? 'res/images/arrow_up.png' : 'res/images/arrow_down.png')
-          .attr('alt', 'Increase');
-      }
+    }
+
+    var wtRatio = refWt / slotWt;
+
+    // If weight change is within tolerance, draw a neutral symbol.
+    if (-0.05 <= wtRatio && wtRatio <= 0.05)
+    {
+      deckSvg.append('circle').attr('class', 'svg_shape')
+        .attr('cx', slotWidth*x + slotWidth*subX/4.0 + slotWidth/8.0)
+        .attr('cy', offsetY + slotHeight*y + slotSubHeight*subY + 0.5*slotSubHeight)
+        .style('r', 2.5)
+        .style('opacity', 1.0);
+    }
+    else if(-0.25 <= wtRatio && wtRatio <= 0.25)
+    {
+      var forPlyrteam = ((playerTeam == cDeckPlayer) && (wtRatio > 0.0)) || ((playerTeam == cDeckOpponent) && (wtRatio < 0.0));
+      deckSvg.append('circle').attr('class', 'svg_shape')
+        .classed('highlighted', !forPlyrteam)
+        .classed('selected', forPlyrteam)
+        .attr('cx', slotWidth*x + slotWidth*subX/4.0 + slotWidth/8.0)
+        .attr('cy', offsetY + slotHeight*y + slotSubHeight*subY + 0.5*slotSubHeight)
+        .style('r', 2.5)
+        .style('opacity', 1.0);
+    }
+    else // If weight change is out of tolerance, draw an up or down arrow as needed.
+    {
+      var onTeam = wtRatio > 0.0 ? (playerTeam == cDeckPlayer) : (playerTeam == cDeckOpponent);
+      var ref = wtRatio > 0.0 ? 'res/images/arrow_up.png' : 'res/images/arrow_down.png';
+      deckSvg.append('image').attr('class', 'svg_report_image')
+        .classed('teamA', onTeam)
+        .classed('teamB', !onTeam)
+        .attr('x', slotWidth*x + slotWidth*subX/4.0 + slotWidth/8.0 - 7.5)
+        .attr('y', offsetY + slotHeight*y + slotSubHeight*subY + 2.5)
+        .attr('width', 15.0)
+        .attr('height', 15.0)
+        .attr('filter', 'invert(100%) saturation(1500%)')
+        .style('opacity', 1.0)
+        .attr('href', ref)
+        .attr('alt', 'Increase');
     }
   }
 }
@@ -610,30 +678,27 @@ function drawCardHighlight(detailSvg, cardIdx)
       .attr('href', ref)
       .attr('alt', alt);
 
-    if(deckSelections[cardIdx] != -1)
-    {
-      var suffix = showDeckResources ? '%' : '';
-      var soloTech = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
-      soloTech[cardIdx] = 1;
-      var basePower = computeCardPower(cardIdx, soloTech);
-      var netPower  = computeCardPower(cardIdx, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]);
-      var diffPower = netPower - basePower;
-      var sign = diffPower < 0 ? '' : '+'
-      cardSvg.append('text').attr('class', 'svg_text')
-        .classed('bright', true)
-        .style('font-size', '40px')
-        .style("text-anchor", "middle")
-        .attr('x', cardWidth * 3.0 / 4.0 + 20.0)
-        .attr('y', (cardHeight - largeIconSize * 0.9) / 2.0 + 100.0)
-        .text(Math.round(netPower) + suffix);
-      var wtTextSum  = cardSvg.append('text').attr('class', 'svg_text')
-        .classed('bright', true)
-        .style('font-size', '30px')
-        .style("text-anchor", "middle")
-        .attr('x', cardWidth * 3.0 / 4.0 + 20.0)
-        .attr('y', (cardHeight - largeIconSize * 0.9) / 2.0 + 140.0)
-        .text('(' + Math.round(basePower) + sign + Math.round(diffPower) + suffix + ')');
-    }
+    var suffix = showDeckResources ? '%' : '';
+    var soloTech = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,];
+    soloTech[cardIdx] = 1;
+    var basePower = computeCardPower(cardIdx, soloTech);
+    var netPower  = computeCardPower(cardIdx, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]);
+    var diffPower = netPower - basePower;
+    var sign = diffPower < 0 ? '' : '+'
+    cardSvg.append('text').attr('class', 'svg_text')
+      .classed('bright', deckSelections[cardIdx] != -1)
+      .style('font-size', '40px')
+      .style("text-anchor", "middle")
+      .attr('x', cardWidth * 3.0 / 4.0 + 20.0)
+      .attr('y', (cardHeight - largeIconSize * 0.9) / 2.0 + 100.0)
+      .text(Math.round(netPower) + suffix);
+    var wtTextSum = cardSvg.append('text').attr('class', 'svg_text')
+      .classed('bright', deckSelections[cardIdx] != -1)
+      .style('font-size', '30px')
+      .style("text-anchor", "middle")
+      .attr('x', cardWidth * 3.0 / 4.0 + 20.0)
+      .attr('y', (cardHeight - largeIconSize * 0.9) / 2.0 + 140.0)
+      .text('(' + Math.round(basePower) + sign + Math.round(diffPower) + suffix + ')');
 
     for(var refIdx = 0 ; refIdx < (2 * cDeckSize); ++refIdx)
     {
@@ -670,75 +735,123 @@ function drawCardHighlight(detailSvg, cardIdx)
           .style('r', 2.5)
           .style('opacity', 0.3);
       }
-      else if(botIdx != -1 && deckSelections[refIdx] != -1)
+      else
       {
         var suffix = showDeckResources ? '%' : '';
+        var ref = "";
+        var alt = "";
+        var wt = 0.0;
+        var wtRatio = 0.0;
+        var wtReverse = 0.0;
+        var wtRatioReverse = 0.0;
+
+        if(botIdx != -1) // Bot selected
         {
-          var ref = botImageLookup[deckSelections[refIdx]];
-          var alt = botNameLookup[deckSelections[refIdx]];
-          cardSvg.append('image').attr('class', 'svg_report_image')
-            .attr('x', cardWidth*subX/4.0 + cardWidth/8.0 - 45.0)
-            .attr('y', offsetY + cardSubHeight*subY + 0.5*cardSubHeight - 20.0)
-            .attr('width', 40.0)
-            .attr('height', 40.0)
-            .attr('filter', 'invert(100%)')
-            .attr('href', ref)
-            .attr('alt', alt);
-
-          var wt = transformBotValue(cardIdx, refIdx);
-          var wtRatio = wt / transformBotValue(cardIdx, cardIdx);
-          var wtText = cardSvg.append('text').attr('class', 'svg_text').classed('bright', true)
-            .style('font-size', '20px')
-            .style("text-anchor", "middle")
-            .attr('x', cardWidth*subX/4.0 + cardWidth/8.0 + 25.0)
-            .attr('y', offsetY + cardSubHeight*subY + 0.5*cardSubHeight + 0.0);
-
-          if(wtRatio > 0.05)
+          if(deckSelections[refIdx] != -1) // Reference selected
           {
-            wtText.append("tspan").attr('class', 'svg_text')
-              .classed('selected', playerTeam == cDeckOpponent)
-              .classed('highlighted', playerTeam == cDeckPlayer)
-              .text('+' + Math.round(wt) + '' + suffix);
+            ref = botImageLookup[deckSelections[refIdx]];
+            alt = botNameLookup[deckSelections[refIdx]];
+            wt = transformBotValue(cardIdx, refIdx);
+            wtRatio = wt / transformBotValue(cardIdx, cardIdx);
+            wtReverse = transformBotValue(refIdx, cardIdx);
+            wtRatioReverse = wtReverse / transformBotValue(refIdx, refIdx);
+            console.log("A" + wt + " " + wtReverse);
           }
-          else if(wtRatio < -0.05)
+          else // Reference not selected
           {
-            wtText.classed('bright', true).append("tspan").attr('class', 'svg_text')
-              .classed('selected', playerTeam == cDeckPlayer)
-              .classed('highlighted', playerTeam == cDeckOpponent)
-              .text(Math.round(wt) + suffix);
-          }
-          else
-          {
-            wtText.text(Math.round(wt) + suffix);
+            ref = deckslotImageLookup[(refIdx >= cDeckSize) ? refIdx - cDeckSize : refIdx];
+            alt = deckslotNameLookup[(refIdx >= cDeckSize) ? refIdx - cDeckSize : refIdx];
+            wt = getSpecificSlotOutput(refIdx, cardIdx, botIdx);
+            wtRatio = wt / transformBotValue(cardIdx, cardIdx);
+            wtReverse = getSpecificSlotInput(refIdx, cardIdx, botIdx);
+            wtRatioReverse = wtReverse / getDefaultSlotOutput(refIdx, refIdx);
+            console.log("B" + wt + " " + wtReverse);
           }
         }
+        else // Bot not selected
         {
-          var wt = transformBotValue(refIdx, cardIdx);
-          var wtRatio = wt / transformBotValue(refIdx, refIdx);
-          var wtText = cardSvg.append('text').attr('class', 'svg_text').classed('bright', true)
-            .style('font-size', '16px')
-            .style("text-anchor", "middle")
-            .attr('x', cardWidth*subX/4.0 + cardWidth/8.0 + 25.0)
-            .attr('y', offsetY + cardSubHeight*subY + 0.5*cardSubHeight + 20.0);
+          if(deckSelections[refIdx] != -1) // Reference selected
+          {
+            ref = botImageLookup[deckSelections[refIdx]];
+            alt = botNameLookup[deckSelections[refIdx]];
+            wt = getSpecificSlotInput(cardIdx, refIdx, deckSelections[refIdx]);
+            wtRatio = wt / getDefaultSlotOutput(cardIdx, cardIdx);
+            wtReverse = getSpecificSlotOutput(cardIdx, refIdx, deckSelections[refIdx]);
+            wtRatioReverse = wtReverse / transformBotValue(refIdx, refIdx);
+            console.log("C" + wt + " " + wtReverse);
+          }
+          else // Reference not selected
+          {
+            ref = deckslotImageLookup[(refIdx >= cDeckSize) ? refIdx - cDeckSize : refIdx];
+            alt = deckslotNameLookup[(refIdx >= cDeckSize) ? refIdx - cDeckSize : refIdx];
+            wt = getDefaultSlotInput(cardIdx, refIdx);
+            wtRatio = wt / getDefaultSlotOutput(cardIdx, cardIdx);
+            wtReverse = getDefaultSlotOutput(cardIdx, refIdx);
+            wtRatioReverse = wtReverse / getDefaultSlotOutput(refIdx, refIdx);
+            console.log("D" + wt + " " + wtReverse);
+          }
+        }
+
+        cardSvg.append('image').attr('class', 'svg_report_image')
+          .classed('dead', deckSelections[refIdx] == -1)
+          .attr('x', cardWidth*subX/4.0 + cardWidth/8.0 - 45.0)
+          .attr('y', offsetY + cardSubHeight*subY + 0.5*cardSubHeight - 20.0)
+          .attr('width', 40.0)
+          .attr('height', 40.0)
+          .attr('filter', 'invert(100%)')
+          .attr('href', ref)
+          .attr('alt', alt);
+
+        var wtText = cardSvg.append('text').attr('class', 'svg_text')
+          .classed('bright', deckSelections[refIdx] != -1)
+          .style('font-size', '20px')
+          .style("text-anchor", "middle")
+          .attr('x', cardWidth*subX/4.0 + cardWidth/8.0 + 25.0)
+          .attr('y', offsetY + cardSubHeight*subY + 0.5*cardSubHeight + 0.0);
+
+        if(wtRatio > 0.05)
+        {
+          wtText.append("tspan").attr('class', 'svg_text')
+            .classed('selected', playerTeam == cDeckOpponent)
+            .classed('highlighted', playerTeam == cDeckPlayer)
+            .text('+' + Math.round(wt) + '' + suffix);
+        }
+        else if(wtRatio < -0.05)
+        {
+          wtText.append("tspan").attr('class', 'svg_text')
+            .classed('selected', playerTeam == cDeckPlayer)
+            .classed('highlighted', playerTeam == cDeckOpponent)
+            .text(Math.round(wt) + suffix);
+        }
+        else
+        {
+          wtText.text(Math.round(wt) + suffix);
+        }
+
+        var wtTextReverse = cardSvg.append('text').attr('class', 'svg_text')
+          .classed('bright', deckSelections[refIdx] != -1)
+          .style('font-size', '16px')
+          .style("text-anchor", "middle")
+          .attr('x', cardWidth*subX/4.0 + cardWidth/8.0 + 25.0)
+          .attr('y', offsetY + cardSubHeight*subY + 0.5*cardSubHeight + 20.0);
   
-          if(wtRatio > 0.05)
-          {
-            wtText.append("tspan").attr('class', 'svg_text')
-              .classed('selected', playerTeam == cDeckOpponent)
-              .classed('highlighted', playerTeam == cDeckPlayer)
-              .text('(+' + Math.round(wt) + suffix + ')');
-          }
-          else if(wtRatio < -0.05)
-          {
-            wtText.append("tspan").attr('class', 'svg_text')
-              .classed('selected', playerTeam == cDeckPlayer)
-              .classed('highlighted', playerTeam == cDeckOpponent)
-              .text('(' + Math.round(wt) + suffix + ')');
-          }
-          else
-          {
-            wtText.text('(' + Math.round(wt) + suffix + ')');
-          }
+        if(wtRatioReverse > 0.05)
+        {
+          wtTextReverse.append("tspan").attr('class', 'svg_text')
+            .classed('selected', playerTeam == cDeckOpponent)
+            .classed('highlighted', playerTeam == cDeckPlayer)
+            .text('(+' + Math.round(wtReverse) + suffix + ')');
+        }
+        else if(wtRatioReverse < -0.05)
+        {
+          wtTextReverse.append("tspan").attr('class', 'svg_text')
+            .classed('selected', playerTeam == cDeckPlayer)
+            .classed('highlighted', playerTeam == cDeckOpponent)
+            .text('(' + Math.round(wtReverse) + suffix + ')');
+        }
+        else
+        {
+          wtTextReverse.text('(' + Math.round(wtReverse) + suffix + ')');
         }
       }
     }
@@ -753,6 +866,7 @@ function drawCardHighlight(detailSvg, cardIdx)
 //
 function drawComparisons()
 {
+/*
   deckPlyrGraph.selectAll('*').remove();
   deckPlyrGraph.append('g')
     .attr("transform", `translate(${margin.left},${margin.top})`)
@@ -764,6 +878,7 @@ function drawComparisons()
     .attr("transform", `translate(${margin.left},${margin.top})`)
   drawPlayerGraphs(deckPlyrGraph);
   drawPlayerGraphs(deckOppoGraph);
+*/
 }
 
 function drawPlayerGraphs(graph)
@@ -870,6 +985,239 @@ function computeBotValues()
   return botValues;
 }
 
+// Get a bot's weight impact on a comparison slot.
+function getSpecificSlotInput(cardIdx, refIdx, botIdx)
+{
+  var slotIdx = cardIdx >= cDeckSize ? cardIdx - 8 : cardIdx;
+  var refSlotIdx = refIdx >= cDeckSize ? refIdx - 8 : refIdx;
+  var slotCompare = GlobalData.comparisons.slot[slotIdx];
+  if(cardIdx == refIdx)
+  {
+    if(showDeckInstances)
+    {
+      return slotCompare.Weight;
+    }
+    else if(showDeckBandwidth)
+    {
+      return slotCompare.WeightBW;
+    }
+    else if(showDeckResources)
+    {
+      return slotCompare.WeightRes;
+    }
+  }
+  else
+  {
+    if((cardIdx < cDeckSize && refIdx < cDeckSize) || (cDeckSize <= cardIdx && cDeckSize <= refIdx))
+    {
+      if(showDeckInstances)
+      {
+        return slotCompare.corrIn[botIdx].Weight;
+      }
+      else if(showDeckBandwidth)
+      {
+        return slotCompare.corrIn[botIdx].WeightBW;
+      }
+      else if(showDeckResources)
+      {
+        return slotCompare.corrIn[botIdx].WeightRes;
+      }
+    }
+    else
+    {
+      if(showDeckInstances)
+      {
+        return slotCompare.corrIn[botIdx+(botCount+2)].Weight;
+      }
+      else if(showDeckBandwidth)
+      {
+        return slotCompare.corrIn[botIdx+(botCount+2)].WeightBW;
+      }
+      else if(showDeckResources)
+      {
+        return slotCompare.corrIn[botIdx+(botCount+2)].WeightRes;
+      }
+    }
+  }
+
+  return 0.0;
+}
+
+// Get a comparison slot's weight impact on a comparison slot.
+function getDefaultSlotInput(cardIdx, refIdx)
+{
+  var slotIdx = cardIdx >= cDeckSize ? cardIdx - 8 : cardIdx;
+  var refSlotIdx = refIdx >= cDeckSize ? refIdx - 8 : refIdx;
+  var slotCompare = GlobalData.comparisons.slot[slotIdx];
+  if(cardIdx == refIdx)
+  {
+    if(showDeckInstances)
+    {
+      return slotCompare.Weight;
+    }
+    else if(showDeckBandwidth)
+    {
+      return slotCompare.WeightBW;
+    }
+    else if(showDeckResources)
+    {
+      return slotCompare.WeightRes;
+    }
+  }
+  else
+  {
+    if((cardIdx < cDeckSize && refIdx < cDeckSize) || (cDeckSize <= cardIdx && cDeckSize <= refIdx))
+    {
+      if(showDeckInstances)
+      {
+        return slotCompare.corrInSelfFriend[refSlotIdx].Weight;
+      }
+      else if(showDeckBandwidth)
+      {
+        return slotCompare.corrInSelfFriend[refSlotIdx].WeightBW;
+      }
+      else if(showDeckResources)
+      {
+        return slotCompare.corrInSelfFriend[refSlotIdx].WeightRes;
+      }
+    }
+    else
+    {
+      if(showDeckInstances)
+      {
+        return slotCompare.corrInSelfFoe[refSlotIdx].Weight;
+      }
+      else if(showDeckBandwidth)
+      {
+        return slotCompare.corrInSelfFoe[refSlotIdx].WeightBW;
+      }
+      else if(showDeckResources)
+      {
+        return slotCompare.corrInSelfFoe[refSlotIdx].WeightRes;
+      }
+    }
+  }
+
+  return 0.0;
+}
+
+// Get a comparison slot's weight impact on a specific bot.
+function getSpecificSlotOutput(cardIdx, refIdx, botIdx)
+{
+  console.log(cardIdx + " is " + botIdx + " referring to " + refIdx);
+  var slotIdx = cardIdx >= cDeckSize ? cardIdx - 8 : cardIdx;
+  var refSlotIdx = refIdx >= cDeckSize ? refIdx - 8 : refIdx;
+  var slotCompare = GlobalData.comparisons.slot[slotIdx];
+  if(cardIdx == refIdx)
+  {
+    if(showDeckInstances)
+    {
+      return slotCompare.Weight;
+    }
+    else if(showDeckBandwidth)
+    {
+      return slotCompare.WeightBW;
+    }
+    else if(showDeckResources)
+    {
+      return slotCompare.WeightRes;
+    }
+  }
+  else
+  {
+    if((cardIdx < cDeckSize && refIdx < cDeckSize) || (cDeckSize <= cardIdx && cDeckSize <= refIdx))
+    {
+      if(showDeckInstances)
+      {
+        return slotCompare.corrOutFriend[botIdx].Weight;
+      }
+      else if(showDeckBandwidth)
+      {
+        return slotCompare.corrOutFriend[botIdx].WeightBW;
+      }
+      else if(showDeckResources)
+      {
+        return slotCompare.corrOutFriend[botIdx].WeightRes;
+      }
+    }
+    else
+    {
+      if(showDeckInstances)
+      {
+        return slotCompare.corrOutFoe[botIdx].Weight;
+      }
+      else if(showDeckBandwidth)
+      {
+        return slotCompare.corrOutFoe[botIdx].WeightBW;
+      }
+      else if(showDeckResources)
+      {
+        return slotCompare.corrOutFoe[botIdx].WeightRes;
+      }
+    }
+  }
+
+  return 0.0;
+}
+
+// Get an comparison slot's weight impact on another bot.
+function getDefaultSlotOutput(cardIdx, refIdx)
+{
+  var slotIdx = cardIdx >= cDeckSize ? cardIdx - 8 : cardIdx;
+  var refSlotIdx = refIdx >= cDeckSize ? refIdx - 8 : refIdx;
+  var slotCompare = GlobalData.comparisons.slot[slotIdx];
+  if(cardIdx == refIdx)
+  {
+    if(showDeckInstances)
+    {
+      return slotCompare.Weight;
+    }
+    else if(showDeckBandwidth)
+    {
+      return slotCompare.WeightBW;
+    }
+    else if(showDeckResources)
+    {
+      return slotCompare.WeightRes;
+    }
+  }
+  else
+  {
+    if((cardIdx < cDeckSize && refIdx < cDeckSize) || (cDeckSize <= cardIdx && cDeckSize <= refIdx))
+    {
+      if(showDeckInstances)
+      {
+        return slotCompare.corrOutSelfFriend[refSlotIdx].Weight;
+      }
+      else if(showDeckBandwidth)
+      {
+        return slotCompare.corrOutSelfFriend[refSlotIdx].WeightBW;
+      }
+      else if(showDeckResources)
+      {
+        return slotCompare.corrOutSelfFriend[refSlotIdx].WeightRes;
+      }
+    }
+    else
+    {
+      if(showDeckInstances)
+      {
+        return slotCompare.corrOutSelfFoe[refSlotIdx].Weight;
+      }
+      else if(showDeckBandwidth)
+      {
+        return slotCompare.corrOutSelfFoe[refSlotIdx].WeightBW;
+      }
+      else if(showDeckResources)
+      {
+        return slotCompare.corrOutSelfFoe[refSlotIdx].WeightRes;
+      }
+    }
+  }
+
+  return 0.0;
+}
+
 function transformBotValue(cardIdx, refIdx)
 {
   if(showDeckInstances)
@@ -893,7 +1241,7 @@ function transformBotValue(cardIdx, refIdx)
 //
 function computeCardPower(cardIdx, techs)
 {
-  var baseWt = transformBotValue(cardIdx, cardIdx);
+  var baseWt = 0.0;
   var friendModifierWt = 0.0;
   var friendModifierCount = 1.0;
   var foeModifierWt = 0.0;
@@ -901,37 +1249,61 @@ function computeCardPower(cardIdx, techs)
 
   if(techs[cardIdx] == 1)
   {
+    if(botValues[cardIdx].selected)
+    {
+      baseWt = transformBotValue(cardIdx, cardIdx);
+    }
+    else
+    {
+      baseWt = getDefaultSlotOutput(cardIdx, cardIdx);
+    }
+
     for(var j = 0; j < (2 * cDeckSize); ++j)
     {
       if(((cardIdx < cDeckSize) && (j < cDeckSize)) || ((cDeckSize <= cardIdx) && (cDeckSize <= j)))
       {
-        if((techs[j] == 1) && botValues[j].selected && (cardIdx != j))
+        if((techs[j] == 1) && cardIdx != j)
         {
-          friendModifierCount++;
-          friendModifierWt += transformBotValue(cardIdx, j);
+          if(botValues[j].selected)
+          {
+            friendModifierCount++;
+            friendModifierWt += transformBotValue(cardIdx, j);
+          }
+          else
+          {
+            friendModifierCount++;
+            friendModifierWt += getDefaultSlotOutput(cardIdx, j);
+          }
         }
       }
       else
       {
-        if((techs[j] == 1) && botValues[j].selected && (cardIdx != j))
+        if((techs[j] == 1) && cardIdx != j)
         {
-          foeModifierCount++;
-          foeModifierWt += transformBotValue(cardIdx, j);
+          if(botValues[j].selected)
+          {
+            foeModifierCount++;
+            foeModifierWt += transformBotValue(cardIdx, j);
+          }
+          else
+          {
+            foeModifierCount++;
+            foeModifierWt += getDefaultSlotOutput(cardIdx, j);
+          }
         }
       }
     }
   }
 
-  if (friendModifierCount != 0)
-  {
-    friendModifierWt /= friendModifierCount;
-  }
+  //if (friendModifierCount != 0)
+  //{
+  //  friendModifierWt /= friendModifierCount;
+  //}
 
-  if (foeModifierCount != 0)
-  {
-    foeModifierWt /= foeModifierCount;
-  }
-
+  //if (foeModifierCount != 0)
+  //{
+  //  foeModifierWt /= foeModifierCount;
+  //}
   return baseWt + friendModifierWt + foeModifierWt;
 }
 

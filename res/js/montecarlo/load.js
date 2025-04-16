@@ -384,6 +384,7 @@ for(var botIdx = 0; botIdx < botCount; ++botIdx)
   GlobalData.regStats[botIdx].Hulking = 0.0;
   GlobalData.regStats[botIdx].Shattering = 0.0;
   GlobalData.regStats[botIdx].Hunting = 0.0;
+  GlobalData.regStats[botIdx].Passive = 0.0;
   GlobalData.regStats[botIdx].Radius = 0.0;
   GlobalData.regStats[botIdx].Speed = 0.0;
   GlobalData.regStats[botIdx].Damage = 0.0;
@@ -394,6 +395,12 @@ for(var botIdx = 0; botIdx < botCount; ++botIdx)
   GlobalData.regStats[botIdx].DamageHulking = 0.0;
   GlobalData.regStats[botIdx].DamageShattering = 0.0;
   GlobalData.regStats[botIdx].DamageHunting = 0.0;
+  //GlobalData.regStats[botIdx].DamagePassive = 0.0;
+  //GlobalData.regStats[botIdx].DamageTier1 = 0.0;
+  //GlobalData.regStats[botIdx].DamageTier2 = 0.0;
+  //GlobalData.regStats[botIdx].DamageTier3 = 0.0;
+  //GlobalData.regStats[botIdx].DamageFoundry = 0.0;
+  //GlobalData.regStats[botIdx].DamageStarforge = 0.0;
   GlobalData.regStats[botIdx].DamageBonusID0 = 0.0;
   GlobalData.regStats[botIdx].DamageBonus0 = 0.0;
   GlobalData.regStats[botIdx].DamageBonusID1 = 0.0;
@@ -415,6 +422,12 @@ for(var botIdx = 0; botIdx < botCount; ++botIdx)
   GlobalData.regStats[botIdx].TgtHulking = 0.0;
   GlobalData.regStats[botIdx].TgtShattering = 0.0;
   GlobalData.regStats[botIdx].TgtHunting = 0.0;
+  //GlobalData.regStats[botIdx].TgtPassive = 0.0;
+  //GlobalData.regStats[botIdx].TgtTier1 = 0.0;
+  //GlobalData.regStats[botIdx].TgtTier2 = 0.0;
+  //GlobalData.regStats[botIdx].TgtTier3 = 0.0;
+  //GlobalData.regStats[botIdx].TgtFoundry = 0.0;
+  //GlobalData.regStats[botIdx].TgtStarforge = 0.0;
   GlobalData.regStats[botIdx].Overclock = 0.0;
   GlobalData.regStats[botIdx].Blink = 0.0;
   GlobalData.regStats[botIdx].Recall = 0.0;
@@ -581,14 +594,16 @@ function loadData(i)
 
     GlobalData.comparisons = {};
     GlobalData.comparisons.tech = [];
+    GlobalData.comparisons.slot = [];
     GlobalData.comparisons.trait = [];
     GlobalData.comparisons.manu = [];
+    var copyProps = { Weight: 0, WeightRes: 0, WeightBW: 0 };
 
     for(var techIdx = techIndex.core; techIdx < techCount; ++techIdx)
     {
       var compareCount = 0;
       GlobalData.comparisons.tech[techIdx] = {};
-      GlobalData.comparisons.tech[techIdx].correlations = [];
+      GlobalData.comparisons.tech[techIdx].corrIn = [];
       GlobalData.comparisons.tech[techIdx].ID = techIdx;
       GlobalData.comparisons.tech[techIdx].name = techNameLookup[techIdx];
 
@@ -611,19 +626,19 @@ function loadData(i)
             }
           }
 
-          // Get sum of bot correlations
+          // Get sum of bot corrIn
           for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
           {
-            GlobalData.comparisons.tech[techIdx].correlations[corrIdx] = {};
-            for(const property in GlobalData.regData[botIdx][corrIdx])
+            GlobalData.comparisons.tech[techIdx].corrIn[corrIdx] = {};
+            for(const property in copyProps)
             {
               if(property != "name" && property != "ID" && property != "correlationID")
               {
-                if(!GlobalData.comparisons.tech[techIdx].correlations[corrIdx][property])
+                if(!GlobalData.comparisons.tech[techIdx].corrIn[corrIdx][property])
                 {
-                  GlobalData.comparisons.tech[techIdx].correlations[corrIdx][property] = 0;
+                  GlobalData.comparisons.tech[techIdx].corrIn[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.tech[techIdx].correlations[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
+                GlobalData.comparisons.tech[techIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
               }
             }
           }
@@ -634,33 +649,33 @@ function loadData(i)
       var countInv = 1.0 / compareCount;
       for(const property in GlobalData.comparisons.tech[techIdx])
       {
-        if(property != "name" && property != "ID" && property != "correlations" && property != "correlationsOther")
+        if(property != "name" && property != "ID" && property != "corrIn" && property != "corrOutFriend" && property != "corrOutFoe")
         {
           GlobalData.comparisons.tech[techIdx][property] *= countInv;
         }
       }
       for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
       {
-        for(const property in GlobalData.comparisons.tech[techIdx].correlations[corrIdx])
+        for(const property in copyProps)
         {
-          GlobalData.comparisons.tech[techIdx].correlations[corrIdx][property] *= countInv;
+          GlobalData.comparisons.tech[techIdx].corrIn[corrIdx][property] *= countInv;
         }
       }
 
       compareCount = 0;
-      GlobalData.comparisons.tech[techIdx].correlationsFriend = [];
-      GlobalData.comparisons.tech[techIdx].correlationsFoe = [];
+      GlobalData.comparisons.tech[techIdx].corrOutFriend = [];
+      GlobalData.comparisons.tech[techIdx].corrOutFoe = [];
 
-      // Get sum of correlations to other bots.
+      // Get sum of corrIn to other bots.
       for(var corrIdx = 0; corrIdx < botCount; ++corrIdx)
       {
-        if(!GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx])
+        if(!GlobalData.comparisons.tech[techIdx].corrOutFriend[corrIdx])
         {
-          GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx] = {};
+          GlobalData.comparisons.tech[techIdx].corrOutFriend[corrIdx] = {};
         }
-        if(!GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx])
+        if(!GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx])
         {
-          GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx] = {};
+          GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx] = {};
         }
 
         for(var botIdx = 0; botIdx < botCount; ++botIdx)
@@ -668,34 +683,168 @@ function loadData(i)
           if(GlobalData.bots[botIdx].Tech == techIdx && (botIdx != corrIdx))
           {
             compareCount++;
-            for(const property in GlobalData.regData[corrIdx][botIdx])
+            for(const property in copyProps)
             {
               if(property != "name" && property != "ID" && property != "correlationID")
               {
-                if(!GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx][property])
+                if(!GlobalData.comparisons.tech[techIdx].corrOutFriend[corrIdx][property])
                 {
-                  GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx][property] = 0;
+                  GlobalData.comparisons.tech[techIdx].corrOutFriend[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
+                GlobalData.comparisons.tech[techIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
 
-                if(!GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx][property])
+                if(!GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx][property])
                 {
-                  GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx][property] = 0;
+                  GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
+                GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
               }
             }
           }
         }
 
         countInv = 1.0 / compareCount;
-        for(const property in GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx])
+        for(const property in copyProps)
         {
-          GlobalData.comparisons.tech[techIdx].correlationsFriend[corrIdx][property] *= countInv;
+          GlobalData.comparisons.tech[techIdx].corrOutFriend[corrIdx][property] *= countInv;
+          GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx][property] *= countInv;
         }
-        for(const property in GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx])
+      }
+    }
+
+    for(var slotIdx = deckslotIndex.core1; slotIdx < deckslotCount; ++slotIdx)
+    {
+      GlobalData.comparisons.slot[slotIdx] = {};
+      compare = GlobalData.comparisons.slot[slotIdx];
+      compare.ID = slotIdx;
+      compare.name = deckslotNameLookup[slotIdx];
+      compare.corrIn = [];
+      compare.corrOutFriend = [];
+      compare.corrOutFoe = [];
+      for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+      {
+        compare.corrIn[corrIdx] = {};
+      }
+      for(var corrIdx = 0; corrIdx < botCount; ++corrIdx)
+      {
+        compare.corrOutFriend[corrIdx] = {};
+        compare.corrOutFoe[corrIdx] = {};
+      }
+
+      var slotMultipier = (slotIdx == deckslotIndex.wildfoundry || slotIdx == deckslotIndex.wildstarforge) ? 0.5 : 1.0;
+      for(var techIdx = techIndex.core; techIdx < techIndex.any; ++techIdx)
+      {
+        if(deckslotStartTechMap[slotIdx] <= techIdx && techIdx < deckslotEndTechMap[slotIdx])
         {
-          GlobalData.comparisons.tech[techIdx].correlationsFoe[corrIdx][property] *= countInv;
+          var tech = GlobalData.comparisons.tech[techIdx];
+          for(const property in tech)
+          {
+            if(property != "ID" && property != "name" &&
+               property != "corrIn" && property != "corrInSelf" &&
+               property != "corrOutFriend" && property != "corrOutFoe" && property != "corrOutSelf")
+            {
+              if(!compare[property])
+              {
+                compare[property] = 0.0;
+              }
+              compare[property] += tech[property] * slotMultipier;
+            }
+          }
+
+          for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+          {
+            for(const property in tech.corrIn[corrIdx])
+            {
+              if(!compare.corrIn[corrIdx][property])
+              {
+                compare.corrIn[corrIdx][property] = 0.0;
+              }
+              compare.corrIn[corrIdx][property] += tech.corrIn[corrIdx][property];
+            }
+          }
+
+          for(var corrIdx = 0; corrIdx < botCount; ++corrIdx)
+          {
+            for(const property in tech.corrOutFriend[corrIdx])
+            {
+              if(!compare.corrOutFriend[corrIdx][property])
+              {
+                compare.corrOutFriend[corrIdx][property] = 0.0;
+              }
+              compare.corrOutFriend[corrIdx][property] += tech.corrOutFriend[corrIdx][property];
+            }
+
+            for(const property in tech.corrOutFoe[corrIdx])
+            {
+              if(!compare.corrOutFoe[corrIdx][property])
+              {
+                compare.corrOutFoe[corrIdx][property] = 0.0;
+              }
+              compare.corrOutFoe[corrIdx][property] += tech.corrOutFoe[corrIdx][property];
+            }
+          }
+        }
+      }
+    }
+
+    for(var slotIdx = deckslotIndex.core1; slotIdx < deckslotCount; ++slotIdx)
+    {
+      compare = GlobalData.comparisons.slot[slotIdx];
+      compare.corrInSelfFriend = [];
+      compare.corrInSelfFoe = [];
+      compare.corrOutSelfFriend = [];
+      compare.corrOutSelfFoe = [];
+
+      for(var otherSlotIdx = deckslotIndex.core1; otherSlotIdx < deckslotCount; ++otherSlotIdx)
+      {
+        if(!compare.corrInSelfFriend[otherSlotIdx])
+        {
+          compare.corrInSelfFriend[otherSlotIdx] = {};
+          compare.corrInSelfFoe[otherSlotIdx] = {};
+          compare.corrOutSelfFriend[otherSlotIdx] = {};
+          compare.corrOutSelfFoe[otherSlotIdx] = {};
+        }
+
+        var other = GlobalData.comparisons.slot[otherSlotIdx];
+        var compareCount = 0;
+        for(var corrIdx = 0; corrIdx < botCount; ++ corrIdx)
+        {
+          var tech = GlobalData.bots[corrIdx].Tech;
+          if(deckslotStartTechMap[otherSlotIdx] <= tech && tech < deckslotEndTechMap[otherSlotIdx])
+          {
+            compareCount++;
+            for(const property in other.corrOutFriend[corrIdx])
+            {
+              if(!compare.corrInSelfFriend[otherSlotIdx][property])
+              {
+                compare.corrInSelfFriend[otherSlotIdx][property] = 0.0;
+              }
+              if(!compare.corrInSelfFoe[otherSlotIdx][property])
+              {
+                compare.corrInSelfFoe[otherSlotIdx][property] = 0.0;
+              }
+              if(!compare.corrOutSelfFriend[otherSlotIdx][property])
+              {
+                compare.corrOutSelfFriend[otherSlotIdx][property] = 0.0;
+              }
+              if(!compare.corrOutSelfFoe[otherSlotIdx][property])
+              {
+                compare.corrOutSelfFoe[otherSlotIdx][property] = 0.0;
+              }
+              compare.corrInSelfFriend[otherSlotIdx][property]  += other.corrOutFoe[corrIdx][property];
+              compare.corrInSelfFoe[otherSlotIdx][property]     += other.corrOutFriend[corrIdx][property];
+              compare.corrOutSelfFriend[otherSlotIdx][property] += other.corrIn[corrIdx][property];
+              compare.corrOutSelfFoe[otherSlotIdx][property]    += other.corrIn[corrIdx + (botCount + 2)][property];
+            }
+          }
+        }
+
+        for(const property in compare.corrInSelfFriend[otherSlotIdx])
+        {
+          compare.corrInSelfFriend[otherSlotIdx][property] /= compareCount;
+          compare.corrInSelfFoe[otherSlotIdx][property] /= compareCount;
+          compare.corrOutSelfFriend[otherSlotIdx][property] /= compareCount;
+          compare.corrOutSelfFoe[otherSlotIdx][property] /= compareCount;
         }
       }
     }
@@ -704,7 +853,7 @@ function loadData(i)
     {
       var compareCount = 0;
       GlobalData.comparisons.trait[traitIdx] = {};
-      GlobalData.comparisons.trait[traitIdx].correlations = [];
+      GlobalData.comparisons.trait[traitIdx].corrIn = [];
       GlobalData.comparisons.trait[traitIdx].ID = traitIdx;
       GlobalData.comparisons.trait[traitIdx].name = traitNameLookup[traitIdx];
 
@@ -727,19 +876,19 @@ function loadData(i)
             }
           }
 
-          // Get sum of bot correlations
+          // Get sum of bot corrIn
           for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
           {
-            GlobalData.comparisons.trait[traitIdx].correlations[corrIdx] = {};
-            for(const property in GlobalData.regData[botIdx][corrIdx])
+            GlobalData.comparisons.trait[traitIdx].corrIn[corrIdx] = {};
+            for(const property in copyProps)
             {
               if(property != "name" && property != "ID" && property != "correlationID")
               {
-                if(!GlobalData.comparisons.trait[traitIdx].correlations[corrIdx][property])
+                if(!GlobalData.comparisons.trait[traitIdx].corrIn[corrIdx][property])
                 {
-                  GlobalData.comparisons.trait[traitIdx].correlations[corrIdx][property] = 0;
+                  GlobalData.comparisons.trait[traitIdx].corrIn[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.trait[traitIdx].correlations[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
+                GlobalData.comparisons.trait[traitIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
               }
             }
           }
@@ -750,33 +899,33 @@ function loadData(i)
       var countInv = 1.0 / compareCount;
       for(const property in GlobalData.comparisons.trait[traitIdx])
       {
-        if(property != "name" && property != "ID" && property != "correlations" && property != "correlationsOther")
+        if(property != "name" && property != "ID" && property != "corrIn" && property != "corrOutFriend" && property != "corrOutFoe")
         {
           GlobalData.comparisons.trait[traitIdx][property] *= countInv;
         }
       }
       for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
       {
-        for(const property in GlobalData.comparisons.trait[traitIdx].correlations[corrIdx])
+        for(const property in copyProps)
         {
-          GlobalData.comparisons.trait[traitIdx].correlations[corrIdx][property] *= countInv;
+          GlobalData.comparisons.trait[traitIdx].corrIn[corrIdx][property] *= countInv;
         }
       }
 
       compareCount = 0;
-      GlobalData.comparisons.trait[traitIdx].correlationsFriend = [];
-      GlobalData.comparisons.trait[traitIdx].correlationsFoe = [];
+      GlobalData.comparisons.trait[traitIdx].corrOutFriend = [];
+      GlobalData.comparisons.trait[traitIdx].corrOutFoe = [];
 
-      // Get sum of correlations to other bots.
+      // Get sum of corrIn to other bots.
       for(var corrIdx = 0; corrIdx < botCount; ++corrIdx)
       {
-        if(!GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx])
+        if(!GlobalData.comparisons.trait[traitIdx].corrOutFriend[corrIdx])
         {
-          GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx] = {};
+          GlobalData.comparisons.trait[traitIdx].corrOutFriend[corrIdx] = {};
         }
-        if(!GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx])
+        if(!GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx])
         {
-          GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx] = {};
+          GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx] = {};
         }
 
         for(var botIdx = 0; botIdx < botCount; ++botIdx)
@@ -784,34 +933,31 @@ function loadData(i)
           if(GlobalData.bots[botIdx][internalTraitNameLookup[traitIdx]] && (botIdx != corrIdx))
           {
             compareCount++;
-            for(const property in GlobalData.regData[corrIdx][botIdx])
+            for(const property in copyProps)
             {
               if(property != "name" && property != "ID" && property != "correlationID")
               {
-                if(!GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx][property])
+                if(!GlobalData.comparisons.trait[traitIdx].corrOutFriend[corrIdx][property])
                 {
-                  GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx][property] = 0;
+                  GlobalData.comparisons.trait[traitIdx].corrOutFriend[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
+                GlobalData.comparisons.trait[traitIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
 
-                if(!GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx][property])
+                if(!GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx][property])
                 {
-                  GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx][property] = 0;
+                  GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
+                GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
               }
             }
           }
         }
 
         countInv = 1.0 / compareCount;
-        for(const property in GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx])
+        for(const property in copyProps)
         {
-          GlobalData.comparisons.trait[traitIdx].correlationsFriend[corrIdx][property] *= countInv;
-        }
-        for(const property in GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx])
-        {
-          GlobalData.comparisons.trait[traitIdx].correlationsFoe[corrIdx][property] *= countInv;
+          GlobalData.comparisons.trait[traitIdx].corrOutFriend[corrIdx][property] *= countInv;
+          GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx][property] *= countInv;
         }
       }
     }
@@ -820,7 +966,7 @@ function loadData(i)
     {
       var compareCount = 0;
       GlobalData.comparisons.manu[manuIdx] = {};
-      GlobalData.comparisons.manu[manuIdx].correlations = [];
+      GlobalData.comparisons.manu[manuIdx].corrIn = [];
       GlobalData.comparisons.manu[manuIdx].ID = manuIdx;
       GlobalData.comparisons.manu[manuIdx].name = manuNameLookup[manuIdx];
 
@@ -843,19 +989,19 @@ function loadData(i)
             }
           }
 
-          // Get sum of bot correlations
+          // Get sum of bot corrIn
           for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
           {
-            GlobalData.comparisons.manu[manuIdx].correlations[corrIdx] = {};
-            for(const property in GlobalData.regData[botIdx][corrIdx])
+            GlobalData.comparisons.manu[manuIdx].corrIn[corrIdx] = {};
+            for(const property in copyProps)
             {
               if(property != "name" && property != "ID" && property != "correlationID")
               {
-                if(!GlobalData.comparisons.manu[manuIdx].correlations[corrIdx][property])
+                if(!GlobalData.comparisons.manu[manuIdx].corrIn[corrIdx][property])
                 {
-                  GlobalData.comparisons.manu[manuIdx].correlations[corrIdx][property] = 0;
+                  GlobalData.comparisons.manu[manuIdx].corrIn[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.manu[manuIdx].correlations[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
+                GlobalData.comparisons.manu[manuIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
               }
             }
           }
@@ -866,33 +1012,33 @@ function loadData(i)
       var countInv = 1.0 / compareCount;
       for(const property in GlobalData.comparisons.manu[manuIdx])
       {
-        if(property != "name" && property != "ID" && property != "correlations" && property != "correlationsOther")
+        if(property != "name" && property != "ID" && property != "corrIn" && property != "corrOutFriend" && property != "corrOutFoe")
         {
           GlobalData.comparisons.manu[manuIdx][property] *= countInv;
         }
       }
       for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
       {
-        for(const property in GlobalData.comparisons.manu[manuIdx].correlations[corrIdx])
+        for(const property in copyProps)
         {
-          GlobalData.comparisons.manu[manuIdx].correlations[corrIdx][property] *= countInv;
+          GlobalData.comparisons.manu[manuIdx].corrIn[corrIdx][property] *= countInv;
         }
       }
 
       compareCount = 0;
-      GlobalData.comparisons.manu[manuIdx].correlationsFriend = [];
-      GlobalData.comparisons.manu[manuIdx].correlationsFoe = [];
+      GlobalData.comparisons.manu[manuIdx].corrOutFriend = [];
+      GlobalData.comparisons.manu[manuIdx].corrOutFoe = [];
 
-      // Get sum of correlations to other bots.
+      // Get sum of corrIn to other bots.
       for(var corrIdx = 0; corrIdx < botCount; ++corrIdx)
       {
-        if(!GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx])
+        if(!GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx])
         {
-          GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx] = {};
+          GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx] = {};
         }
-        if(!GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx])
+        if(!GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx])
         {
-          GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx] = {};
+          GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx] = {};
         }
 
         for(var botIdx = 0; botIdx < botCount; ++botIdx)
@@ -900,34 +1046,31 @@ function loadData(i)
           if(GlobalData.bots[botIdx].Manu == manuIdx && (botIdx != corrIdx))
           {
             compareCount++;
-            for(const property in GlobalData.regData[corrIdx][botIdx])
+            for(const property in copyProps)
             {
               if(property != "name" && property != "ID" && property != "correlationID")
               {
-                if(!GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx][property])
+                if(!GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx][property])
                 {
-                  GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx][property] = 0;
+                  GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
+                GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
 
-                if(!GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx][property])
+                if(!GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx][property])
                 {
-                  GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx][property] = 0;
+                  GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
+                GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
               }
             }
           }
         }
 
         countInv = 1.0 / compareCount;
-        for(const property in GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx])
+        for(const property in copyProps)
         {
-          GlobalData.comparisons.manu[manuIdx].correlationsFriend[corrIdx][property] *= countInv;
-        }
-        for(const property in GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx])
-        {
-          GlobalData.comparisons.manu[manuIdx].correlationsFoe[corrIdx][property] *= countInv;
+          GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx][property] *= countInv;
+          GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx][property] *= countInv;
         }
       }
     }

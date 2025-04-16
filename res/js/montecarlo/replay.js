@@ -565,8 +565,19 @@ function drawReportDeck(deck, unitList, unitAlive, unitTotal, teamIdx)
   const teamClassShapeRes = teamIdx == 0 ? 'selected' : 'highlighted';
   const teamClassShapeScore = teamIdx == 0 ? 'svg_shape_secondary' : 'svg_shape_tertiary';
   unitList.forEach((d, i) =>{
-    var xBase = (4 * teamIdx + slotIdx % 4) * (repIconSmall + 50 + 4);
-    var yBase = 100.0 * Math.floor(slotIdx / 4);
+    var xBase = 0;
+    var yBase = 0;
+    if(slotIdx <= 1)
+    {
+      xBase = (4 * teamIdx + 0) * (repIconSmall + 50 + 4);
+      yBase = 100.0 * Math.floor(slotIdx / 1);
+    }
+    else
+    {
+      xBase = (4 * teamIdx + 1 + (slotIdx - 2) % 3) * (repIconSmall + 50 + 4);
+      yBase = 100.0 * Math.floor((slotIdx - 2) / 3);
+    }
+
     if(d == -1)
     {
       deck.append('image').attr('class', 'svg_report_image')

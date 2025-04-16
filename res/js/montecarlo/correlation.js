@@ -184,8 +184,8 @@ function drawCorrelationGraph(graph, table, data)
       .style('font-size', '20px')
       .style("text-anchor", "middle")
       .text((cBinThresholds[i] >= 0.0 ? "+" : "") + parseInt(cBinThresholds[i] * 100.0) + "%");
-      
   }
+
   for(var i = 0; i < cNumBins; ++i)
   {
     var friendScale = binnedData[i].friend.length > 16.0 ? Math.ceil(binnedData[i].friend.length / 5.0) : 4.0;
@@ -229,6 +229,32 @@ function drawCorrelationGraph(graph, table, data)
         .on('mouseleave', () => setCorrelationInputHighlight(graph, table, null))
         .on('click', () => setCorrelationInputSelect(graph, table, name));
     });
+  }
+
+  if(correlationOutputSelect == "Weight")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Weight");
+  }
+  else if(correlationOutputSelect == "WeightRes")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Weight / Resource");
+  }
+  else if(correlationOutputSelect == "WeightBW")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Weight / Bandwidth");
+  }
+  else if(correlationOutputSelect == "AdvantagedWins")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Win %");
+  }
+  else if(correlationOutputSelect == "PickPct")
+  {
+    svg.append('text').attr('class', 'svg_text')
+      .text("Pick %");
   }
 }
 

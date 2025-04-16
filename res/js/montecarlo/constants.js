@@ -315,46 +315,47 @@ const statIndex = {
   Hulking: 8,
   Shattering: 9,
   Hunting: 10,
-  Radius: 11,
-  Speed: 12,
-  Damage: 13,
-  DamageWalking: 14,
-  DamageFlying: 15,
-  DamageSwarming: 16,
-  DamagePiercing: 17,
-  DamageHulking: 18,
-  DamageShattering: 19,
-  DamageHunting: 20,
-  DamageBonusID0: 21,
-  DamageBonus0: 22,
-  DamageBonusID1: 23,
-  DamageBonus1: 24,
-  DamageBonusID2: 25,
-  DamageBonus2: 26,
-  DamageBonusID3: 27,
-  DamageBonus3: 28,
-  Duration: 29,
-  Windup: 30,
-  Recoil: 31,
-  WeaponSpeed: 32,
-  Range: 33,
-  Splash: 34,
-  TgtWalking: 35,
-  TgtFlying: 36,
-  TgtSwarming: 37,
-  TgtPiercing: 38,
-  TgtHulking: 39,
-  TgtShattering: 40,
-  TgtHunting: 41,
-  Overclock: 42,
-  Blink: 43,
-  Recall: 44,
-  Setup: 45,
-  Detonate: 46,
-  Unsetup: 47,
-  Destruct: 48,
-  "Guardian Shield": 49,
-  Extra: 50,
+  Passive: 11,
+  Radius: 12,
+  Speed: 13,
+  Damage: 14,
+  DamageWalking: 15,
+  DamageFlying: 16,
+  DamageSwarming: 17,
+  DamagePiercing: 18,
+  DamageHulking: 19,
+  DamageShattering: 20,
+  DamageHunting: 21,
+  DamageBonusID0: 22,
+  DamageBonus0: 23,
+  DamageBonusID1: 24,
+  DamageBonus1: 25,
+  DamageBonusID2: 26,
+  DamageBonus2: 27,
+  DamageBonusID3: 28,
+  DamageBonus3: 29,
+  Duration: 30,
+  Windup: 31,
+  Recoil: 32,
+  WeaponSpeed: 33,
+  Range: 34,
+  Splash: 35,
+  TgtWalking: 36,
+  TgtFlying: 37,
+  TgtSwarming: 38,
+  TgtPiercing: 39,
+  TgtHulking: 40,
+  TgtShattering: 41,
+  TgtHunting: 42,
+  Overclock: 43,
+  Blink: 44,
+  Recall: 45,
+  Setup: 46,
+  Detonate: 47,
+  Unsetup: 48,
+  Destruct: 49,
+  "Guardian Shield": 50,
+  Extra: 51,
 };
 
 const statCount = statIndex.Extra;
@@ -435,9 +436,9 @@ const statImageLookup = [
   'res/images/traits/' + traitNameLookup[ 5].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
   'res/images/traits/' + traitNameLookup[ 6].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
   'res/images/traits/' + traitNameLookup[ 7].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
-  'res/images/stats/' + statNameLookup[11].toLowerCase().replace(/\s+/g,'') + '.png', // Radius
-  'res/images/stats/' + statNameLookup[12].toLowerCase().replace(/\s+/g,'') + '.png', // Speed
-  'res/images/stats/' + statNameLookup[13].toLowerCase().replace(/\s+/g,'') + '.png', // Damage
+  'res/images/stats/' + statNameLookup[12].toLowerCase().replace(/\s+/g,'') + '.png', // Radius
+  'res/images/stats/' + statNameLookup[13].toLowerCase().replace(/\s+/g,'') + '.png', // Speed
+  'res/images/stats/' + statNameLookup[14].toLowerCase().replace(/\s+/g,'') + '.png', // Damage
   'res/images/stats/dmgvs' + traitNameLookup[ 0].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Walking
   'res/images/stats/dmgvs' + traitNameLookup[ 1].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs Flying
   'res/images/stats/dmgvs' + traitNameLookup[ 2].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Swarming
@@ -445,20 +446,20 @@ const statImageLookup = [
   'res/images/stats/dmgvs' + traitNameLookup[ 4].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Hulking
   'res/images/stats/dmgvs' + traitNameLookup[ 5].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Shattering
   'res/images/stats/dmgvs' + traitNameLookup[ 6].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // Damage vs. Hunting
-  'res/images/stats/' + statNameLookup[21].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 0
-  'res/images/stats/' + statNameLookup[22].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 0
-  'res/images/stats/' + statNameLookup[23].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 1
-  'res/images/stats/' + statNameLookup[24].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 1
-  'res/images/stats/' + statNameLookup[25].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 2
-  'res/images/stats/' + statNameLookup[26].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 2
-  'res/images/stats/' + statNameLookup[27].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 3
-  'res/images/stats/' + statNameLookup[28].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 3
-  'res/images/stats/' + statNameLookup[29].toLowerCase().replace(/\s+/g,'') + '.png', // Duration
-  'res/images/stats/' + statNameLookup[30].toLowerCase().replace(/\s+/g,'') + '.png', // Windup
-  'res/images/stats/' + statNameLookup[31].toLowerCase().replace(/\s+/g,'') + '.png', // Recoil
-  'res/images/stats/' + statNameLookup[32].toLowerCase().replace(/\s+/g,'') + '.png', // Weapon Speed
-  'res/images/stats/' + statNameLookup[33].toLowerCase().replace(/\s+/g,'') + '.png', // Range
-  'res/images/stats/' + statNameLookup[34].toLowerCase().replace(/\s+/g,'') + '.png', // Splash
+  'res/images/stats/' + statNameLookup[22].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 0
+  'res/images/stats/' + statNameLookup[23].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 0
+  'res/images/stats/' + statNameLookup[24].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 1
+  'res/images/stats/' + statNameLookup[25].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 1
+  'res/images/stats/' + statNameLookup[26].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 2
+  'res/images/stats/' + statNameLookup[27].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 2
+  'res/images/stats/' + statNameLookup[28].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 3
+  'res/images/stats/' + statNameLookup[29].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 3
+  'res/images/stats/' + statNameLookup[30].toLowerCase().replace(/\s+/g,'') + '.png', // Duration
+  'res/images/stats/' + statNameLookup[31].toLowerCase().replace(/\s+/g,'') + '.png', // Windup
+  'res/images/stats/' + statNameLookup[32].toLowerCase().replace(/\s+/g,'') + '.png', // Recoil
+  'res/images/stats/' + statNameLookup[33].toLowerCase().replace(/\s+/g,'') + '.png', // Weapon Speed
+  'res/images/stats/' + statNameLookup[34].toLowerCase().replace(/\s+/g,'') + '.png', // Range
+  'res/images/stats/' + statNameLookup[35].toLowerCase().replace(/\s+/g,'') + '.png', // Splash
   'res/images/stats/tgt' + traitNameLookup[ 0].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtWalking
   'res/images/stats/tgt' + traitNameLookup[ 1].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtFlying
   'res/images/stats/tgt' + traitNameLookup[ 2].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtSwarming
@@ -466,7 +467,6 @@ const statImageLookup = [
   'res/images/stats/tgt' + traitNameLookup[ 4].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtHulking
   'res/images/stats/tgt' + traitNameLookup[ 5].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtShattering
   'res/images/stats/tgt' + traitNameLookup[ 6].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png', // TgtHunting
-  'res/images/abilities/' + statNameLookup[42].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + statNameLookup[43].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + statNameLookup[44].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + statNameLookup[45].toLowerCase().replace(/\s+/g,'') + '.png',
@@ -474,6 +474,7 @@ const statImageLookup = [
   'res/images/abilities/' + statNameLookup[47].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + statNameLookup[48].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/abilities/' + statNameLookup[49].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/abilities/' + statNameLookup[50].toLowerCase().replace(/\s+/g,'') + '.png',
   '', // Extra, dummy image?
 ];
 
@@ -573,6 +574,7 @@ const deckslotEndTechMap = [
   techIndex.any, //wildstarforge
 ];
 
+const deckslotCount = deckslotNameLookup.length;
 
 // Ability index.
 const abilityIndex = {
