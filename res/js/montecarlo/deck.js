@@ -755,7 +755,6 @@ function drawCardHighlight(detailSvg, cardIdx)
             wtRatio = wt / transformBotValue(cardIdx, cardIdx);
             wtReverse = transformBotValue(refIdx, cardIdx);
             wtRatioReverse = wtReverse / transformBotValue(refIdx, refIdx);
-            console.log("A" + wt + " " + wtReverse);
           }
           else // Reference not selected
           {
@@ -765,7 +764,6 @@ function drawCardHighlight(detailSvg, cardIdx)
             wtRatio = wt / transformBotValue(cardIdx, cardIdx);
             wtReverse = getSpecificSlotInput(refIdx, cardIdx, botIdx);
             wtRatioReverse = wtReverse / getDefaultSlotOutput(refIdx, refIdx);
-            console.log("B" + wt + " " + wtReverse);
           }
         }
         else // Bot not selected
@@ -778,7 +776,6 @@ function drawCardHighlight(detailSvg, cardIdx)
             wtRatio = wt / getDefaultSlotOutput(cardIdx, cardIdx);
             wtReverse = getSpecificSlotOutput(cardIdx, refIdx, deckSelections[refIdx]);
             wtRatioReverse = wtReverse / transformBotValue(refIdx, refIdx);
-            console.log("C" + wt + " " + wtReverse);
           }
           else // Reference not selected
           {
@@ -788,7 +785,6 @@ function drawCardHighlight(detailSvg, cardIdx)
             wtRatio = wt / getDefaultSlotOutput(cardIdx, cardIdx);
             wtReverse = getDefaultSlotOutput(cardIdx, refIdx);
             wtRatioReverse = wtReverse / getDefaultSlotOutput(refIdx, refIdx);
-            console.log("D" + wt + " " + wtReverse);
           }
         }
 
@@ -1104,7 +1100,6 @@ function getDefaultSlotInput(cardIdx, refIdx)
 // Get a comparison slot's weight impact on a specific bot.
 function getSpecificSlotOutput(cardIdx, refIdx, botIdx)
 {
-  console.log(cardIdx + " is " + botIdx + " referring to " + refIdx);
   var slotIdx = cardIdx >= cDeckSize ? cardIdx - 8 : cardIdx;
   var refSlotIdx = refIdx >= cDeckSize ? refIdx - 8 : refIdx;
   var slotCompare = GlobalData.comparisons.slot[slotIdx];
