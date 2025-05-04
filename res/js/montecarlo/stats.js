@@ -34,14 +34,18 @@ var colour = ["#a6a6a6", "#ff7b00", "#2191ec", "#000000"]; // TODO: Make this re
 // Stats for selected bot.
 var cropStatData = {};
 var unsortStatData = {};
-var selectedScore = 0;
 var compareTotals = {};
 
 // User selection values.
 var statBotSelected = 0; // Crab
 var statCompareSelect = 0;
 var statHighlight = 2;
-var statPieHighlight = 0;
+var statPieHighlight = -1;
+var piePaths = [];
+var pieIcons = [];
+var wireLinesA = [];
+var wireLinesB = [];
+var wireIcons = [];
 
 //
 // User Interface Elements
@@ -114,7 +118,7 @@ function selectStatBot(value)
 // TODO: Comparison select dropdown.
 d3.select("#selectCompareSlug").on("change", function() {
   computeCompareStats();
-  drawWireframeChart();
+  drawStats();
 });
 
 //
@@ -174,6 +178,7 @@ function drawStats()
   drawWireframeChart();
   drawStatHighlight();
   drawStatTable();
+  linkStatCharts();
 }
 
 function computeCompareStats()
@@ -217,7 +222,7 @@ function computeStats(botIdx)
   var statCount = 0;
   var results = {base: [], sorted: [], cropped: [], unsorted: []};
 
-  selectedScore = 1;
+  var selectedScore = 0;
   for(const property in GlobalData.regStats[botIdx])
   {
     selectedScore += Math.abs(GlobalData.regStats[botIdx][property] * GlobalData.bots[botIdx][property]);
@@ -277,6 +282,23 @@ function computeStats(botIdx)
   return results;
 }
 
+function linkStatCharts()
+{
+  for(let i = 0; i < cropStatData.length-1; ++i)
+  {
+    piePaths[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
+               .on('mouseleave', function() { setStatHighlight(i, -1, false); });
+    pieIcons[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
+               .on('mouseleave', function() { setStatHighlight(i, -1, false); });
+    wireIcons[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
+                .on('mouseleave', function() { setStatHighlight(i, -1, false); });
+    wireLinesA[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
+                 .on('mouseleave', function() { setStatHighlight(i, -1, false); });
+    wireLinesB[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
+                 .on('mouseleave', function() { setStatHighlight(i, -1, false); });
+  }
+}
+
 //
 // Draw pie chart of several most impactful values, ranked, enable highlighting by mouse over.
 //
@@ -284,29 +306,35 @@ function drawPieChart()
 {
   clearSvg(statsPieChart);
 
-  const pieSlice = statsPieChart.append('g')
+  piePaths = [];
+  pieIcons = [];
+
+  const pieSlices = statsPieChart.append('g')
     .attr('transform', `translate(${cPieRadius+55}, ${cPieRadius+60})`)
     .selectAll(".arc")
       .data(pie(cropStatData))
       .enter()
       .append('g')
         .attr('class', 'svg_arc');
-  pieSlice.append('path')
-    .attr("stroke", '#303030')
-    .style("stroke-width", "2px")
-    .style("opacity", 0.7)
-    .attr('d', smallArc)
-      .style('fill', function(d, i) {return (d.data.weight >= 0.0) ? colour[1] : colour[2];})
-      .on('mouseenter', function(d, i) { setStatHighlight(this, i.data.ID, true); })
-      .on('mouseleave', function() { setStatHighlight(this, -1, false); });
-  pieSlice.append('g')
-    .append('image').attr('class', 'svg_image')
+
+  pieSlices._groups[0].forEach((d,i) => {
+    var pieSlice = d3.select(d);
+
+    piePaths[i] = pieSlice.append('path')
+      .attr("stroke", '#303030')
+      .style("stroke-width", "2px")
+      .style("opacity", 0.7)
+      .attr('d', smallArc)
+      .style('fill', function(d, i) {return (d.data.weight >= 0.0) ? colour[1] : colour[2];});
+    pieIcons[i] = pieSlice.append('image').attr('class', 'svg_image')
       .attr('width', 35)
       .attr('height', 35)
       .attr("transform", function(d) { return "translate(" + (2.5*(smallArc.centroid(d)[0])-17.5) + ", " + (2.5*(smallArc.centroid(d)[1])-17.5) + ")"; })
       .attr('href', function(d) { return statImageLookup[d.data.ID] })
       .attr('filter', 'invert(100%)')
+      .style('opacity', 0.7)
       .attr('alt', function(d) { return d.data.name });
+  });
 }
 
 //
@@ -315,6 +343,10 @@ function drawPieChart()
 function drawWireframeChart()
 {
   clearSvg(statsWireframeChart);
+
+  wireLinesA = [];
+  wireLinesB = [];
+  wireIcons = [];
 
   var wireframe = statsWireframeChart.append('g')
     .attr('transform', `translate(${cPieRadius+55}, ${cPieRadius+60})`);
@@ -335,12 +367,13 @@ function drawWireframeChart()
 
     if(i < vertexCount)
     {
-      wireframe.append('image').attr('class', 'svg_image')
+      wireIcons[i] = wireframe.append('image').attr('class', 'svg_image')
         .attr('x', (cWireIconRadius + 35.0) * Math.sin(2*Math.PI * i / vertexCount)-20)
         .attr('y', -(cWireIconRadius + 35.0) * Math.cos(2*Math.PI * i / vertexCount)-20)
         .attr('width', 35)
         .attr('height', 35)
         .attr('filter', 'invert(100%)')
+        .style('opacity', 0.7)
         .attr('href', statImageLookup[unsortStatData[i].ID])
         .attr('alt', unsortStatData[i].name);
     }
@@ -438,13 +471,50 @@ function drawWireframeChart()
     .style("stroke-width", "1.0")
     .attr("d", drawLine(maxVertices));
 
-  wireframe.append("path")
-    .attr("class", "svg_line")
-    .classed('selected', true)
-    .attr("fill", colour[1])
-    .style("stroke-width", "3.0")
-    .style('opacity', 0.3)
-    .attr("d", drawLine(botVertices));
+  for(var i = 0; i < vertexCount; ++i)
+  {
+    var wedgeAVertices = [];
+    wedgeAVertices[0] = { x: 0.0, y: 0.0 };
+    var wedgeBVertices = [];
+    wedgeBVertices[0] = { x: 0.0, y: 0.0 };
+
+    if(i > 0)
+    {
+      wedgeAVertices[1] = { x: (botVertices[i-1].x + botVertices[i].x) * 0.5, y: (botVertices[i-1].y + botVertices[i].y) * 0.5 };
+      wedgeBVertices[1] = botVertices[i];
+    }
+    else
+    {
+      wedgeAVertices[1] = { x: (botVertices[vertexCount-1].x + botVertices[i].x) * 0.5, y: (botVertices[vertexCount-1].y + botVertices[i].y) * 0.5 };
+      wedgeBVertices[1] = botVertices[i];
+    }
+
+    if(i < vertexCount-1)
+    {
+      wedgeAVertices[2] = botVertices[i];
+      wedgeBVertices[2] = { x: (botVertices[i].x + botVertices[i+1].x) * 0.5, y: (botVertices[i].y + botVertices[i+1].y) * 0.5 };
+    }
+    else
+    {
+      wedgeAVertices[2] = botVertices[i];
+      wedgeBVertices[2] = { x: (botVertices[i].x + botVertices[0].x) * 0.5, y: (botVertices[i].y + botVertices[0].y) * 0.5 };
+    }
+
+    wireLinesA[i] = wireframe.append("path")
+      .attr("class", "svg_line")
+      .classed('selected', true)
+      .attr("fill", colour[1])
+      .style("stroke-width", "0.1")
+      .style('opacity', 0.3)
+      .attr('d', drawLine(wedgeAVertices));
+    wireLinesB[i] = wireframe.append("path")
+      .attr("class", "svg_line")
+      .classed('selected', true)
+      .attr("fill", colour[1])
+      .style("stroke-width", "0.1")
+      .style('opacity', 0.3)
+      .attr('d', drawLine(wedgeBVertices));
+  }
 
   wireframe.append("path")
     .attr("class", "svg_line")
@@ -469,13 +539,17 @@ function drawWireframeChart()
     .attr("d", drawLine(compareVertices));
 }
 
-function setStatHighlight(obj, statIdx, enlarge)
+function setStatHighlight(graphIdx, statIdx, enlarge)
 {
   if(statPieHighlight != statIdx)
   {
-    d3.select(obj).attr('d', enlarge ? largeArc : smallArc)
-        .attr('fill', function(d, i) {return enlarge ? ((statIdx == statIndex.Extra) ? colour[3] : (d.data.weight < 0.0 ? colour[2] : colour[1])) : colour[0];})
-        .style('opacity', (enlarge ? 1.0 : 0.7)); 
+    piePaths[graphIdx].attr('d', enlarge ? largeArc : smallArc)
+      .attr('fill', function(d, i) {return enlarge ? ((statIdx == statIndex.Extra) ? colour[3] : (d.data.weight < 0.0 ? colour[2] : colour[1])) : colour[0];})
+      .style('opacity', (enlarge ? 1.0 : 0.7));
+    pieIcons[graphIdx].style('opacity', (enlarge ? 1.0 : 0.7));
+    wireIcons[graphIdx].style('opacity', (enlarge ? 1.0 : 0.7));
+    wireLinesA[graphIdx].style('opacity', (enlarge ? 0.6 : 0.3));
+    wireLinesB[graphIdx].style('opacity', (enlarge ? 0.6 : 0.3));
     statPieHighlight = statIdx;
     drawStatHighlight();
   }
@@ -523,6 +597,11 @@ function drawStatHighlight()
 
     if(statPieHighlight < statIndex.Extra)
     {
+      var selectedScore = 0;
+      for(const property in GlobalData.regStats[statBotSelected])
+      {
+        selectedScore += Math.abs(GlobalData.regStats[statBotSelected][property] * GlobalData.bots[statBotSelected][property]);
+      };
       var value = GlobalData.bots[statBotSelected][statNameLookup[statPieHighlight]];
       var weight = GlobalData.regStats[statBotSelected][statNameLookup[statPieHighlight]];
       var score = value * weight;
@@ -611,58 +690,112 @@ function drawStatTable()
   topStat.append('th').attr('class', 'table_hr_sticky')
     .text("Percent");
 
-  var selectedScore = 0.0;
-  for(const property in GlobalData.regStats[statBotSelected])
-  {
-    selectedScore += GlobalData.regStats[statBotSelected][property] * GlobalData.bots[statBotSelected][property];
-  };
-
   var dim = false;
   for(var tablePass = 0; tablePass < 2; ++tablePass)
   {
     for(var statIdx = 0; statIdx < statCount; ++statIdx)
     {
+      var selectedScore = 0;
+      for(const property in GlobalData.regStats[statBotSelected])
+      {
+        selectedScore += Math.abs(GlobalData.regStats[statBotSelected][property] * GlobalData.bots[statBotSelected][property]);
+      };
+      var baseWeight = GlobalData.regData[statBotSelected][statBotSelected].Weight;
       var value = GlobalData.bots[statBotSelected][statNameLookup[statIdx]];
       var weight = GlobalData.regStats[statBotSelected][statNameLookup[statIdx]];
       var score = weight*value;
       if((!dim && (score != 0.0)) || (dim && (score == 0.0)))
       {
         var row = statsTable.append('tbody').append('tr')
-        var newCell = row.append('td').attr('class', 'table_cell').style('width', '10%')
-        var cellRow = newCell.append('div').attr('class', 'row row-cols-2')
-          cellRow.append('div').attr('class', 'col')
+        var newCell = row.append('td').attr('class', 'table_cell').style('width', '15%')
+        if(statNameLookup[statIdx].match(/DamageBonusID[0-9]/))
+        {
+          newCell.append('div').attr('class', 'col')
+            .style('width', '10%');
+            newCell.append('img')
+            .attr('src', statImageLookup[statIndex.Range])
+            .attr('alt', statNameLookup[statIdx]);
+          if(value == -1)
+          {
+            newCell.append('img')
+              .attr('src', 'res/images/stats/nothing.png')
+              .attr('alt', 'Nothing');
+          }
+          else
+          {
+            newCell.append('img')
+              .attr('src', botImageLookup[value])
+              .attr('alt', statNameLookup[statIdx]);
+          }
+        }
+        else if(statNameLookup[statIdx].match(/DamageBonus[0-9]/))
+        {
+          newCell.append('div').attr('class', 'col')
+            .style('width', '10%');
+            newCell.append('img')
+              .attr('src', statImageLookup[statIndex.Damage])
+              .attr('alt', statNameLookup[statIdx]);
+          if(GlobalData.bots[statBotSelected][statNameLookup[statIdx-1]] == -1)
+          {
+            newCell.append('img')
+              .attr('src', 'res/images/stats/nothing.png')
+              .attr('alt', 'Nothing');
+          }
+          else
+          {
+            newCell.append('img')
+              .attr('src', botImageLookup[GlobalData.bots[statBotSelected][statNameLookup[statIdx-1]]])
+              .attr('alt', statNameLookup[statIdx]);
+          }
+        }
+        else
+        {
+          newCell.append('div').attr('class', 'col')
             .style('width', '10%')
             .append('img')
               .attr('src', statImageLookup[statIdx])
               .attr('alt', statNameLookup[statIdx]);
-          //.append('text')
-          //  .attr('alt', "Symbol")
-          //  .text(statImageLookup[statIdx]);
-        newCell = row.append('td').attr('class', 'table_cell').style('width', '20%')
+        }
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '19%')
           .append('text')
             .attr('class', dim ? 'darken' : '')
             .attr('alt', "Measure Value")
             .text(statNameLookup[statIdx]);
-        newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '16%')
           .append('text')
             .attr('class', dim ? 'darken' : '')
             .attr('alt', "Value")
             .text(parseInt(100.0*value)/100.0);
-        newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '16%')
           .append('text')
             .attr('class', dim ? 'darken' : '')
             .attr('alt', "Weight")
             .text(parseInt(100.0*weight)/100.0);
-        newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '16%')
           .append('text')
             .attr('class', dim ? 'darken' : '')
             .attr('alt', "Score")
             .text(parseInt(100.0*score)/100.0);
-        newCell = row.append('td').attr('class', 'table_cell').style('width', '17%')
-          .append('text')
+        newCell = row.append('td').attr('class', 'table_cell').style('width', '16%');
+        newCell.append('text')
             .attr('class', dim ? 'darken' : '')
             .attr('alt', "Percent")
-            .text(parseInt(100.0*score/selectedScore)/100.0);
+            .text(parseInt(100.0*score/baseWeight) + '% (');
+        if(score > 0)
+        {
+          newCell.append('text').attr('class', dim ? 'darken' : '').attr('class', 'secondary').attr('alt', "Percent").text(Math.abs(parseInt(100.0*score/selectedScore)) + '%');
+          newCell.append('text').attr('class', dim ? 'darken' : '').attr('alt', "Percent").text(')');
+        }
+        else if(score == 0.0)
+        {
+          newCell.append('text').attr('class', dim ? 'darken' : '').attr('alt', "Percent").text(Math.abs(parseInt(100.0*score/selectedScore)) + '%');
+          newCell.append('text').attr('class', dim ? 'darken' : '').attr('alt', "Percent").text(')');
+        }
+        else
+        {
+          newCell.append('text').attr('class', dim ? 'darken' : '').attr('class', 'tertiary').attr('alt', "Percent").text(Math.abs(parseInt(100.0*score/selectedScore)) + '%');
+          newCell.append('text').attr('class', dim ? 'darken' : '').attr('alt', "Percent").text(')');
+        }
       }
     }
 

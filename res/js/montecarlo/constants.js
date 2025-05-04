@@ -435,7 +435,7 @@ const statImageLookup = [
   'res/images/traits/' + traitNameLookup[ 4].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
   'res/images/traits/' + traitNameLookup[ 5].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
   'res/images/traits/' + traitNameLookup[ 6].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
-  'res/images/traits/' + traitNameLookup[ 7].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
+  'res/images/techtiers/core.png',
   'res/images/stats/' + statNameLookup[12].toLowerCase().replace(/\s+/g,'') + '.png', // Radius
   'res/images/stats/' + statNameLookup[13].toLowerCase().replace(/\s+/g,'') + '.png', // Speed
   'res/images/stats/' + statNameLookup[14].toLowerCase().replace(/\s+/g,'') + '.png', // Damage
