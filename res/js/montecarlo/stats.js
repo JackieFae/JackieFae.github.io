@@ -284,18 +284,32 @@ function computeStats(botIdx)
 
 function linkStatCharts()
 {
+  let unsortIdx = [];
+  let sortIdx = [];
   for(let i = 0; i < cropStatData.length-1; ++i)
   {
-    piePaths[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
-               .on('mouseleave', function() { setStatHighlight(i, -1, false); });
-    pieIcons[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
-               .on('mouseleave', function() { setStatHighlight(i, -1, false); });
-    wireIcons[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
-                .on('mouseleave', function() { setStatHighlight(i, -1, false); });
-    wireLinesA[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
-                 .on('mouseleave', function() { setStatHighlight(i, -1, false); });
-    wireLinesB[i].on('mouseenter', function(d, j) { setStatHighlight(i, cropStatData[i].ID, true); })
-                 .on('mouseleave', function() { setStatHighlight(i, -1, false); });
+    for(var j = 0; j < cropStatData.length-1; ++j)
+    {
+      if(cropStatData[i].ID == unsortStatData[j].ID)
+      {
+        unsortIdx[i] = j;
+        sortIdx[j] = i;
+      }
+    }
+  }
+
+  for(let i = 0; i < cropStatData.length-1; ++i)
+  {
+    piePaths[i].on('mouseenter', function(d, j) { setStatHighlight(i, unsortIdx[i], cropStatData[i].ID, true); })
+               .on('mouseleave', function() { setStatHighlight(i, unsortIdx[i], -1, false); });
+    pieIcons[i].on('mouseenter', function(d, j) { setStatHighlight(i, unsortIdx[i], cropStatData[i].ID, true); })
+               .on('mouseleave', function() { setStatHighlight(i, unsortIdx[i], -1, false); });
+    wireIcons[i].on('mouseenter', function(d, j) { setStatHighlight(sortIdx[i], i, unsortStatData[i].ID, true); })
+                .on('mouseleave', function() { setStatHighlight(sortIdx[i], i, -1, false); });
+    wireLinesA[i].on('mouseenter', function(d, j) { setStatHighlight(sortIdx[i], i, unsortStatData[i].ID, true); })
+                 .on('mouseleave', function() { setStatHighlight(sortIdx[i], i, -1, false); });
+    wireLinesB[i].on('mouseenter', function(d, j) { setStatHighlight(sortIdx[i], i, unsortStatData[i].ID, true); })
+                 .on('mouseleave', function() { setStatHighlight(sortIdx[i], i, -1, false); });
   }
 }
 
@@ -539,17 +553,17 @@ function drawWireframeChart()
     .attr("d", drawLine(compareVertices));
 }
 
-function setStatHighlight(graphIdx, statIdx, enlarge)
+function setStatHighlight(pieIdx, wireIdx, statIdx, enlarge)
 {
   if(statPieHighlight != statIdx)
   {
-    piePaths[graphIdx].attr('d', enlarge ? largeArc : smallArc)
+    piePaths[pieIdx].attr('d', enlarge ? largeArc : smallArc)
       .attr('fill', function(d, i) {return enlarge ? ((statIdx == statIndex.Extra) ? colour[3] : (d.data.weight < 0.0 ? colour[2] : colour[1])) : colour[0];})
       .style('opacity', (enlarge ? 1.0 : 0.7));
-    pieIcons[graphIdx].style('opacity', (enlarge ? 1.0 : 0.7));
-    wireIcons[graphIdx].style('opacity', (enlarge ? 1.0 : 0.7));
-    wireLinesA[graphIdx].style('opacity', (enlarge ? 0.6 : 0.3));
-    wireLinesB[graphIdx].style('opacity', (enlarge ? 0.6 : 0.3));
+    pieIcons[pieIdx].style('opacity', (enlarge ? 1.0 : 0.7));
+    wireIcons[wireIdx].style('opacity', (enlarge ? 1.0 : 0.7));
+    wireLinesA[wireIdx].style('opacity', (enlarge ? 0.6 : 0.3));
+    wireLinesB[wireIdx].style('opacity', (enlarge ? 0.6 : 0.3));
     statPieHighlight = statIdx;
     drawStatHighlight();
   }
