@@ -496,7 +496,7 @@ function loadData(i)
   ]).then(([regData]) => {
     GlobalData.regData = [];
     //GlobalData.regStats = [];
-    var numStats = 9; // TODO: Make equal to stat count
+    var numStats = 10; // TODO: Make equal to stat count
     var varCount = 2 * (botCount + 2) + numStats;
     regData.forEach(function(d, i) {
       var botIdx = parseInt(i / varCount);
