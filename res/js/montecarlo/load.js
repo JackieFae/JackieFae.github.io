@@ -1201,14 +1201,14 @@ function loadReports(reportIdx)
   Promise.all([
     d3.csv(pathRoot + 'repsum_' + reportIdx + '.csv'),
   ]).then(([repsumData]) => {
-    GlobalData.reportSummary = [];
+    GlobalData.reportSummary = {};
     repsumData.forEach(function(d, i) {
-      GlobalData.reportSummary[i] = {};
-      GlobalData.reportSummary[i].width = +d.Width;
-      GlobalData.reportSummary[i].height = +d.Height;
-      GlobalData.reportSummary[i].duration = +d.Duration;
-      GlobalData.reportSummary[i].timeStep = +d.TimeStep;
-      GlobalData.reportSummary[i].unitCount = +d.UnitCount;
+      GlobalData.reportSummary.width = +d.Width;
+      GlobalData.reportSummary.height = +d.Height;
+      GlobalData.reportSummary.spaceStep = +d.SpaceStep;
+      GlobalData.reportSummary.duration = +d.Duration;
+      GlobalData.reportSummary.timeStep = +d.TimeStep;
+      GlobalData.reportSummary.unitCount = +d.UnitCount;
     });
 
     Promise.all([
@@ -1217,7 +1217,7 @@ function loadReports(reportIdx)
       GlobalData.reportData = [];
       var snapIdx = 0;
       reportData.forEach(function(d, i) {
-        var unitIdx = i % GlobalData.reportSummary[0].unitCount
+        var unitIdx = i % GlobalData.reportSummary.unitCount
         if(unitIdx == 0)
         {
           GlobalData.reportData[snapIdx] = [];
@@ -1227,11 +1227,11 @@ function loadReports(reportIdx)
         GlobalData.reportData[snapIdx-1][unitIdx].id = +d.ID;
         GlobalData.reportData[snapIdx-1][unitIdx].teamIdx = +d.TeamIdx;
         GlobalData.reportData[snapIdx-1][unitIdx].botIdx = +d.BotIdx;
-        GlobalData.reportData[snapIdx-1][unitIdx].posX = +d.PosX;
-        GlobalData.reportData[snapIdx-1][unitIdx].posY = +d.PosY;
+        GlobalData.reportData[snapIdx-1][unitIdx].posX = +d.PosX * GlobalData.reportSummary.spaceStep;
+        GlobalData.reportData[snapIdx-1][unitIdx].posY = +d.PosY * GlobalData.reportSummary.spaceStep;
         GlobalData.reportData[snapIdx-1][unitIdx].action = d.Action;
-        GlobalData.reportData[snapIdx-1][unitIdx].actX = +d.ActX;
-        GlobalData.reportData[snapIdx-1][unitIdx].actY = +d.ActY;
+        GlobalData.reportData[snapIdx-1][unitIdx].actX = +d.ActX * GlobalData.reportSummary.spaceStep;
+        GlobalData.reportData[snapIdx-1][unitIdx].actY = +d.ActY * GlobalData.reportSummary.spaceStep;
       });
 
       Promise.all([

@@ -34,11 +34,18 @@ const reportGraphBots = reportGraphOverflow.append('svg')
 
 const reportDetail = reportDisplay.append('div')
   .style('height', '300px');
-const reportDetail2 = reportDetail.append('div').attr('class', 'row row-cols-2')
-  .style('width', '175px')
-  .style('height', '25px');
-const reportSelect = reportDetail2.append('div').attr('class', 'col')
-  .style('width', '50%')
+//const reportDetail2 = reportDetail.append('div').attr('class', 'row row-cols-2')
+//  .style('width', '175px')
+//  .style('height', '25px');
+const reportScore = reportDetail.append('div')
+  .style('height', '40px');
+const reportDecks = reportDetail.append('div')
+  .style('height', `${200.0}px`);
+
+const reportControl = reportGraph.append('div').attr('class', 'row row-cols-5');
+
+const reportSelect = reportControl.append('div').attr('class', 'col')
+  .style('width', '10%')
   .append('input').attr('type', "number")
   .on("change", function(d){
     reportTimeStep = 0;
@@ -47,17 +54,10 @@ const reportSelect = reportDetail2.append('div').attr('class', 'col')
     reportGraphOverflow._groups[0][0].scrollTop = 0.29 * repHeight;
     loadReports(reportIdx - 1);
   });
-const reportSelectDenom = reportDetail2.append('div').attr('class', 'col')
-  .style('width', '50%');
-const reportScore = reportDetail.append('div')
-  .style('height', '40px');
-const reportDecks = reportDetail.append('div')
-  .style('height', `${200.0}px`);
-
-const reportControl = reportGraph.append('div').attr('class', 'row row-cols-3');
-
+const reportSelectDenom = reportControl.append('div').attr('class', 'col')
+  .style('width', '7.5%');
 const reportSlider = reportControl.append('div').attr('class', 'col')
-  .style('width', '80%')
+  .style('width', '62.5%')
   .append('input').attr('class', 'slider')
   .attr('type', 'range')
   .on("change", function(d){
@@ -67,10 +67,11 @@ const reportSlider = reportControl.append('div').attr('class', 'col')
 
 const reportTime = reportControl.append('div').attr('class', 'col')
   .style('width', '10%')
-  .append('input').attr('type', "number")
-  .on("change", function(d){
-    reportTimeStep = parseInt(this.value);
-    drawReport();
+  .append('input')
+    .attr('type', "number")
+    .on("change", function(d) {
+      reportTimeStep = this.value / GlobalData.reportSummary.timeStep;
+      drawReport();
   });
 const reportTimeDenom = reportControl.append('div').attr('class', 'col')
   .style('width', '10%');
@@ -135,7 +136,7 @@ function drawReport()
   var fieldHeight = repHeight - 2.0 * boundary;
 
   // Draw dead bots first, without borders.
-  for(var unitIdx = 0; unitIdx < GlobalData.reportSummary[0].unitCount; ++unitIdx)
+  for(var unitIdx = 0; unitIdx < GlobalData.reportSummary.unitCount; ++unitIdx)
   {
     var act = GlobalData.reportData[reportTimeStep][unitIdx].action;
     var rad = GlobalData.bots[GlobalData.reportData[reportTimeStep][unitIdx].botIdx].Radius;
@@ -143,8 +144,8 @@ function drawReport()
     {
       rad = 1.0;
     }
-    var topLeftX = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posX * fieldWidth  / GlobalData.reportSummary[0].width - 0.5 * repIconLarge.width;
-    var topLeftY = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posY * fieldHeight / GlobalData.reportSummary[0].height - 0.5 * repIconLarge.height;
+    var topLeftX = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posX * fieldWidth  / GlobalData.reportSummary.width - 0.5 * repIconLarge.width * rad;
+    var topLeftY = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posY * fieldHeight / GlobalData.reportSummary.height - 0.5 * repIconLarge.height * rad;
     var iamgePath = botImageLookup[GlobalData.reportData[reportTimeStep][unitIdx].botIdx];
     if(act == 'x')
     {
@@ -160,7 +161,7 @@ function drawReport()
   }
 
   // Draw living bots, make lines faded.
-  for(var unitIdx = 0; unitIdx < GlobalData.reportSummary[0].unitCount; ++unitIdx)
+  for(var unitIdx = 0; unitIdx < GlobalData.reportSummary.unitCount; ++unitIdx)
   {
     var act = GlobalData.reportData[reportTimeStep][unitIdx].action;
     if(act != 'x')
@@ -170,8 +171,8 @@ function drawReport()
       {
         rad = 1.0;
       }
-      var topLeftX = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posX * fieldWidth  / GlobalData.reportSummary[0].width  - 0.5 * repIconLarge.width;
-      var topLeftY = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posY * fieldHeight / GlobalData.reportSummary[0].height - 0.5 * repIconLarge.height;
+      var topLeftX = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posX * fieldWidth  / GlobalData.reportSummary.width  - 0.5 * repIconLarge.width * rad;
+      var topLeftY = boundary + GlobalData.reportData[reportTimeStep][unitIdx].posY * fieldHeight / GlobalData.reportSummary.height - 0.5 * repIconLarge.height * rad;
       reportGraphBots.append("path")
         .attr("class", "svg_line")
         .attr("fill", "none")
@@ -189,10 +190,10 @@ function drawReport()
       {
         var className = 'teamB';
       }
-      var data = [ { x: boundary + GlobalData.reportData[reportTimeStep][unitIdx].posX * fieldWidth  / GlobalData.reportSummary[0].width  + 1,
-                     y: repHeight - (boundary + GlobalData.reportData[reportTimeStep][unitIdx].posY * fieldHeight / GlobalData.reportSummary[0].height + 1) },
-                   { x: boundary + GlobalData.reportData[reportTimeStep][unitIdx].actX * fieldWidth  / GlobalData.reportSummary[0].width  + 1,
-                     y: repHeight - (boundary + GlobalData.reportData[reportTimeStep][unitIdx].actY * fieldHeight / GlobalData.reportSummary[0].height + 1) } ];
+      var data = [ { x: boundary + GlobalData.reportData[reportTimeStep][unitIdx].posX * fieldWidth  / GlobalData.reportSummary.width  + 1,
+                     y: repHeight - (boundary + GlobalData.reportData[reportTimeStep][unitIdx].posY * fieldHeight / GlobalData.reportSummary.height + 1) },
+                   { x: boundary + GlobalData.reportData[reportTimeStep][unitIdx].actX * fieldWidth  / GlobalData.reportSummary.width  + 1,
+                     y: repHeight - (boundary + GlobalData.reportData[reportTimeStep][unitIdx].actY * fieldHeight / GlobalData.reportSummary.height + 1) } ];
 
       if((act == 'm')  // Move
       || (act == 'b')  // Blink
@@ -317,17 +318,17 @@ function drawReport()
 
   reportSlider
     .attr('min', 0)
-    .attr('max', GlobalData.reportSummary[0].duration);
+    .attr('max', GlobalData.reportSummary.duration / GlobalData.reportSummary.timeStep);
   reportSlider._groups[0][0].value = `${reportTimeStep}`;
   reportSlider._groups[0][0].valueAsNumber = reportTimeStep;
 
   reportTime
     .attr('min', 0)
-    .attr('max', GlobalData.reportSummary[0].duration)
+    .attr('max', parseInt(GlobalData.reportSummary.duration))
     .attr('value', reportTimeStep);
-  reportTime._groups[0][0].value = `${reportTimeStep}`;
-  reportTime._groups[0][0].valueAsNumber = reportTimeStep;
-  reportTimeDenom.text(" / " + (GlobalData.reportSummary[0].duration) + "s");
+  reportTime._groups[0][0].value = `${parseInt(reportTimeStep / GlobalData.reportSummary.timeStep) * GlobalData.reportSummary.timeStep}`;
+  reportTime._groups[0][0].valueAsNumber = parseInt(reportTimeStep * GlobalData.reportSummary.timeStep * 100.0) / 100.0;
+  reportTimeDenom.text(" / " + (GlobalData.reportSummary.duration) + "s");
 
   reportSelect
     .attr('min', 1)
@@ -349,7 +350,7 @@ function drawReportScores()
   // Draw army counts/value
   var p1Res = 0.0;
   var p2Res = 0.0;
-  for(var i = 0; i < GlobalData.reportSummary[0].unitCount; ++i)
+  for(var i = 0; i < GlobalData.reportSummary.unitCount; ++i)
   {
     if(GlobalData.reportData[reportTimeStep][i].teamIdx == 1)
     {
@@ -366,7 +367,7 @@ function drawReportScores()
       }
     }
   }
-  var scoreStep = Math.min(reportTimeStep+1, GlobalData.reportSummary[0].duration);
+  var scoreStep = Math.min(reportTimeStep+1, GlobalData.reportSummary.duration / GlobalData.reportSummary.timeStep);
   var p1Score = Math.max(0.0, GlobalData.reportData[scoreStep].p1Score - p1Res); // TODO: Note that this cannot represent sim-specific values for res cost.
   var p2Score = Math.max(0.0, GlobalData.reportData[scoreStep].p2Score - p2Res);
   var scoreTotal = p1Res + p1Score + p2Res + p2Score;
@@ -433,7 +434,7 @@ function drawReportDecks()
     unitTotal[1][i] = 0;
   }
 
-  for(var i = 0; i < GlobalData.reportSummary[0].unitCount; ++i)
+  for(var i = 0; i < GlobalData.reportSummary.unitCount; ++i)
   {
     var unitIdx = GlobalData.reportData[reportTimeStep][i].botIdx;
     var team = GlobalData.reportData[reportTimeStep][i].teamIdx - 1;
@@ -612,7 +613,7 @@ function drawReportDeck(deck, unitList, unitAlive, unitTotal, teamIdx)
 
     if(unitTotal[i] > 0)
     {
-      var scoreStep = Math.min(reportTimeStep+1, GlobalData.reportSummary[0].duration);
+      var scoreStep = Math.min(reportTimeStep+1, GlobalData.reportSummary.duration / GlobalData.reportSummary.timeStep);
       var botCost = GlobalData.bots[d].ResTotal;
       var botResValue = unitAlive[i] * botCost;
       var botScore = Math.max(0.0, GlobalData.reportData[scoreStep].p1BotScores[d] - botResValue);
