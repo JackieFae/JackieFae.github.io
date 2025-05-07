@@ -87,7 +87,7 @@ function selectCorrelationBase(value)
 
 function drawCorrelation()
 {
-  botRegData = GlobalData.regData[correlationBot]
+  botRegData = GlobalData.regData[correlationBot].correlations;
 
   drawCorrelationTable(correlationGraph, correlationTable, botRegData);
   if(correlationOutputSelect == null)
@@ -114,7 +114,7 @@ function drawCorrelationGraph(graph, table, data)
   const filterFoeData = data.slice(botTechMap[5] + 2/*Skill & Aggression*/ + botTechMap[0], botTechMap[5] + 2/*Skill & Aggression*/ + botTechMap[5]);
   const sortedFoeData = filterFoeData.slice().sort((a,b) => d3.ascending(a[correlationOutputSelect], b[correlationOutputSelect]));
 
-  const graphBot = GlobalData.regData[correlationBot][correlationBot];
+  const graphBot = GlobalData.regData[correlationBot].correlations[correlationBot];
 
   const binnedData = []
   for(var i = 0; i < cNumBins; ++i)

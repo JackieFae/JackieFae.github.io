@@ -317,43 +317,56 @@ function loadBasicRegression()
         var valueIdx = i % varCount;
         if(GlobalData.regDataBase[botIdx] == null)
         {
-          GlobalData.regDataBase[botIdx] = [];
+          GlobalData.regDataBase[botIdx] = {};
+          GlobalData.regDataBase[botIdx].correlations = [];
         }
-        GlobalData.regDataBase[botIdx][valueIdx] = {};
-        GlobalData.regDataBase[botIdx][valueIdx].ID = botIdx;
-        GlobalData.regDataBase[botIdx][valueIdx].name = d.Name;
-        GlobalData.regDataBase[botIdx][valueIdx].Score = +d.Score;
-        GlobalData.regDataBase[botIdx][valueIdx].Stddev = +d.StdDev;
-        GlobalData.regDataBase[botIdx][valueIdx].AvgScore = +d.AvgScore;
-        GlobalData.regDataBase[botIdx][valueIdx].AvgStddev = +d.AvgStdDev;
-        GlobalData.regDataBase[botIdx][valueIdx].Weight = +d.Weight;
-        GlobalData.regDataBase[botIdx][valueIdx].WeightRes = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].ResTotal) * 100);
-        GlobalData.regDataBase[botIdx][valueIdx].WeightBW = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].Bandwidth));
-        GlobalData.regDataBase[botIdx][valueIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
-        GlobalData.regDataBase[botIdx][valueIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
-        GlobalData.regDataBase[botIdx][valueIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
-        GlobalData.regDataBase[botIdx][valueIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
-        GlobalData.regDataBase[botIdx][valueIdx].NeutralIterations = parseInt(+d.NeutralIterations);
-        GlobalData.regDataBase[botIdx][valueIdx].NeutralWins = parseInt(+d.NeutralWins);
-        GlobalData.regDataBase[botIdx][valueIdx].PickPct = 100 - parseInt(+d.NeutralIterations);
-        GlobalData.regDataBase[botIdx][valueIdx].ScoreDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].StddevDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].AvgScoreDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].AvgStddevDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].WeightDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].WeightResDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].WeightBWDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].AdvantagedIterationsDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].AdvantagedWinsDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].DisadvantagedIterationsDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].DisadvantagedWinsDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].NeutralIterationsDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].NeutralWinsDiff = 0;
-        GlobalData.regDataBase[botIdx][valueIdx].PickPctDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx] = {};
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].ID = botIdx;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].name = d.Name;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].Weight = +d.Weight;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].WeightRes = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].ResTotal) * 100);
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].WeightBW = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].Bandwidth));
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].NeutralIterations = parseInt(+d.NeutralIterations);
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].NeutralWins = parseInt(+d.NeutralWins);
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].PickPct = 100 - parseInt(+d.NeutralIterations);
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].WeightDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].WeightResDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].WeightBWDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].AdvantagedIterationsDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].AdvantagedWinsDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].DisadvantagedIterationsDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].DisadvantagedWinsDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].NeutralIterationsDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].NeutralWinsDiff = 0;
+        GlobalData.regDataBase[botIdx].correlations[valueIdx].PickPctDiff = 0;
       });
 
-      loaded.basicRegression = true;
-      loadSpecificData(); // Attempt to load specifics.
+      Promise.all([
+        d3.csv(pathRoot + 'linregout_all.csv'),
+      ]).then(([regDataBase]) => {
+        regDataBase.forEach(function(d, i) {
+          var botIdx = i;
+          GlobalData.regDataBase[botIdx].ID = i;
+          GlobalData.regDataBase[botIdx].name = d.Name;
+          GlobalData.regDataBase[botIdx].Score = +d.Score;
+          GlobalData.regDataBase[botIdx].Stddev = +d.StdDev;
+          GlobalData.regDataBase[botIdx].AvgScore = +d.AvgScore;
+          GlobalData.regDataBase[botIdx].AvgStddev = +d.AvgStdDev;
+          GlobalData.regDataBase[botIdx].ScoreDiff = 0;
+          GlobalData.regDataBase[botIdx].StddevDiff = 0;
+          GlobalData.regDataBase[botIdx].AvgScoreDiff = 0;
+          GlobalData.regDataBase[botIdx].AvgStddevDiff = 0;
+        });
+
+        loaded.basicRegression = true;
+        loadSpecificData(); // Attempt to load specifics.
+      }).catch((error) => {
+        console.log(error);
+      });
     }).catch((error) => {
       console.log(error);
     });
@@ -494,87 +507,73 @@ function loadData(i)
       {
         if(GlobalData.regData[botIdx] == null)
         {
-          GlobalData.regData[botIdx] = [];
+          GlobalData.regData[botIdx] = {};
+          GlobalData.regData[botIdx].correlations = [];
         }
         var mapValueIdx = valueIdx;
         if(botIdx + numStats < mapValueIdx)
         {
           mapValueIdx -= numStats;
         }
-        GlobalData.regData[botIdx][mapValueIdx] = {};
-        GlobalData.regData[botIdx][mapValueIdx].ID = botIdx;
-        GlobalData.regData[botIdx][mapValueIdx].correlationID = mapValueIdx;
-        GlobalData.regData[botIdx][mapValueIdx].name = d.Name;
-        GlobalData.regData[botIdx][mapValueIdx].Score = +d.Score;
-        GlobalData.regData[botIdx][mapValueIdx].Stddev = +d.StdDev;
-        GlobalData.regData[botIdx][mapValueIdx].AvgScore = +d.AvgScore;
-        GlobalData.regData[botIdx][mapValueIdx].AvgStddev = +d.AvgStdDev;
-        GlobalData.regData[botIdx][mapValueIdx].Weight = +d.Weight;
-        GlobalData.regData[botIdx][mapValueIdx].WeightRes = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].ResTotal) * 100);
-        GlobalData.regData[botIdx][mapValueIdx].WeightBW = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].Bandwidth));
-        GlobalData.regData[botIdx][mapValueIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
-        GlobalData.regData[botIdx][mapValueIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
-        GlobalData.regData[botIdx][mapValueIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
-        GlobalData.regData[botIdx][mapValueIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
-        GlobalData.regData[botIdx][mapValueIdx].NeutralIterations = parseInt(+d.NeutralIterations);
-        GlobalData.regData[botIdx][mapValueIdx].NeutralWins = parseInt(+d.NeutralWins);
-        GlobalData.regData[botIdx][mapValueIdx].PickPct = (botIdx == mapValueIdx) ? GlobalData.regDataBase[botIdx][botIdx].PickPct : 100 - parseInt(+d.DisadvantagedIterations + +d.NeutralIterations);
-        GlobalData.regData[botIdx][mapValueIdx].ScoreDiff = +d.Score - GlobalData.regDataBase[botIdx][botIdx].Score;
-        GlobalData.regData[botIdx][mapValueIdx].StddevDiff = +d.StdDev - GlobalData.regDataBase[botIdx][botIdx].Stddev;
-        GlobalData.regData[botIdx][mapValueIdx].AvgScoreDiff = +d.AvgScore - GlobalData.regDataBase[botIdx][botIdx].AvgScore;
-        GlobalData.regData[botIdx][mapValueIdx].AvgStddevDiff = +d.AvgStdDev - GlobalData.regDataBase[botIdx][botIdx].AvgStddev;
-        GlobalData.regData[botIdx][mapValueIdx].WeightDiff = 0;
-        GlobalData.regData[botIdx][mapValueIdx].WeightResDiff = 0;
-        GlobalData.regData[botIdx][mapValueIdx].WeightBWDiff = 0;
-        GlobalData.regData[botIdx][mapValueIdx].AdvantagedIterationsDiff = parseInt(+d.AdvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedIterations;
-        GlobalData.regData[botIdx][mapValueIdx].AdvantagedWinsDiff = parseInt(+d.AdvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].AdvantagedWins;
-        GlobalData.regData[botIdx][mapValueIdx].DisadvantagedIterationsDiff = parseInt(+d.DisadvantagedIterations) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedIterations;
-        GlobalData.regData[botIdx][mapValueIdx].DisadvantagedWinsDiff = parseInt(+d.DisadvantagedWins) - GlobalData.regDataBase[botIdx][botIdx].DisadvantagedWins;
-        GlobalData.regData[botIdx][mapValueIdx].NeutralIterationsDiff = parseInt(+d.NeutralIterations) - GlobalData.regDataBase[botIdx][botIdx].NeutralIterations;
-        GlobalData.regData[botIdx][mapValueIdx].NeutralWinsDiff = parseInt(+d.NeutralWins) - GlobalData.regDataBase[botIdx][botIdx].NeutralWins;
-        GlobalData.regData[botIdx][mapValueIdx].PickPctDiff = GlobalData.regData[botIdx][mapValueIdx].PickPct - GlobalData.regDataBase[botIdx][botIdx].PickPct;
+        GlobalData.regData[botIdx].correlations[mapValueIdx] = {};
+        GlobalData.regData[botIdx].correlations[mapValueIdx].ID = botIdx;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].correlationID = mapValueIdx;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].name = d.Name;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].Weight = +d.Weight;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].WeightRes = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].ResTotal) * 100);
+        GlobalData.regData[botIdx].correlations[mapValueIdx].WeightBW = parseInt(+d.Weight / Math.max(1.0, GlobalData.bots[botIdx].Bandwidth));
+        GlobalData.regData[botIdx].correlations[mapValueIdx].AdvantagedIterations = parseInt(+d.AdvantagedIterations);
+        GlobalData.regData[botIdx].correlations[mapValueIdx].AdvantagedWins = parseInt(+d.AdvantagedWins);
+        GlobalData.regData[botIdx].correlations[mapValueIdx].DisadvantagedIterations = parseInt(+d.DisadvantagedIterations);
+        GlobalData.regData[botIdx].correlations[mapValueIdx].DisadvantagedWins = parseInt(+d.DisadvantagedWins);
+        GlobalData.regData[botIdx].correlations[mapValueIdx].NeutralIterations = parseInt(+d.NeutralIterations);
+        GlobalData.regData[botIdx].correlations[mapValueIdx].NeutralWins = parseInt(+d.NeutralWins);
+        GlobalData.regData[botIdx].correlations[mapValueIdx].PickPct = (botIdx == mapValueIdx) ? GlobalData.regDataBase[botIdx].correlations[botIdx].PickPct : 100 - parseInt(+d.DisadvantagedIterations + +d.NeutralIterations);
+        GlobalData.regData[botIdx].correlations[mapValueIdx].WeightDiff = 0;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].WeightResDiff = 0;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].WeightBWDiff = 0;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].AdvantagedIterationsDiff = parseInt(+d.AdvantagedIterations) - GlobalData.regDataBase[botIdx].correlations[botIdx].AdvantagedIterations;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].AdvantagedWinsDiff = parseInt(+d.AdvantagedWins) - GlobalData.regDataBase[botIdx].correlations[botIdx].AdvantagedWins;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].DisadvantagedIterationsDiff = parseInt(+d.DisadvantagedIterations) - GlobalData.regDataBase[botIdx].correlations[botIdx].DisadvantagedIterations;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].DisadvantagedWinsDiff = parseInt(+d.DisadvantagedWins) - GlobalData.regDataBase[botIdx].correlations[botIdx].DisadvantagedWins;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].NeutralIterationsDiff = parseInt(+d.NeutralIterations) - GlobalData.regDataBase[botIdx].correlations[botIdx].NeutralIterations;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].NeutralWinsDiff = parseInt(+d.NeutralWins) - GlobalData.regDataBase[botIdx].correlations[botIdx].NeutralWins;
+        GlobalData.regData[botIdx].correlations[mapValueIdx].PickPctDiff = GlobalData.regData[botIdx].correlations[mapValueIdx].PickPct - GlobalData.regDataBase[botIdx].correlations[botIdx].PickPct;
       }
       else // Map stat weights in bot at botIdx
       {
         // Copy common values from base regData.
         if(GlobalData.regData[botIdx] == null)
         {
-          GlobalData.regData[botIdx] = [];
+          GlobalData.regData[botIdx] = {};
+          GlobalData.regData[botIdx].correlations = [];
         }
-        if(GlobalData.regData[botIdx][botIdx] == null)
+        if(GlobalData.regData[botIdx].correlations[botIdx] == null)
         {
-          GlobalData.regData[botIdx][botIdx] = {};
-          GlobalData.regData[botIdx][botIdx].ID = botIdx;
-          GlobalData.regData[botIdx][botIdx].correlationID = valueIdx;
-          GlobalData.regData[botIdx][botIdx].name = botNameLookup[botIdx];
-          GlobalData.regData[botIdx][botIdx].Score = +d.Score;
-          GlobalData.regData[botIdx][botIdx].Stddev = +d.StdDev;
-          GlobalData.regData[botIdx][botIdx].AvgScore = +d.AvgScore;
-          GlobalData.regData[botIdx][botIdx].AvgStddev = +d.AvgStdDev;
-          GlobalData.regData[botIdx][botIdx].Weight = 0.0;
-          GlobalData.regData[botIdx][botIdx].WeightRes = 0.0;
-          GlobalData.regData[botIdx][botIdx].WeightBW = 0.0;
-          GlobalData.regData[botIdx][botIdx].AdvantagedIterations = GlobalData.regDataBase[botIdx][botIdx].AdvantagedIterations;
-          GlobalData.regData[botIdx][botIdx].AdvantagedWins = GlobalData.regDataBase[botIdx][botIdx].AdvantagedWins;
-          GlobalData.regData[botIdx][botIdx].DisadvantagedIterations = GlobalData.regDataBase[botIdx][botIdx].DisadvantagedIterations;
-          GlobalData.regData[botIdx][botIdx].DisadvantagedWins = GlobalData.regDataBase[botIdx][botIdx].DisadvantagedWins;
-          GlobalData.regData[botIdx][botIdx].NeutralIterations = GlobalData.regDataBase[botIdx][botIdx].NeutralIterations;
-          GlobalData.regData[botIdx][botIdx].NeutralWins = GlobalData.regDataBase[botIdx][botIdx].NeutralWins;
-          GlobalData.regData[botIdx][botIdx].PickPct = GlobalData.regDataBase[botIdx][botIdx].PickPct;
-          GlobalData.regData[botIdx][botIdx].ScoreDiff = +d.Score - GlobalData.regDataBase[botIdx][botIdx].Score;
-          GlobalData.regData[botIdx][botIdx].StddevDiff = +d.StdDev - GlobalData.regDataBase[botIdx][botIdx].Stddev;
-          GlobalData.regData[botIdx][botIdx].AvgScoreDiff = +d.AvgScore - GlobalData.regDataBase[botIdx][botIdx].AvgScore;
-          GlobalData.regData[botIdx][botIdx].AvgStddevDiff = +d.AvgStdDev - GlobalData.regDataBase[botIdx][botIdx].AvgStddev;
-          GlobalData.regData[botIdx][botIdx].WeightDiff = 0;
-          GlobalData.regData[botIdx][botIdx].WeightResDiff = 0;
-          GlobalData.regData[botIdx][botIdx].WeightBWDiff = 0;
-          GlobalData.regData[botIdx][botIdx].AdvantagedIterationsDiff = 0;
-          GlobalData.regData[botIdx][botIdx].AdvantagedWinsDiff = 0;
-          GlobalData.regData[botIdx][botIdx].DisadvantagedIterationsDiff = 0;
-          GlobalData.regData[botIdx][botIdx].DisadvantagedWinsDiff = 0;
-          GlobalData.regData[botIdx][botIdx].NeutralIterationsDiff = 0;
-          GlobalData.regData[botIdx][botIdx].NeutralWinsDiff = 0;
-          GlobalData.regData[botIdx][botIdx].PickPctDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx] = {};
+          GlobalData.regData[botIdx].correlations[botIdx].ID = botIdx;
+          GlobalData.regData[botIdx].correlations[botIdx].correlationID = valueIdx;
+          GlobalData.regData[botIdx].correlations[botIdx].name = botNameLookup[botIdx];
+          GlobalData.regData[botIdx].correlations[botIdx].Weight = 0.0;
+          GlobalData.regData[botIdx].correlations[botIdx].WeightRes = 0.0;
+          GlobalData.regData[botIdx].correlations[botIdx].WeightBW = 0.0;
+          GlobalData.regData[botIdx].correlations[botIdx].AdvantagedIterations = GlobalData.regDataBase[botIdx].correlations[botIdx].AdvantagedIterations;
+          GlobalData.regData[botIdx].correlations[botIdx].AdvantagedWins = GlobalData.regDataBase[botIdx].correlations[botIdx].AdvantagedWins;
+          GlobalData.regData[botIdx].correlations[botIdx].DisadvantagedIterations = GlobalData.regDataBase[botIdx].correlations[botIdx].DisadvantagedIterations;
+          GlobalData.regData[botIdx].correlations[botIdx].DisadvantagedWins = GlobalData.regDataBase[botIdx].correlations[botIdx].DisadvantagedWins;
+          GlobalData.regData[botIdx].correlations[botIdx].NeutralIterations = GlobalData.regDataBase[botIdx].correlations[botIdx].NeutralIterations;
+          GlobalData.regData[botIdx].correlations[botIdx].NeutralWins = GlobalData.regDataBase[botIdx].correlations[botIdx].NeutralWins;
+          GlobalData.regData[botIdx].correlations[botIdx].PickPct = GlobalData.regDataBase[botIdx].correlations[botIdx].PickPct;
+          GlobalData.regData[botIdx].correlations[botIdx].WeightDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx].WeightResDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx].WeightBWDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx].AdvantagedIterationsDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx].AdvantagedWinsDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx].DisadvantagedIterationsDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx].DisadvantagedWinsDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx].NeutralIterationsDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx].NeutralWinsDiff = 0;
+          GlobalData.regData[botIdx].correlations[botIdx].PickPctDiff = 0;
         }
 
         // Load specific stat data.
@@ -586,9 +585,9 @@ function loadData(i)
         // TODO: Load other specific stats values for stats table?
 
         // Compose total weight as the sum of stats.
-        GlobalData.regData[botIdx][botIdx].Weight += +d.Weight * GlobalData.bots[botIdx][d.Name];
-        GlobalData.regData[botIdx][botIdx].WeightRes += +d.Weight * GlobalData.bots[botIdx][d.Name] / Math.max(1.0, GlobalData.bots[botIdx].ResTotal) * 100.0;
-        GlobalData.regData[botIdx][botIdx].WeightBW += +d.Weight * GlobalData.bots[botIdx][d.Name] / Math.max(1.0, GlobalData.bots[botIdx].Bandwidth);
+        GlobalData.regData[botIdx].correlations[botIdx].Weight += +d.Weight * GlobalData.bots[botIdx][d.Name];
+        GlobalData.regData[botIdx].correlations[botIdx].WeightRes += +d.Weight * GlobalData.bots[botIdx][d.Name] / Math.max(1.0, GlobalData.bots[botIdx].ResTotal) * 100.0;
+        GlobalData.regData[botIdx].correlations[botIdx].WeightBW += +d.Weight * GlobalData.bots[botIdx][d.Name] / Math.max(1.0, GlobalData.bots[botIdx].Bandwidth);
       }
     });
 
@@ -614,7 +613,7 @@ function loadData(i)
           compareCount++;
 
           // Get sum of bot values.
-          for(const property in GlobalData.regData[botIdx][botIdx])
+          for(const property in GlobalData.regData[botIdx].correlations[botIdx])
           {
             if(property != "name" && property != "ID" && property != "correlationID")
             {
@@ -622,7 +621,7 @@ function loadData(i)
               {
                 GlobalData.comparisons.tech[techIdx][property] = 0;
               }
-              GlobalData.comparisons.tech[techIdx][property] += GlobalData.regData[botIdx][botIdx][property];
+              GlobalData.comparisons.tech[techIdx][property] += GlobalData.regData[botIdx].correlations[botIdx][property];
             }
           }
 
@@ -638,7 +637,7 @@ function loadData(i)
                 {
                   GlobalData.comparisons.tech[techIdx].corrIn[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.tech[techIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
+                GlobalData.comparisons.tech[techIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx].correlations[corrIdx][property];
               }
             }
           }
@@ -691,13 +690,13 @@ function loadData(i)
                 {
                   GlobalData.comparisons.tech[techIdx].corrOutFriend[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.tech[techIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
+                GlobalData.comparisons.tech[techIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx].correlations[botIdx][property];
 
                 if(!GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx][property])
                 {
                   GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
+                GlobalData.comparisons.tech[techIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx].correlations[botIdx + botCount + 2][property];
               }
             }
           }
@@ -864,7 +863,7 @@ function loadData(i)
           compareCount++;
 
           // Get sum of bot values.
-          for(const property in GlobalData.regData[botIdx][botIdx])
+          for(const property in GlobalData.regData[botIdx].correlations[botIdx])
           {
             if(property != "name" && property != "ID" && property != "correlationID")
             {
@@ -872,7 +871,7 @@ function loadData(i)
               {
                 GlobalData.comparisons.trait[traitIdx][property] = 0;
               }
-              GlobalData.comparisons.trait[traitIdx][property] += GlobalData.regData[botIdx][botIdx][property];
+              GlobalData.comparisons.trait[traitIdx][property] += GlobalData.regData[botIdx].correlations[botIdx][property];
             }
           }
 
@@ -888,7 +887,7 @@ function loadData(i)
                 {
                   GlobalData.comparisons.trait[traitIdx].corrIn[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.trait[traitIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
+                GlobalData.comparisons.trait[traitIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx].correlations[corrIdx][property];
               }
             }
           }
@@ -941,13 +940,13 @@ function loadData(i)
                 {
                   GlobalData.comparisons.trait[traitIdx].corrOutFriend[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.trait[traitIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
+                GlobalData.comparisons.trait[traitIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx].correlations[botIdx][property];
 
                 if(!GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx][property])
                 {
                   GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
+                GlobalData.comparisons.trait[traitIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx].correlations[botIdx + botCount + 2][property];
               }
             }
           }
@@ -977,7 +976,7 @@ function loadData(i)
           compareCount++;
 
           // Get sum of bot values.
-          for(const property in GlobalData.regData[botIdx][botIdx])
+          for(const property in GlobalData.regData[botIdx].correlations[botIdx])
           {
             if(property != "name" && property != "ID" && property != "correlationID")
             {
@@ -985,7 +984,7 @@ function loadData(i)
               {
                 GlobalData.comparisons.manu[manuIdx][property] = 0;
               }
-              GlobalData.comparisons.manu[manuIdx][property] += GlobalData.regData[botIdx][botIdx][property];
+              GlobalData.comparisons.manu[manuIdx][property] += GlobalData.regData[botIdx].correlations[botIdx][property];
             }
           }
 
@@ -1001,7 +1000,7 @@ function loadData(i)
                 {
                   GlobalData.comparisons.manu[manuIdx].corrIn[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.manu[manuIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx][corrIdx][property];
+                GlobalData.comparisons.manu[manuIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx].correlations[corrIdx][property];
               }
             }
           }
@@ -1054,13 +1053,13 @@ function loadData(i)
                 {
                   GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx][botIdx][property];
+                GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx].correlations[botIdx][property];
 
                 if(!GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx][property])
                 {
                   GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx][property] = 0;
                 }
-                GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx][botIdx + botCount + 2][property];
+                GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx].correlations[botIdx + botCount + 2][property];
               }
             }
           }
@@ -1075,17 +1074,43 @@ function loadData(i)
       }
     }
 
-    console.log(GlobalData);
-    loaded.regression = true;
-    if(loaded.count && loaded.results && loaded.regression)
-    {
-      drawBuilder(); // deck.js
-      drawRegression(); // regression.js
-      computeCompareStats();
-      drawStats(); // stats.js
-      drawCorrelation(); // correlation.js
-      drawResults(resultSelection); // results.js
-    }
+    Promise.all([
+      d3.csv(pathRoot + 'linregout_combo.csv'),
+    ]).then(([regData]) => {
+      regData.forEach(function(d, i) {
+        var botIdx = i;
+          GlobalData.regData[botIdx].ID = botIdx;
+          GlobalData.regData[botIdx].name = d.Name;
+          GlobalData.regData[botIdx].Score = +d.Score;
+          GlobalData.regData[botIdx].Stddev = +d.StdDev;
+          GlobalData.regData[botIdx].AvgScore = +d.AvgScore;
+          GlobalData.regData[botIdx].AvgStddev = +d.AvgStdDev;
+          GlobalData.regData[botIdx].ScoreDiff = +d.Score - GlobalData.regDataBase[botIdx].Score;
+          GlobalData.regData[botIdx].StddevDiff = +d.StdDev - GlobalData.regDataBase[botIdx].Stddev;
+          GlobalData.regData[botIdx].AvgScoreDiff = +d.AvgScore - GlobalData.regDataBase[botIdx].AvgScore;
+          GlobalData.regData[botIdx].AvgStddevDiff = +d.AvgStdDev - GlobalData.regDataBase[botIdx].AvgStddev;
+      });
+
+      console.log(GlobalData);
+      loaded.regression = true;
+      if(loaded.count && loaded.results && loaded.regression)
+      {
+        drawBuilder(); // deck.js
+        drawRegression(); // regression.js
+        computeCompareStats();
+        drawStats(); // stats.js
+        drawCorrelation(); // correlation.js
+        drawResults(resultSelection); // results.js
+      }
+    }).catch((error) => {
+      console.log(error);
+      regressionGraph.selectAll('*').remove();
+      regressionTable.selectAll('*').remove();
+      regressionGraph.append('g').append('text').attr('class', 'svg_text')
+        .attr('x', width / 3.5)
+        .attr('y', height / 2.0)
+        .text('No regression was possible for the selected combination of filters.');
+    });
   }).catch((error) => {
     console.log(error);
     regressionGraph.selectAll('*').remove();

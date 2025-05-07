@@ -500,8 +500,8 @@ function drawCardReference(deckSvg, x, y, subX, subY, slotIdx, botIdx, refIdx, p
       if(deckSelections[refIdx] != -1)
       {
         var weightOffset = (refTeam == playerTeam) ? 0 : botCount + 2;
-        refWt = GlobalData.regData[botIdx][deckSelections[refIdx] + weightOffset].Weight;
-        slotWt = GlobalData.regData[botIdx][botIdx].Weight;
+        refWt = GlobalData.regData[botIdx].correlations[deckSelections[refIdx] + weightOffset].Weight;
+        slotWt = GlobalData.regData[botIdx].correlations[botIdx].Weight;
         if(showDeckInstances)
         {
           // Do nothing.
@@ -520,7 +520,7 @@ function drawCardReference(deckSvg, x, y, subX, subY, slotIdx, botIdx, refIdx, p
       else // If no selection
       {
         refWt = getSpecificSlotOutput(refIdx, slotIdx + slotOffset, botIdx);
-        slotWt = GlobalData.regData[botIdx][botIdx].Weight;
+        slotWt = GlobalData.regData[botIdx].correlations[botIdx].Weight;
         if(showDeckInstances)
         {
           // Do nothing.
@@ -959,11 +959,11 @@ function computeBotValues()
         {
           if((i < cDeckSize && j < cDeckSize) || (cDeckSize <= i && cDeckSize <= j))
           {
-            botValues[i].wts[j] = GlobalData.regData[deckSelections[i]][deckSelections[j]].Weight;
+            botValues[i].wts[j] = GlobalData.regData[deckSelections[i]].correlations[deckSelections[j]].Weight;
           }
           else
           {
-            botValues[i].wts[j] = GlobalData.regData[deckSelections[i]][deckSelections[j]+(botCount + 2)].Weight; // TODO: Magic number here.
+            botValues[i].wts[j] = GlobalData.regData[deckSelections[i]].correlations[deckSelections[j]+(botCount + 2)].Weight; // TODO: Magic number here.
           }
         }
         else

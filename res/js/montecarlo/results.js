@@ -213,21 +213,21 @@ function drawResults(newSelection)
     .attr("transform", `translate(${originX},0)`)
     .call(d3.axisRight(y).tickFormat((d) => d));
 
-  if(GlobalData.regDataBase[resultSelection][resultSelection].Weight > resCost)
+  if(GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight > resCost)
   {
     svg.append("line").attr('class', 'svg_line_selected')
       .attr("x1", originX + counts[0] / (counts[1] - counts[0]) * width)
       .attr("x2", originX + counts[1] / (counts[1] - counts[0]) * width)
-      .attr("y1", originY + (-GlobalData.regDataBase[resultSelection][resultSelection].Weight * counts[0]) / maxResult * originY)
-      .attr("y2", originY + (-GlobalData.regDataBase[resultSelection][resultSelection].Weight * counts[1]) / maxResult * originY);
+      .attr("y1", originY + (-GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight * counts[0]) / maxResult * originY)
+      .attr("y2", originY + (-GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight * counts[1]) / maxResult * originY);
   }
   else
   {
     svg.append("line").attr('class', 'svg_line_highlighted')
       .attr("x1", originX + counts[0] / (counts[1] - counts[0]) * width)
       .attr("x2", originX + counts[1] / (counts[1] - counts[0]) * width)
-      .attr("y1", originY + (-GlobalData.regDataBase[resultSelection][resultSelection].Weight * counts[0]) / maxResult * originY)
-      .attr("y2", originY + (-GlobalData.regDataBase[resultSelection][resultSelection].Weight * counts[1]) / maxResult * originY);
+      .attr("y1", originY + (-GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight * counts[0]) / maxResult * originY)
+      .attr("y2", originY + (-GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight * counts[1]) / maxResult * originY);
   }
 
   svg.append("line").attr('class', 'svg_line')

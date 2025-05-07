@@ -566,7 +566,7 @@ function drawStatHighlight()
     .attr('y', 30)
     .style('font-size', '30px')
     .style("text-anchor", "middle")
-    .text('\u{2211}' + parseInt(GlobalData.regData[statBotSelected][statBotSelected].Weight));
+    .text('\u{2211}' + parseInt(GlobalData.regData[statBotSelected].correlations[statBotSelected].Weight));
   statsHighlightImages.append('g')
     .append('image').attr('class', 'svg_image')
       .attr('width', 80)
@@ -700,7 +700,7 @@ function drawStatTable()
       {
         selectedScore += Math.abs(GlobalData.regStats[statBotSelected][property] * GlobalData.bots[statBotSelected][property]);
       };
-      var baseWeight = GlobalData.regData[statBotSelected][statBotSelected].Weight;
+      var baseWeight = GlobalData.regData[statBotSelected].correlations[statBotSelected].Weight;
       var value = GlobalData.bots[statBotSelected][statNameLookup[statIdx]];
       var weight = GlobalData.regStats[statBotSelected][statNameLookup[statIdx]];
       var score = weight*value;

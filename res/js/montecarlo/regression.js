@@ -78,7 +78,7 @@ function selectManuFilter(value) {
 function drawRegression()
 {
   GlobalData.regData.forEach(function(d, i) {
-    allBotRegData[i] = d[i];
+    allBotRegData[i] = d.correlations[i];
   });
 
   drawRegressionTable(regressionGraph, regressionTable, allBotRegData);
@@ -351,7 +351,7 @@ function drawRegressionTable(graph, table, data)
         .on('mouseenter', () => setRegressionOutputHighlight(graph, table, "AvgScore"))
         .on('mouseleave', () => setRegressionOutputHighlight(graph, table, null))
         .on('click', () => setRegressionOutputSelect(graph, table, "AvgScore"));
-      writeTableText(newCell, d.AvgScore, d.AvgScoreDiff, d.name, 2);
+      writeTableText(newCell, GlobalData.regData[d.ID].AvgScore, GlobalData.regData[d.ID].AvgScoreDiff, d.name, 2);
       newCell = row.append('td').attr('class', 'table_cell').style('width', '10%')
         .attr('alt', "Weight")
         .on('mouseenter', () => setRegressionOutputHighlight(graph, table, "Weight"))

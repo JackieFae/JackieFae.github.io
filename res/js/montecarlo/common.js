@@ -20,9 +20,9 @@ const pathRoot = 'res/data/montecarlo/';
 const GlobalData = {
   //count: 0,
   //countBase: 0,
-  //regData: [],
+  //regData: {...,[]},
   //regDataBot: [][],
-  //regDataBase: [],
+  //regDataBase: {...,[]},
   //regDataBaseBot: [][],
   //resultDataBase: [],
   //resultIdx: [],
