@@ -174,11 +174,36 @@ function drawStats()
   var res = computeStats(statBotSelected);
   cropStatData = res.cropped;
   unsortStatData = res.unsorted;
+  updateColours();
   drawPieChart();
   drawWireframeChart();
   drawStatHighlight();
   drawStatTable();
   linkStatCharts();
+}
+
+function updateColours()
+{
+  for(var ruleIdx in document.styleSheets[1].cssRules)
+  {
+    var ruleList = document.styleSheets[1].cssRules[ruleIdx];
+    if(ruleList.selectorText == ".pieColour0")
+    {
+      colour[0] = ruleList.style.color;
+    }
+    else if(ruleList.selectorText == ".pieColour1")
+    {
+      colour[1] = ruleList.style.color;
+    }
+    else if(ruleList.selectorText == ".pieColour2")
+    {
+      colour[2] = ruleList.style.color;
+    }
+    else if(ruleList.selectorText == ".pieColour3")
+    {
+      colour[3] = ruleList.style.color;
+    }
+  }
 }
 
 function computeCompareStats()

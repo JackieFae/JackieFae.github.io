@@ -107,7 +107,6 @@ body {
   cursor: pointer;
 }
 
-
 /* Combine with bootstrap container to create page background */
 .main {
   background-color: #303030;
@@ -192,7 +191,6 @@ body {
   filter: invert(100%) invert(35%);
 }
 
-
 .svg_shape {
   filter: invert(100%) invert(35%);
 }
@@ -211,7 +209,7 @@ body {
 }
 .svg_shape_dark.selected {
   filter: invert(40%) sepia(75%) saturate(458%) hue-rotate(352deg) brightness(96%) contrast(82%);
-}
+}  
 
 .svg_shape_secondary {
   filter: invert(78%) sepia(48%) saturate(5437%) hue-rotate(350deg) brightness(91%) contrast(83%);
@@ -429,4 +427,17 @@ body {
   border-radius: 50%;
   background: #ff7b00;
   cursor: pointer;
+}
+
+.pieColour0 {
+  color: #a6a6a6;
+}
+.pieColour1 {
+  color: #ff7b00;
+}
+.pieColour2 {
+  color: #2191ec;
+}
+.pieColour3 {
+  color: #000000;
 }

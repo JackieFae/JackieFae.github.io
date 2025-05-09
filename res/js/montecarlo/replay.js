@@ -608,7 +608,7 @@ function drawReportDeck(deck, unitList, unitAlive, unitTotal, teamIdx)
         .attr('x', xBase + 50)
         .attr('y', yBase + 32)
         .attr('font-size', '30px')
-        .text(unitAlive[i]);// + " / " + d);
+        .text(unitAlive[i]);
     }
 
     if(unitTotal[i] > 0)

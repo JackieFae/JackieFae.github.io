@@ -25,7 +25,10 @@ body {
 .form-select{display:block;width:100%;padding:.375rem 2.25rem .375rem .75rem;-moz-padding-start:calc(0.75rem - 3px);font-size:1rem;font-weight:400;line-height:1.4;
   color:#24d69b;
   background-color:#303030;
-  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2324d69b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right .75rem center;background-size:16px 12px;
+  background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2324d69b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat:no-repeat;
+  background-position:right .75rem center;
+  background-size:16px 12px;
   border:1px solid #2da376;
   border-radius:0;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;-webkit-appearance:none;-moz-appearance:none;appearance:none}
 @media (prefers-reduced-motion:reduce){.form-select{transition:none}}
@@ -42,9 +45,13 @@ body {
   scrollbar-color: #24d69b #303030;
 }
 
+.form-select, .form-select-sm {
+  overflow: auto;
+}
+
 .dropbtn {
   display:block;width:100%;padding:.375rem 2.25rem .375rem .75rem;-moz-padding-start:calc(0.75rem - 3px);font-size:1rem;font-weight:400;line-height:1.4;
-  color:#00ffdd;
+  color:#24d69b;
   background-color:#303030;
   background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2324d69b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right .75rem center;background-size:16px 12px;
   border:1px solid #24d69b;
@@ -79,7 +86,7 @@ body {
   background-color: #00ffdd77;
 }
 .dropdown-content::-webkit-scrollbar-thumb {
-  background: #00ffdd;
+  background: #24d69b;
 }
 
 .dropdown:hover .dropdown-content {
@@ -88,7 +95,7 @@ body {
 }
 
 .dropdown-content div {
-  color: #00ffdd;
+  color: #24d69b;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -154,31 +161,34 @@ body {
 .svg_text {
   filter: invert(100%) invert(35%);
 }
+.svg_text.bright {
+  filter: invert(100%) brightness(125%);
+}
 .svg_text.highlighted {
-  filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+  filter: invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
 }
 .svg_text.selected {
-  filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+  filter: invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
 }
 
 .svg_text_secondary {
-  filter: invert(100%) invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+  filter: invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
 }
 .svg_text_secondary.highlighted {
-  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+  filter: invert(100%) invert(35%);
 }
 .svg_text_secondary.selected {
-  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+  filter: invert(100%) invert(35%);
 }
 
 .svg_text_tertiary {
-  filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+  filter: invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
 }
 .svg_text_tertiary.highlighted {
-  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+  filter: invert(100%) invert(35%);
 }
 .svg_text_tertiary.selected {
-  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+  filter: invert(100%) invert(35%);
 }
 
 .svg_shape {
@@ -189,6 +199,16 @@ body {
 }
 .svg_shape.selected {
   filter: invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+}
+
+.svg_shape_dark {
+  filter: invert(19%) sepia(18%) saturate(0%) hue-rotate(152deg) brightness(94%) contrast(99%)
+}
+.svg_shape_dark.highlighted {
+  filter: invert(27%) sepia(79%) saturate(2573%) hue-rotate(343deg) brightness(72%) contrast(88%);
+}
+.svg_shape_dark.selected {
+  filter: invert(52%) sepia(75%) saturate(404%) hue-rotate(105deg) brightness(88%) contrast(82%);
 }
 
 .svg_shape_secondary {
@@ -281,8 +301,21 @@ body {
   opacity: 1.0;
 }
 
+.svg_report_shape {
+  filter: invert(10%);
+  opacity: 0.5;
+}
+.svg_report_shape.teamA {
+  filter: invert(89%) sepia(90%) saturate(3411%) hue-rotate(90deg) brightness(101%) contrast(102%);
+  opacity: 0.25;
+}
+.svg_report_shape.teamB {
+  filter: invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
+  opacity: 0.25;
+}
+
 /* Table formatting */
-.table_hr, .table_hr_sticky, .table_hr_cornersticky{
+.table_hr, .table_hr_sticky, .table_hr_cornersticky {
   border: 1px solid #2da376;
   border-collapse: collapse;
   background: #303030;
@@ -314,8 +347,8 @@ body {
 }
 
 .table_cell img, .table_cell_sticky img {
-  width: 34px;
-  height: 34px;
+  width: 45px;
+  height: 45px;
   filter: invert(0%);
 }
 .table_cell img.highlighted, .table_cell_sticky img.highlighted {
@@ -327,6 +360,9 @@ body {
 
 .table_cell text {
   filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(117%) contrast(76%);
+}
+.table_cell text.darken {
+  filter: sepia(2%) saturate(1637%) hue-rotate(183deg) brightness(65%) contrast(76%);
 }
 .table_cell text.highlighted {
   filter: invert(100%) invert(39%) sepia(45%) saturate(5264%) hue-rotate(337deg) brightness(105%) contrast(121%);
@@ -391,4 +427,17 @@ body {
   border-radius: 50%;
   background: #00ffdd;
   cursor: pointer;
+}
+
+.pieColour0 {
+  color: #a6a6a6;
+}
+.pieColour1 {
+  color: #00ffdd;
+}
+.pieColour2 {
+  color: #ff3737;
+}
+.pieColour3 {
+  color: #000000;
 }

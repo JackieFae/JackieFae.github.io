@@ -29,10 +29,10 @@
         <h4 class="text-center">Beta 3 - Patch 4 - 2025-04-25</h4>
         <h4 class="text-center">3,000,000 Simulations</h4>
         <p class="section-label">Style</p>
-        <button onClick="swapStyle('res/css/montecarloHer.css')" type="button" class="btn btn-outline-secondary btn-xs">Her</button>
-        <button onClick="swapStyle('res/css/montecarloHim.css')" type="button" class="btn btn-outline-secondary btn-xs" disabled>Him</button>
-        <button onClick="swapStyle('res/css/montecarloLight.css')" type="button" class="btn btn-outline-secondary btn-xs" disabled>Light</button>
-        <button onClick="swapStyle('res/css/montecarloDark.css')" type="button" class="btn btn-outline-secondary btn-xs" disabled>Dark</button>
+        <button onClick="swapStyle('res/css/montecarloHer.css'); sleep(100).then(() => {drawStats();});" type="button" class="btn btn-outline-secondary btn-xs">Her</button>
+        <button onClick="swapStyle('res/css/montecarloHim.css'); sleep(100).then(() => {drawStats();});" type="button" class="btn btn-outline-secondary btn-xs">Him</button>
+        <button onClick="swapStyle('res/css/montecarloLight.css'); sleep(100).then(() => {drawStats();});" type="button" class="btn btn-outline-secondary btn-xs" disabled>Light</button>
+        <button onClick="swapStyle('res/css/montecarloDark.css'); sleep(100).then(() => {drawStats();});" type="button" class="btn btn-outline-secondary btn-xs" disabled>Dark</button>
         <p></p>
         <p class="section-label">Acknowledgements</p>
         <p class="text-justified">Thanks to <a href="https://www.reddit.com/u/Dolmant">u/Dolmant</a> for his working mining and publishing the unit data.</p>
