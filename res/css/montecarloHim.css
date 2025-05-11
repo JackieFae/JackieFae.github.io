@@ -63,7 +63,7 @@ body {
   display: inline-block;
 }
 
-.dropdown:disabled{
+.dropdown:disabled {
   background-color:#24d69b
 }
 
