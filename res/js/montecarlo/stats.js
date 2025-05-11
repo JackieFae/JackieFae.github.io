@@ -38,7 +38,8 @@ var compareTotals = {};
 
 // User selection values.
 var statBotSelected = 0; // Crab
-var statCompareSelect = 0;
+var statCompareGroup = compIndex.any; // Any
+var statCompareSelect = 0; // Any
 var statHighlight = 2;
 var statPieHighlight = -1;
 var piePaths = [];
@@ -50,80 +51,39 @@ var wireIcons = [];
 //
 // User Interface Elements
 //
-// Select bot to display.
-// Add event listener to the select box
-var statSelectButton = d3.select('#statBotButton');
-d3.select('#statBotCrab').on('click', () => selectStatBot(d3.select("#statBotCrab").attr('value')));
-d3.select('#statBotHunter').on('click', () => selectStatBot(d3.select("#statBotHunter").attr('value')));
-d3.select('#statBotGuardianShield').on('click', () => selectStatBot(d3.select("#statBotGuardianShield").attr('value')));
-d3.select('#statBotRecall').on('click', () => selectStatBot(d3.select("#statBotRecall").attr('value')));
-d3.select('#statBotRecallHunter').on('click', () => selectStatBot(d3.select("#statBotRecallHunter").attr('value')));
-d3.select('#statBotScorpion').on('click', () => selectStatBot(d3.select("#statBotScorpion").attr('value')));
-d3.select('#statBotBeetle').on('click', () => selectStatBot(d3.select("#statBotBeetle").attr('value')));
-d3.select('#statBotBlink').on('click', () => selectStatBot(d3.select("#statBotBlink").attr('value')));
-d3.select('#statBotBlinkHunter').on('click', () => selectStatBot(d3.select("#statBotBlinkHunter").attr('value')));
-d3.select('#statBotGunbot').on('click', () => selectStatBot(d3.select("#statBotGunbot").attr('value')));
-d3.select('#statBotMissilebot').on('click', () => selectStatBot(d3.select("#statBotMissilebot").attr('value')));
-d3.select('#statBotWasp').on('click', () => selectStatBot(d3.select("#statBotWasp").attr('value')));
-d3.select('#statBotHornet').on('click', () => selectStatBot(d3.select("#statBotHornet").attr('value')));
-d3.select('#statBotKnight').on('click', () => selectStatBot(d3.select("#statBotKnight").attr('value')));
-d3.select('#statBotCrossbow').on('click', () => selectStatBot(d3.select("#statBotCrossbow").attr('value')));
-d3.select('#statBotBallista').on('click', () => selectStatBot(d3.select("#statBotBallista").attr('value')));
-d3.select('#statBotKingCrab').on('click', () => selectStatBot(d3.select("#statBotKingCrab").attr('value')));
-d3.select('#statBotCrusader').on('click', () => selectStatBot(d3.select("#statBotCrusader").attr('value')));
-d3.select('#statBotBomber').on('click', () => selectStatBot(d3.select("#statBotBomber").attr('value')));
-d3.select('#statBotShocker').on('click', () => selectStatBot(d3.select("#statBotShocker").attr('value')));
-d3.select('#statBotRecallShocker').on('click', () => selectStatBot(d3.select("#statBotRecallShocker").attr('value')));
-d3.select('#statBotMortar').on('click', () => selectStatBot(d3.select("#statBotMortar").attr('value')));
-d3.select('#statBotSwiftShocker').on('click', () => selectStatBot(d3.select("#statBotSwiftShocker").attr('value')));
-d3.select('#statBotHeavyHunter').on('click', () => selectStatBot(d3.select("#statBotHeavyHunter").attr('value')));
-d3.select('#statBotDestroyer').on('click', () => selectStatBot(d3.select("#statBotDestroyer").attr('value')));
-d3.select('#statBotRaider').on('click', () => selectStatBot(d3.select("#statBotRaider").attr('value')));
-d3.select('#statBotTurret').on('click', () => selectStatBot(d3.select("#statBotTurret").attr('value')));
-d3.select('#statBotHeavyBallista').on('click', () => selectStatBot(d3.select("#statBotHeavyBallista").attr('value')));
-d3.select('#statBotGargantua').on('click', () => selectStatBot(d3.select("#statBotGargantua").attr('value')));
-d3.select('#statBotSniper').on('click', () => selectStatBot(d3.select("#statBotSniper").attr('value')));
-d3.select('#statBotAdvancedBlink').on('click', () => selectStatBot(d3.select("#statBotAdvancedBlink").attr('value')));
-d3.select('#statBotAssaultbot').on('click', () => selectStatBot(d3.select("#statBotAssaultbot").attr('value')));
-d3.select('#statBotAdvancedbot').on('click', () => selectStatBot(d3.select("#statBotAdvancedbot").attr('value')));
-d3.select('#statBotBehemoth').on('click', () => selectStatBot(d3.select("#statBotBehemoth").attr('value')));
-d3.select('#statBotAdvancedMortar').on('click', () => selectStatBot(d3.select("#statBotAdvancedMortar").attr('value')));
-d3.select('#statBotBlaster').on('click', () => selectStatBot(d3.select("#statBotBlaster").attr('value')));
-d3.select('#statBotButterfly').on('click', () => selectStatBot(d3.select("#statBotButterfly").attr('value')));
-d3.select('#statBotDragonfly').on('click', () => selectStatBot(d3.select("#statBotDragonfly").attr('value')));
-d3.select('#statBotFalcon').on('click', () => selectStatBot(d3.select("#statBotFalcon").attr('value')));
-d3.select('#statBotAirship').on('click', () => selectStatBot(d3.select("#statBotAirship").attr('value')));
-d3.select('#statBotAdvancedRecall').on('click', () => selectStatBot(d3.select("#statBotAdvancedRecall").attr('value')));
-d3.select('#statBotMammoth').on('click', () => selectStatBot(d3.select("#statBotMammoth").attr('value')));
-d3.select('#statBotStinger').on('click', () => selectStatBot(d3.select("#statBotStinger").attr('value')));
-d3.select('#statBotFlakTurret').on('click', () => selectStatBot(d3.select("#statBotFlakTurret").attr('value')));
-d3.select('#statBotBulwark').on('click', () => selectStatBot(d3.select("#statBotBulwark").attr('value')));
-d3.select('#statBotKatbus').on('click', () => selectStatBot(d3.select("#statBotKatbus").attr('value')));
-d3.select('#statBotLocust').on('click', () => selectStatBot(d3.select("#statBotLocust").attr('value')));
-d3.select('#statBotKraken').on('click', () => selectStatBot(d3.select("#statBotKraken").attr('value')));
-d3.select('#statBotPredator').on('click', () => selectStatBot(d3.select("#statBotPredator").attr('value')));
-d3.select('#statBotValkyrie').on('click', () => selectStatBot(d3.select("#statBotValkyrie").attr('value')));
-d3.select('#statBotArtillery').on('click', () => selectStatBot(d3.select("#statBotArtillery").attr('value')));
-d3.select('#statBotAdvancedDestroyer').on('click', () => selectStatBot(d3.select("#statBotAdvancedDestroyer").attr('value')));
-d3.select('#statBotShade').on('click', () => selectStatBot(d3.select("#statBotShade").attr('value')));
+var statSelectButton = null;
+var statGroupButton = null;
+var statComparisonButton = null;
 
 function selectStatBot(value)
 {
-  statSelectButton.select('img').attr('src', botImageLookup[value]);
-  statSelectButton.select('span').text(botNameLookup[value]);
   statBotSelected = value;
   drawStats();
 }
 
-// TODO: Comparison select dropdown.
-d3.select("#selectCompareSlug").on("change", function() {
+function selectComparisonGroup(value)
+{
+  statCompareGroup = value;
+  statCompareSelect = 0;
   computeCompareStats();
   drawStats();
-});
+}
+
+function selectTechComparison(value)
+{
+  statCompareSelect = value;
+  computeCompareStats();
+  drawStats();
+}
 
 //
 // HTML Linkages
 //
+const statsSelection = d3.select('#viz-stats-selection').append('div')//.attr('class', 'row row-cols-3');
+const statsSelectBot = statsSelection.append('div')//.attr('class', 'col').style('width', '20%');
+const statsCompareGroup = statsSelection.append('div')//.attr('class', 'col').style('width', '30%');
+const statsCompareIdx = statsSelection.append('div')//.attr('class', 'col').style('width', '50%');
+  
 const statsDisplay = d3.select('#viz-stats').append('div')
   .style('width', `${width}`)
   .style('height', '650');
@@ -171,6 +131,9 @@ const statsTable = statsTableView.append('div')
 //
 function drawStats()
 {
+  drawBotDropdown('selectBotSlug2', selectStatBot);
+  drawGroupDropdown('selectCompareSlug2', selectComparisonGroup);
+  drawComparisonDropdown('selectCompareSlug3', selectTechComparison);
   var res = computeStats(statBotSelected);
   cropStatData = res.cropped;
   unsortStatData = res.unsorted;
@@ -180,6 +143,181 @@ function drawStats()
   drawStatHighlight();
   drawStatTable();
   linkStatCharts();
+
+  // Update buttons
+  statSelectButton.select('img').attr('src', botImageLookup[statBotSelected]);
+  statSelectButton.select('span').text(botNameLookup[statBotSelected]);
+  statGroupButton.select('img').attr('src', compImageLookup[statCompareGroup]);
+  statGroupButton.select('span').text(compNameLookup[statCompareGroup]);
+  if(statCompareGroup == compIndex.tech)
+  {
+    statComparisonButton.select('img').attr('src', techImageLookup[statCompareSelect]);
+    statComparisonButton.select('span').text(techNameLookup[statCompareSelect]);
+  }
+  else if(statCompareGroup == compIndex.slot)
+  {
+    statComparisonButton.select('img').attr('src', deckslotImageLookup[statCompareSelect]);
+    statComparisonButton.select('span').text(deckslotNameLookup[statCompareSelect]);
+  }
+  else if(statCompareGroup == compIndex.trait)
+  {
+    statComparisonButton.select('img').attr('src', traitImageLookup[statCompareSelect]);
+    statComparisonButton.select('span').text(traitNameLookup[statCompareSelect]);
+  }
+  else if(statCompareGroup == compIndex.ability)
+  {
+    statComparisonButton.select('img').attr('src', abilityImageLookup[statCompareSelect]);
+    statComparisonButton.select('span').text(abilityNameLookup[statCompareSelect]);
+  }
+  else if(statCompareGroup == compIndex.manu)
+  {
+    statComparisonButton.select('img').attr('src', manuImageLookup[statCompareSelect]);
+    statComparisonButton.select('span').text(manuNameLookup[statCompareSelect]);
+  }
+  else if(statCompareGroup == compIndex.any)
+  {
+    statComparisonButton.select('img').attr('src', "res/images/stats/nothing.png");
+    statComparisonButton.select('span').text('');
+  }
+}
+
+function drawBotDropdown(name, callback)
+{
+  var selectBot = createImageSelect(statsSelectBot, "Select Bot:", name, 210, 300, 25, 25, callback);
+  statSelectButton = selectBot.selectAll(`#${name}Button`);
+  var selectBotContent = selectBot.selectAll(`#${name}Content`);
+  
+  for(let botIdx = 0; botIdx < botCount; ++botIdx)
+  {
+    let element = selectBotContent.append('div')
+      .attr('id', `${name + botNameLookup[botIdx]}`)
+      .attr('value', botIdx);
+    element.append('img')
+      .attr('src', botImageLookup[botIdx])
+      .style('width', '25px')
+      .style('height', '25px')
+    element.append('text')
+      .text(`${botNameLookup[botIdx]}`);
+    element.on('click', () => callback(botIdx))
+  }
+}
+
+function drawGroupDropdown(name, callback)
+{
+  var selectGroup = createImageSelect(statsCompareGroup, "Select Comparison:", name, 150, 300, 25, 25, callback);
+  statGroupButton = selectGroup.selectAll(`#${name}Button`);
+  var selectGroupContent = selectGroup.selectAll(`#${name}Content`);
+
+  for(let compIdx = 0; compIdx < compCount; ++compIdx)
+  {
+    let element = selectGroupContent.append('div')
+      .attr('id', `${name + compNameLookup[compIdx]}`)
+      .attr('value', compIdx);
+    element.append('img')
+      .attr('src', compImageLookup[compIdx])
+      .style('width', '25px')
+      .style('height', '25px')
+    element.append('text')
+      .text(`${compNameLookup[compIdx]}`);
+    element.on('click', () => callback(compIdx))
+  }
+}
+
+function drawComparisonDropdown(name, callback)
+{
+  if(statCompareGroup == compIndex.any)
+  {
+    var selectComparison = createImageSelect(statsCompareIdx, "Select Option:", name, 150, 0, 25, 25, callback);
+    statComparisonButton = selectComparison.selectAll(`#${name}Button`);
+  }
+  else
+  {
+    var selectComparison = createImageSelect(statsCompareIdx, "Select Option:", name, 150, 300, 25, 25, callback);
+    statComparisonButton = selectComparison.selectAll(`#${name}Button`);
+    var selectComparisonContent = selectComparison.selectAll(`#${name}Content`);
+
+    if(statCompareGroup == compIndex.tech)
+    {
+      for(let techIdx = 0; techIdx < techCount; ++techIdx)
+      {
+        let element = selectComparisonContent.append('div')
+          .attr('id', `${name + techNameLookup[techIdx]}`)
+          .attr('value', techIdx);
+        element.append('img')
+          .attr('src', techImageLookup[techIdx])
+          .style('width', '25px')
+          .style('height', '25px');
+        element.append('text')
+          .text(`${techNameLookup[techIdx]}`);
+        element.on('click', () => callback(techIdx))
+      }
+    }
+    else if(statCompareGroup == compIndex.slot)
+    {
+      for(let slotIdx = 0; slotIdx < deckslotCount; ++slotIdx)
+      {
+        let element = selectComparisonContent.append('div')
+          .attr('id', `${name + deckslotNameLookup[slotIdx]}`)
+          .attr('value', slotIdx);
+        element.append('img')
+          .attr('src', deckslotImageLookup[slotIdx])
+          .style('width', '25px')
+          .style('height', '25px');
+        element.append('text')
+          .text(`${deckslotNameLookup[slotIdx]}`);
+        element.on('click', () => callback(slotIdx))
+      }
+    }
+    else if(statCompareGroup == compIndex.trait)
+    {
+      for(let traitIdx = 0; traitIdx < traitCount; ++traitIdx)
+      {
+        let element = selectComparisonContent.append('div')
+          .attr('id', `${name + traitNameLookup[traitIdx]}`)
+          .attr('value', traitIdx);
+        element.append('img')
+          .attr('src', traitImageLookup[traitIdx])
+          .style('width', '25px')
+          .style('height', '25px');
+        element.append('text')
+          .text(`${traitNameLookup[traitIdx]}`);
+        element.on('click', () => callback(traitIdx))
+      }
+    }
+    else if(statCompareGroup == compIndex.ability)
+    {
+      for(let abilIdx = 0; abilIdx < abilityCount; ++abilIdx)
+      {
+        if(abilIdx != abilityIndex.unsetup)
+        {
+          let element = selectComparisonContent.append('div')
+            .attr('id', `${name + abilityNameLookup[abilIdx]}`)
+            .attr('value', abilIdx);
+          element.append('img')
+            .attr('src', abilityImageLookup[abilIdx])
+            .style('width', '25px')
+            .style('height', '25px');
+          element.append('text')
+            .text(`${abilityNameLookup[abilIdx]}`);
+          element.on('click', () => callback(abilIdx))
+        }
+      }
+    }
+    else if(statCompareGroup == compIndex.manu)
+    {
+      for(let manuIdx = 0; manuIdx < manuCount; ++manuIdx)
+      {
+        let element = selectComparisonContent.append('div')
+          .attr('id', `${name + manuNameLookup[manuIdx]}`)
+          .attr('value', manuIdx);
+        element.append('img')
+          .attr('src', manuImageLookup[manuIdx])
+          .style('width', '100px')
+          .style('height', '25px');
+        element.on('click', () => callback(manuIdx))
+      }
+    }
+  }
 }
 
 function updateColours()
@@ -208,22 +346,55 @@ function updateColours()
 
 function computeCompareStats()
 {
-  statCompareSelect = parseInt(d3.select("#selectCompareSlug").property("value"));
+  var filterCompare = GlobalData.bots;
 
-  var startIdx = botTechMap[statCompareSelect]
-  var compareCount = botTechMap[statCompareSelect+1] - botTechMap[statCompareSelect];
-  if(statCompareSelect == botTechMap.length - 1)
+  if(statCompareGroup == compIndex.tech)
   {
-    startIdx = 0;
-    compareCount = botNameLookup.length;
+    filterCompare = GlobalData.bots.filter((d, i) => (d.Tech == statCompareSelect));
   }
+  else if(statCompareGroup == compIndex.slot)
+  {
+    filterCompare = GlobalData.bots.filter((d, i) => (  (deckslotStartTechMap[statCompareSelect] <= d.Tech)
+                                                     && (d.Tech < deckslotEndTechMap[statCompareSelect])));
+  }
+  else if(statCompareGroup == compIndex.trait)
+  {
+    filterCompare = GlobalData.bots.filter((d, i) => (  (d.Swarming && (statCompareSelect == traitIndex.swarming))
+                                                     || (d.Piercing && (statCompareSelect == traitIndex.piercing))
+                                                     || (d.Hulking && (statCompareSelect == traitIndex.hulking))
+                                                     || (d.Shattering && (statCompareSelect == traitIndex.shattering))
+                                                     || (d.Walking && (statCompareSelect == traitIndex.ground))
+                                                     || (d.Flying && (statCompareSelect == traitIndex.flying))
+                                                     || (d.Hunting && (statCompareSelect == traitIndex.hunting))
+                                                     || (d.Passive && (statCompareSelect == traitIndex.passive))));
+  }
+  else if(statCompareGroup == compIndex.ability)
+  {
+    filterCompare = GlobalData.bots.filter((d, i) => (  (d.Overclock && (statCompareSelect == abilityIndex.overclock))
+                                                     || (d.Blink && (statCompareSelect == abilityIndex.blink))
+                                                     || (d.Recall && (statCompareSelect == abilityIndex.recall))
+                                                     || (d.Setup && (statCompareSelect == abilityIndex.setup))
+                                                     || (d.Detonate && (statCompareSelect == abilityIndex.detonate))
+                                                     || (d.Destruct && (statCompareSelect == abilityIndex.destruct))
+                                                     || (d["Guardian Shield"] && (statCompareSelect == abilityIndex.guardianshield))));
+  }
+  else if(statCompareGroup == compIndex.manu)
+  {
+    filterCompare = GlobalData.bots.filter((d, i) => (d.Manu == statCompareSelect));
+  }
+  else
+  {
+    //
+  }
+
+  var compareCount = filterCompare.length;
   var countInv = 1.0 / compareCount;
   var compareBots = [];
   compareTotals = {};
 
-  for(var botIdx = startIdx; botIdx < startIdx + compareCount; ++botIdx)
+  for(var botIdx = 0; botIdx < compareCount; ++botIdx)
   {
-    var res = computeStats(botIdx);
+    var res = computeStats(filterCompare[botIdx].ID);
     compareBots[botIdx] = res.base;
     for(var statIdx = 0; statIdx < compareBots[botIdx].length; ++statIdx)
     {
@@ -232,7 +403,7 @@ function computeCompareStats()
       {
         compareTotals[statName] = {name: statName, ID: statIdx, weight: 0.0, absScore: 0.0, score: 0.0, absWtPct: 0.0, wtPct: 0.0, value: 0.0};
       }
-      compareTotals[statName].value += GlobalData.bots[botIdx][statName] * countInv;
+      compareTotals[statName].value += filterCompare[botIdx][statName] * countInv;
       compareTotals[statName].weight += compareBots[botIdx][statIdx].weight * countInv;
       compareTotals[statName].absScore += compareBots[botIdx][statIdx].absScore * countInv;
       compareTotals[statName].score += compareBots[botIdx][statIdx].score * countInv;
@@ -420,7 +591,7 @@ function drawWireframeChart()
 
   var botVertices = [];
   var compareVertices = [];
-  var factor = 1.5;
+  var factor = 2.5;
   for(var i = 0; i < vertexCount+1; ++i)
   {
     if(i < unsortStatData.length-1)

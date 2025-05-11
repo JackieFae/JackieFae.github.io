@@ -117,9 +117,9 @@ function loadBotData()
       GlobalData.bots[i].DamageBonus2 = +d.DamageBonus2;
       GlobalData.bots[i].DamageBonusID3 = +d.DamageBonusID3;
       GlobalData.bots[i].DamageBonus3 = +d.DamageBonus3;
-      GlobalData.bots[i].Duration = +d.Duration;
       GlobalData.bots[i].Windup = +d.Windup;
       GlobalData.bots[i].Recoil = +d.Recoil;
+      GlobalData.bots[i].Reload = +d.Reload;
       GlobalData.bots[i].WeaponSpeed = +d.WeaponSpeed;
       GlobalData.bots[i].Range = +d.Range;
       GlobalData.bots[i].Splash = +d.Splash;
@@ -422,9 +422,9 @@ for(var botIdx = 0; botIdx < botCount; ++botIdx)
   GlobalData.regStats[botIdx].DamageBonus2 = 0.0;
   GlobalData.regStats[botIdx].DamageBonusID3 = 0.0;
   GlobalData.regStats[botIdx].DamageBonus3 = 0.0;
-  GlobalData.regStats[botIdx].Duration = 0.0;
   GlobalData.regStats[botIdx].Windup = 0.0;
   GlobalData.regStats[botIdx].Recoil = 0.0;
+  GlobalData.regStats[botIdx].Reload = 0.0;
   GlobalData.regStats[botIdx].WeaponSpeed = 0.0;
   GlobalData.regStats[botIdx].Range = 0.0;
   GlobalData.regStats[botIdx].Splash = 0.0;
@@ -596,6 +596,7 @@ function loadData(i)
     GlobalData.comparisons.slot = [];
     GlobalData.comparisons.trait = [];
     GlobalData.comparisons.manu = [];
+    GlobalData.comparisons.abil = [];
     var copyProps = { Weight: 0, WeightRes: 0, WeightBW: 0 };
 
     for(var techIdx = techIndex.core; techIdx < techCount; ++techIdx)
@@ -1070,6 +1071,137 @@ function loadData(i)
         {
           GlobalData.comparisons.manu[manuIdx].corrOutFriend[corrIdx][property] *= countInv;
           GlobalData.comparisons.manu[manuIdx].corrOutFoe[corrIdx][property] *= countInv;
+        }
+      }
+    }
+
+    for(var abilIdx = abilityIndex.blink; abilIdx < abilityCount; ++abilIdx)
+    {
+      if(abilIdx == abilityIndex.unsetup)
+      {
+        continue;
+      }
+
+      var compareCount = 0;
+      GlobalData.comparisons.abil[abilIdx] = {};
+      GlobalData.comparisons.abil[abilIdx].corrIn = [];
+      GlobalData.comparisons.abil[abilIdx].ID = abilIdx;
+      GlobalData.comparisons.abil[abilIdx].name = abilityNameLookup[abilIdx];
+
+      for(var botIdx = 0; botIdx < botCount; ++botIdx)
+      {
+        if((GlobalData.bots[botIdx].Blink && (abilIdx == abilityIndex.blink))
+        || (GlobalData.bots[botIdx].Detonate && (abilIdx == abilityIndex.detonate))
+        || (GlobalData.bots[botIdx].Destruct && (abilIdx == abilityIndex.destruct))
+        || (GlobalData.bots[botIdx].Overclock && (abilIdx == abilityIndex.overclock))
+        || (GlobalData.bots[botIdx].Recall && (abilIdx == abilityIndex.recall))
+        || (GlobalData.bots[botIdx].Setup && (abilIdx == abilityIndex.setup))
+        || (GlobalData.bots[botIdx]["Guardian Shield"] && (abilIdx == abilityIndex.guardianshield)))
+        {
+          compareCount++;
+
+          // Get sum of bot values.
+          for(const property in GlobalData.regData[botIdx].correlations[botIdx])
+          {
+            if(property != "name" && property != "ID" && property != "correlationID")
+            {
+              if(!GlobalData.comparisons.abil[abilIdx][property])
+              {
+                GlobalData.comparisons.abil[abilIdx][property] = 0;
+              }
+              GlobalData.comparisons.abil[abilIdx][property] += GlobalData.regData[botIdx].correlations[botIdx][property];
+            }
+          }
+
+          // Get sum of bot corrIn
+          for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+          {
+            GlobalData.comparisons.abil[abilIdx].corrIn[corrIdx] = {};
+            for(const property in copyProps)
+            {
+              if(property != "name" && property != "ID" && property != "correlationID")
+              {
+                if(!GlobalData.comparisons.abil[abilIdx].corrIn[corrIdx][property])
+                {
+                  GlobalData.comparisons.abil[abilIdx].corrIn[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.abil[abilIdx].corrIn[corrIdx][property] += GlobalData.regData[botIdx].correlations[corrIdx][property];
+              }
+            }
+          }
+        }
+      }
+  
+      // Compute the averages.
+      var countInv = 1.0 / compareCount;
+      for(const property in GlobalData.comparisons.abil[abilIdx])
+      {
+        if(property != "name" && property != "ID" && property != "corrIn" && property != "corrOutFriend" && property != "corrOutFoe")
+        {
+          GlobalData.comparisons.abil[abilIdx][property] *= countInv;
+        }
+      }
+      for(var corrIdx = 0; corrIdx < 2 * (botCount + 2); ++corrIdx)
+      {
+        for(const property in copyProps)
+        {
+          GlobalData.comparisons.abil[abilIdx].corrIn[corrIdx][property] *= countInv;
+        }
+      }
+  
+      compareCount = 0;
+      GlobalData.comparisons.abil[abilIdx].corrOutFriend = [];
+      GlobalData.comparisons.abil[abilIdx].corrOutFoe = [];
+  
+      // Get sum of corrIn to other bots.
+      for(var corrIdx = 0; corrIdx < botCount; ++corrIdx)
+      {
+        if(!GlobalData.comparisons.abil[abilIdx].corrOutFriend[corrIdx])
+        {
+          GlobalData.comparisons.abil[abilIdx].corrOutFriend[corrIdx] = {};
+        }
+        if(!GlobalData.comparisons.abil[abilIdx].corrOutFoe[corrIdx])
+        {
+          GlobalData.comparisons.abil[abilIdx].corrOutFoe[corrIdx] = {};
+        }
+  
+        for(var botIdx = 0; botIdx < botCount; ++botIdx)
+        {
+          if(((GlobalData.bots[botIdx].Blink && (abilIdx == abilityIndex.blink))
+           || (GlobalData.bots[botIdx].Detonate && (abilIdx == abilityIndex.detonate))
+           || (GlobalData.bots[botIdx].Destruct && (abilIdx == abilityIndex.destruct))
+           || (GlobalData.bots[botIdx].Overclock && (abilIdx == abilityIndex.overclock))
+           || (GlobalData.bots[botIdx].Recall && (abilIdx == abilityIndex.recall))
+           || (GlobalData.bots[botIdx].Setup && (abilIdx == abilityIndex.setup))
+           || (GlobalData.bots[botIdx]["Guardian Shield"] && (abilIdx == abilityIndex.guardianshield)))
+          && (botIdx != corrIdx))
+          {
+            compareCount++;
+            for(const property in copyProps)
+            {
+              if(property != "name" && property != "ID" && property != "correlationID")
+              {
+                if(!GlobalData.comparisons.abil[abilIdx].corrOutFriend[corrIdx][property])
+                {
+                  GlobalData.comparisons.abil[abilIdx].corrOutFriend[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.abil[abilIdx].corrOutFriend[corrIdx][property] += GlobalData.regData[corrIdx].correlations[botIdx][property];
+
+                if(!GlobalData.comparisons.abil[abilIdx].corrOutFoe[corrIdx][property])
+                {
+                  GlobalData.comparisons.abil[abilIdx].corrOutFoe[corrIdx][property] = 0;
+                }
+                GlobalData.comparisons.abil[abilIdx].corrOutFoe[corrIdx][property] += GlobalData.regData[corrIdx].correlations[botIdx + botCount + 2][property];
+              }
+            }
+          }
+        }
+  
+        countInv = 1.0 / compareCount;
+        for(const property in copyProps)
+        {
+          GlobalData.comparisons.abil[abilIdx].corrOutFriend[corrIdx][property] *= countInv;
+          GlobalData.comparisons.abil[abilIdx].corrOutFoe[corrIdx][property] *= countInv;
         }
       }
     }

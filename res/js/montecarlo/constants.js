@@ -214,7 +214,6 @@ const techImageLookup = [
   'res/images/techtiers/' + techNameLookup[ 3].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/techtiers/' + techNameLookup[ 4].toLowerCase().replace(/\s+/g,'') + '.png',
   'res/images/techtiers/' + techNameLookup[ 5].toLowerCase().replace(/\s+/g,'') + '.png',
-  ,
 ];
 
 const techCount = techIndex.any;
@@ -334,9 +333,9 @@ const statIndex = {
   DamageBonus2: 27,
   DamageBonusID3: 28,
   DamageBonus3: 29,
-  Duration: 30,
-  Windup: 31,
-  Recoil: 32,
+  Windup: 30,
+  Recoil: 31,
+  Reload: 32,
   WeaponSpeed: 33,
   Range: 34,
   Splash: 35,
@@ -398,9 +397,9 @@ const statNameLookup = [
   "DamageBonus2",
   "DamageBonusID3",
   "DamageBonus3",
-  "Duration",
   "Windup",
   "Recoil",
+  "Reload",
   "WeaponSpeed",
   "Range",
   "Splash",
@@ -454,9 +453,9 @@ const statImageLookup = [
   'res/images/stats/' + statNameLookup[27].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 2
   'res/images/stats/' + statNameLookup[28].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Idx 3
   'res/images/stats/' + statNameLookup[29].toLowerCase().replace(/\s+/g,'') + '.png', // SPECIAL CASE: RESOLVE BY LOOKING UP BOT IDX Damage vs. Idx 3
-  'res/images/stats/' + statNameLookup[30].toLowerCase().replace(/\s+/g,'') + '.png', // Duration
-  'res/images/stats/' + statNameLookup[31].toLowerCase().replace(/\s+/g,'') + '.png', // Windup
-  'res/images/stats/' + statNameLookup[32].toLowerCase().replace(/\s+/g,'') + '.png', // Recoil
+  'res/images/stats/' + statNameLookup[30].toLowerCase().replace(/\s+/g,'') + '.png', // Windup
+  'res/images/stats/' + statNameLookup[31].toLowerCase().replace(/\s+/g,'') + '.png', // Recoil
+  'res/images/stats/' + statNameLookup[32].toLowerCase().replace(/\s+/g,'') + '.png', // Reload
   'res/images/stats/' + statNameLookup[33].toLowerCase().replace(/\s+/g,'') + '.png', // Weapon Speed
   'res/images/stats/' + statNameLookup[34].toLowerCase().replace(/\s+/g,'') + '.png', // Range
   'res/images/stats/' + statNameLookup[35].toLowerCase().replace(/\s+/g,'') + '.png', // Splash
@@ -612,6 +611,8 @@ const abilityImageLookup = [
   'res/images/abilities/' + abilityNameLookup[abilityIndex.guardianshield].toLowerCase().replace(/\s+/g,'') + '.png',
 ];
 
+const abilityCount = abilityNameLookup.length;
+
 const manuIndex = {
   northperformance: 0,
   farhorizoncollective: 1,
@@ -649,3 +650,32 @@ const manuImageLookup = [
 ];
 
 const manuCount = manuIndex.any;
+
+const compIndex = {
+  tech: 0,
+  slot: 1,
+  trait: 2,
+  ability: 3,
+  manu: 4,
+  any: 5,
+};
+
+const compNameLookup = [
+  "Tech Tier",
+  "Deck Slot",
+  "Trait",
+  "Ability",
+  "Manufacturer",
+  "All Bots",
+];
+
+const compImageLookup = [
+  'res/images/techtiers/' + techNameLookup[ 5].toLowerCase().replace(/\s+/g,'') + '.png', // TODO: Make this.
+  'res/images/techtiers/' + techNameLookup[ 5].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/traits/' + traitNameLookup[ 8].toLowerCase().replace(/\s+/g,'').replace(/-+/g,'') + '.png',
+  'res/images/abilities/' + abilityNameLookup[abilityIndex.blink].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/manufacturers/' + manuNameLookup[manuIndex.any].toLowerCase().replace(/\s+/g,'') + '.png',
+  'res/images/techtiers/' + techNameLookup[ 5].toLowerCase().replace(/\s+/g,'') + '.png', // TODO: Make this.
+];
+
+const compCount = compNameLookup.length;
