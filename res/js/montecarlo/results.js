@@ -213,21 +213,20 @@ function drawResults(newSelection)
     .attr("transform", `translate(${originX},0)`)
     .call(d3.axisRight(y).tickFormat((d) => d));
 
-  if(GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight > resCost)
+  var weight = GlobalData.regData[resultSelection].correlations[resultSelection].Weight;
+  var weightLine = svg.append("line")
+    .attr("x1", originX + counts[0] / (counts[1] - counts[0]) * width)
+    .attr("x2", originX + counts[1] / (counts[1] - counts[0]) * width)
+    .attr("y1", originY + (-weight * counts[0]) / maxResult * originY)
+    .attr("y2", originY + (-weight * counts[1]) / maxResult * originY);
+
+  if(weight > resCost)
   {
-    svg.append("line").attr('class', 'svg_line_selected')
-      .attr("x1", originX + counts[0] / (counts[1] - counts[0]) * width)
-      .attr("x2", originX + counts[1] / (counts[1] - counts[0]) * width)
-      .attr("y1", originY + (-GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight * counts[0]) / maxResult * originY)
-      .attr("y2", originY + (-GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight * counts[1]) / maxResult * originY);
+    weightLine.attr('class', 'svg_line_selected');
   }
   else
   {
-    svg.append("line").attr('class', 'svg_line_highlighted')
-      .attr("x1", originX + counts[0] / (counts[1] - counts[0]) * width)
-      .attr("x2", originX + counts[1] / (counts[1] - counts[0]) * width)
-      .attr("y1", originY + (-GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight * counts[0]) / maxResult * originY)
-      .attr("y2", originY + (-GlobalData.regDataBase[resultSelection].correlations[resultSelection].Weight * counts[1]) / maxResult * originY);
+    weightLine.attr('class', 'svg_line_highlighted');
   }
 
   svg.append("line").attr('class', 'svg_line')
